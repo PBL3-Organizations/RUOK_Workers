@@ -13,6 +13,18 @@
         android:theme="@style/Theme.RUOK_Workers"
         tools:targetApi="31">
         <activity
+<<<<<<< HEAD
+=======
+            android:name=".DashboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false" />
+        <activity
+>>>>>>> a70393c7b68f86b8099e2d23a51b9fe275b75591
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
