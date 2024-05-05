@@ -1,8 +1,5 @@
 <resources>
     <string name="app_name">RUOK_Workers</string>
-<<<<<<< HEAD
-=======
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
->>>>>>> a70393c7b68f86b8099e2d23a51b9fe275b75591
 </resources>
