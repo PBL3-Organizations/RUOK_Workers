@@ -7,27 +7,24 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-<<<<<<< HEAD
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello World!"
         app:layout_constraintBottom_toBottomOf="parent"
-=======
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="289dp"
         android:layout_height="277dp"
         android:src="@drawable/aegis_logo"
         app:layout_constraintBottom_toTopOf="@+id/login_button"
->>>>>>> c738a2a51e710177f21c14666ad558eafc68741a
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-<<<<<<< HEAD
+
 </androidx.constraintlayout.widget.ConstraintLayout>
-=======
+
     <Button
         android:id="@+id/login_button"
         android:layout_width="200dp"
@@ -57,4 +54,4 @@
         app:layout_constraintTop_toBottomOf="@+id/login_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
->>>>>>> c738a2a51e710177f21c14666ad558eafc68741a
+
