@@ -22,9 +22,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
-
     <Button
         android:id="@+id/login_button"
         android:layout_width="200dp"
