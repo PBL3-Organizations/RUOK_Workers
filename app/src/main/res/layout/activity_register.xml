@@ -182,7 +182,7 @@
         app:layout_constraintTop_toTopOf="@+id/worker_birth" />
 
     <Button
-        android:id="@+id/signUp_button"
+        android:id="@+id/signUp_button2"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
