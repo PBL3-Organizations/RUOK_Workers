@@ -12,7 +12,7 @@
         android:layout_height="match_parent">
 
         <Button
-            android:id="@+id/buttonList"
+            android:id="@+id/btnList"
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_marginStart="10dp"
@@ -26,7 +26,7 @@
             android:textSize="24sp"
             android:textStyle="bold"
             app:cornerRadius="30dp"
-            app:layout_constraintBottom_toTopOf="@+id/buttonLocation"
+            app:layout_constraintBottom_toTopOf="@+id/btnLocation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -35,7 +35,7 @@
             tools:ignore="MissingConstraints" />
 
         <Button
-            android:id="@+id/buttonLocation"
+            android:id="@+id/btnLocation"
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_marginStart="10dp"
@@ -49,11 +49,11 @@
             android:textSize="24sp"
             android:textStyle="bold"
             app:cornerRadius="30dp"
-            app:layout_constraintBottom_toTopOf="@+id/textViewProfile"
+            app:layout_constraintBottom_toTopOf="@+id/tvProfile"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonList"
+            app:layout_constraintTop_toBottomOf="@+id/btnList"
             app:strokeColor="#808080"
             app:strokeWidth="2dp"
             tools:ignore="MissingConstraints" />
@@ -69,11 +69,11 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textViewProfile"
+            app:layout_constraintTop_toBottomOf="@id/tvProfile"
             tools:ignore="MissingConstraints" />
 
         <TextView
-            android:id="@+id/textViewProfile"
+            android:id="@+id/tvProfile"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -86,7 +86,7 @@
             app:layout_constraintBottom_toTopOf="@+id/recyclerViewProfile"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonLocation"
+            app:layout_constraintTop_toBottomOf="@+id/btnLocation"
             tools:ignore="MissingConstraints" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
