@@ -1,27 +1,17 @@
 [versions]
 agp = "8.4.0"
 kotlin = "1.9.0"
-<<<<<<< HEAD
-coreKtx = "1.13.1"
-=======
 coreKtx = "1.10.1"
->>>>>>> c738a2a51e710177f21c14666ad558eafc68741a
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
 appcompat = "1.6.1"
-<<<<<<< HEAD
-material = "1.12.0"
-activity = "1.9.0"
-constraintlayout = "2.1.4"
-=======
 material = "1.10.0"
 activity = "1.8.0"
 constraintlayout = "2.1.4"
 annotation = "1.6.0"
 lifecycleLivedataKtx = "2.6.1"
 lifecycleViewmodelKtx = "2.6.1"
->>>>>>> c738a2a51e710177f21c14666ad558eafc68741a
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -32,12 +22,10 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
-<<<<<<< HEAD
-=======
 androidx-annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
 androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
->>>>>>> c738a2a51e710177f21c14666ad558eafc68741a
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

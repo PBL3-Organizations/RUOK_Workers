@@ -21,7 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "RUOK_Workers"
 include(":app")
-<<<<<<< HEAD
- 
-=======
->>>>>>> c738a2a51e710177f21c14666ad558eafc68741a
+
