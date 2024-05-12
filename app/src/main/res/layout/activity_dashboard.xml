@@ -27,8 +27,7 @@
         android:background="#F27406"
         android:layout_gravity="start"
         android:paddingStart="20dp"
-        app:menu="@menu/menu"
-        tools:ignore="MissingConstraints" />
+        app:menu="@menu/menu" />
 
 
 </androidx.drawerlayout.widget.DrawerLayout>
