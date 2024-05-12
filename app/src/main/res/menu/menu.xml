@@ -5,10 +5,11 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/tabDashboard"
-            android:title="Dashboard" />
+            android:title="홈" />
         <item
             android:id="@+id/tablist"
-            android:title="details" />
+            android:title="문진표 목록"
+            />
     </group>
 
 </menu>
