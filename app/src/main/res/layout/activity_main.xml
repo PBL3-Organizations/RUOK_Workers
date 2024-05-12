@@ -16,6 +16,7 @@
         app:layout_constraintBottom_toTopOf="@+id/login_button"
         tools:ignore="MissingConstraints" />
 
+
     <TextView
         android:id="@+id/organizations"
         android:layout_width="wrap_content"
@@ -124,7 +125,8 @@
         android:layout_marginTop="100dp"
         android:text="아이디"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/worker_birth" />
+        app:layout_constraintTop_toBottomOf="@+id/worker_birth"
+        tools:ignore="UnknownIdInLayout" />
 
     <ImageView
         android:id="@+id/worker_profileImage"
@@ -249,5 +251,7 @@
         app:layout_constraintStart_toEndOf="@+id/input_organizations"
         app:layout_constraintTop_toBottomOf="@+id/input_phoneNumber" />
 
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+
 
