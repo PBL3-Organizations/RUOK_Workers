@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".DashboardActivity"
-    tools:openDrawer="start">
+    tools:context=".DashboardActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,18 +16,16 @@
             android:id="@+id/rootLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-
     </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="310dp"
+        android:id="@+id/navigationView"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#F27406"
         android:layout_gravity="start"
-        android:paddingStart="20dp"
-        app:menu="@menu/menu"
-        tools:ignore="MissingConstraints" />
+        android:layout_marginTop="20dp"
+        app:menu="@menu/menu" />
+
 
 
 </androidx.drawerlayout.widget.DrawerLayout>

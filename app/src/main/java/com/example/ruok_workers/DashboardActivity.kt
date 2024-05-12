@@ -26,7 +26,7 @@ class DashboardActivity : AppCompatActivity() {
         setFragment(DashboardFragment())
 
         //네비게이션 드로어 선택 시 해당 Fragment로 전환
-        binding.navView.setNavigationItemSelectedListener { item ->
+        binding.navigationView.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.tablist -> setFragment(ListFragment())
             }
@@ -43,6 +43,9 @@ class DashboardActivity : AppCompatActivity() {
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (toggle.onOptionsItemSelected(item)) {
+            return true
+        }
         return super.onOptionsItemSelected(item)
     }
 

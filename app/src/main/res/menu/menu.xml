@@ -5,9 +5,17 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/tabDashboard"
+<<<<<<< HEAD
             android:title="Dashboard" />
         <item
             android:id="@+id/tablist"
+=======
+            android:icon="@drawable/baseline_approval_24"
+            android:title="Dashboard" />
+        <item
+            android:id="@+id/tablist"
+            android:icon="@drawable/baseline_approval_24"
+>>>>>>> 1f6e4b187c137b2860b5b1ec987fdc9bc745d695
             android:title="details" />
     </group>
 
