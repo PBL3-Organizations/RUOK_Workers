@@ -8,14 +8,7 @@
     android:layout_margin="10dp"
     android:padding="16dp"
     xmlns:tools="http://schemas.android.com/tools">
-<!--배경색은 나중에 자동으로 설정되게 변경예정-->
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
->>>>>>> 1f6e4b187c137b2860b5b1ec987fdc9bc745d695
-=======
->>>>>>> 1f6e4b187c137b2860b5b1ec987fdc9bc745d695
+    <!--배경색은 나중에 자동으로 설정되게 변경예정-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -64,21 +57,9 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-    </LinearLayout>
-
-</androidx.cardview.widget.CardView>
-=======
-=======
->>>>>>> 1f6e4b187c137b2860b5b1ec987fdc9bc745d695
 
 
     </LinearLayout>
 
-<<<<<<< HEAD
 </androidx.cardview.widget.CardView>
->>>>>>> 1f6e4b187c137b2860b5b1ec987fdc9bc745d695
-=======
-</androidx.cardview.widget.CardView>
->>>>>>> 1f6e4b187c137b2860b5b1ec987fdc9bc745d695
+

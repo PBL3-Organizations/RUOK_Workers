@@ -6,15 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-<<<<<<< HEAD
-<<<<<<< HEAD
     tools:context=".DashboardActivity">
-=======
-    tools:openDrawer="start">
->>>>>>> 1f6e4b187c137b2860b5b1ec987fdc9bc745d695
-=======
-    tools:openDrawer="start">
->>>>>>> 1f6e4b187c137b2860b5b1ec987fdc9bc745d695
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,29 +19,12 @@
     </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView
-<<<<<<< HEAD
-<<<<<<< HEAD
         android:id="@+id/navigationView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:layout_marginTop="20dp"
         app:menu="@menu/menu" />
-
-=======
-=======
->>>>>>> 1f6e4b187c137b2860b5b1ec987fdc9bc745d695
-        android:id="@+id/nav_view"
-        android:layout_width="310dp"
-        android:layout_height="match_parent"
-        android:background="#F27406"
-        android:layout_gravity="start"
-        android:paddingStart="20dp"
-        app:menu="@menu/menu"/>
-<<<<<<< HEAD
->>>>>>> 1f6e4b187c137b2860b5b1ec987fdc9bc745d695
-=======
->>>>>>> 1f6e4b187c137b2860b5b1ec987fdc9bc745d695
 
 
 </androidx.drawerlayout.widget.DrawerLayout>
