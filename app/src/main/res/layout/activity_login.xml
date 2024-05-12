@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <<<<<<< HEAD
+<<<<<<< HEAD
 <LinearLayout android:id="@+id/main"
 =======
+=======
+>>>>>>> 1f6e4b187c137b2860b5b1ec987fdc9bc745d695
 <LinearLayout
     android:id="@+id/main"
 >>>>>>> 1f6e4b187c137b2860b5b1ec987fdc9bc745d695
@@ -10,6 +13,7 @@
     android:orientation="horizontal"
     tools:context=".LoginActivity"
     xmlns:tools="http://schemas.android.com/tools"
+<<<<<<< HEAD
 <<<<<<< HEAD
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -68,6 +72,11 @@
 
 </LinearLayout>
 
+=======
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+</LinearLayout>
+>>>>>>> 1f6e4b187c137b2860b5b1ec987fdc9bc745d695
 =======
     xmlns:android="http://schemas.android.com/apk/res/android">
 

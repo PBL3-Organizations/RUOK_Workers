@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".RegisterActivity">
+<<<<<<< HEAD
 
 
     <ImageView
@@ -16,6 +17,8 @@
         app:layout_constraintBottom_toTopOf="@+id/login_button"
         tools:ignore="MissingConstraints" />
 
+=======
+>>>>>>> 1f6e4b187c137b2860b5b1ec987fdc9bc745d695
 
     <TextView
         android:id="@+id/organizations"
@@ -125,8 +128,12 @@
         android:layout_marginTop="100dp"
         android:text="아이디"
         app:layout_constraintStart_toStartOf="parent"
+<<<<<<< HEAD
         app:layout_constraintTop_toBottomOf="@+id/worker_birth"
         tools:ignore="UnknownIdInLayout" />
+=======
+        app:layout_constraintTop_toBottomOf="@+id/worker_birth" />
+>>>>>>> 1f6e4b187c137b2860b5b1ec987fdc9bc745d695
 
     <ImageView
         android:id="@+id/worker_profileImage"
@@ -147,6 +154,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+<<<<<<< HEAD
     <Button
         android:id="@+id/login_button"
         android:layout_width="200dp"
@@ -179,6 +187,8 @@
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
+=======
+>>>>>>> 1f6e4b187c137b2860b5b1ec987fdc9bc745d695
     <TextView
         android:id="@+id/worker_birth"
         android:layout_width="wrap_content"
@@ -251,7 +261,11 @@
         app:layout_constraintStart_toEndOf="@+id/input_organizations"
         app:layout_constraintTop_toBottomOf="@+id/input_phoneNumber" />
 
+<<<<<<< HEAD
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+=======
+</androidx.constraintlayout.widget.ConstraintLayout>
+>>>>>>> 1f6e4b187c137b2860b5b1ec987fdc9bc745d695
