@@ -28,6 +28,7 @@ class DashboardActivity : AppCompatActivity() {
         //네비게이션 드로어 선택 시 해당 Fragment로 전환
         binding.navigationView.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
+                R.id.tabDashboard -> setFragment(DashboardFragment())
                 R.id.tablist -> setFragment(ListFragment())
             }
             binding.drawerLayout.closeDrawers()
@@ -38,6 +39,8 @@ class DashboardActivity : AppCompatActivity() {
 
     //나중에 값 전달시 용이하게 함수로 작성함
     fun setFragment(fragment: Fragment){
+        var bundle = Bundle()
+        fragment.arguments = bundle
         supportFragmentManager.beginTransaction().replace(R.id.rootLayout, fragment).commit()
     }
 
