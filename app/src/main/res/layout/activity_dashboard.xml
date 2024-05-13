@@ -5,17 +5,19 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:context=".DashboardActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <FrameLayout
             android:id="@+id/rootLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" >
+
+        </FrameLayout>
     </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView
@@ -23,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-
+        android:layout_marginTop="20dp"
         app:menu="@menu/menu" />
 
 
