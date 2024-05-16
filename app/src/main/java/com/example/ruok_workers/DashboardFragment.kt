@@ -19,8 +19,6 @@ class DashboardFragment : Fragment() {
     ): View? {
         binding = FragmentDashboardBinding.inflate(inflater, container, false)
 
-        val btnList = view?.findViewById<Button>(R.id.btnList)
-        val btnLocation = view?.findViewById<Button>(R.id.btnLocation)
 
         //btnList 클릭시 DashboardFragment에서 ListFragment로 이동
         binding.btnList.setOnClickListener{
@@ -34,7 +32,7 @@ class DashboardFragment : Fragment() {
             parentActivity.setFragment(LocationTrackingFragment())
         }
 
-        return binding!!.root
+        return binding.root
     }
 
 
@@ -46,13 +44,4 @@ class DashboardFragment : Fragment() {
         }
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            DashboardFragment().apply {
-                arguments = Bundle().apply {
-
-                }
-            }
-    }
 }
