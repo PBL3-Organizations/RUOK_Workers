@@ -32,6 +32,12 @@ class DashboardFragment : Fragment() {
             parentActivity.setFragment(LocationTrackingFragment())
         }
 
+        //btnSearch 클릭시 DashboardFragment에서 SearchFragment로 이동
+        binding.btnSearch.setOnClickListener{
+            val parentActivity = activity as DashboardActivity
+            parentActivity.setFragment(SearchFragment())
+        }
+
         return binding.root
     }
 
