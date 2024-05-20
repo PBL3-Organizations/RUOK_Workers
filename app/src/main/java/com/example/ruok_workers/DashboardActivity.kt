@@ -7,6 +7,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.ruok_workers.databinding.ActivityDashboardBinding
+import com.example.ruok_workers.SearchFragment
 
 class DashboardActivity : AppCompatActivity() {
     private lateinit var toggle: ActionBarDrawerToggle
