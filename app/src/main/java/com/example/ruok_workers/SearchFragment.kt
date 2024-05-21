@@ -23,6 +23,9 @@ class SearchFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var centerTextView: TextView
     private lateinit var searchAdapter: SearchAdapter
+
+    //테스트 데이터셋
+    private val initialData = listOf("one", "two1", "two2", "three1", "three2", "three3", "four")
     private val searchResults = mutableListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,21 +56,31 @@ class SearchFragment : Fragment() {
             performSearch()
         }
 
+        // Initialize with initial data
+        searchResults.addAll(initialData)
+        searchAdapter.notifyDataSetChanged()
+
         return view
     }
 
     private fun performSearch() {
-        val query = searchEditText.text.toString()
+        val query = searchEditText.text.toString().trim()
         if (query.isNotEmpty()) {
-            // Perform search logic here (e.g., filter data based on the query)
-            // For demo purposes, we'll just add the query to the list
+            // Filter initialData based on the query
+            val filteredResults = initialData.filter { it.contains(query, ignoreCase = true) }
             searchResults.clear()
-            searchResults.add(query) // Add the query as a dummy result
+            searchResults.addAll(filteredResults)
             searchAdapter.notifyDataSetChanged()
 
-            centerTextView.text = "검색 결과: $query"
+            centerTextView.text = "검색 결과: ${filteredResults.size}개"
             centerTextView.visibility = View.VISIBLE
             recyclerView.visibility = View.VISIBLE
+        } else {
+            searchResults.clear()
+            searchAdapter.notifyDataSetChanged()
+            centerTextView.text = "검색 결과가 없습니다."
+            centerTextView.visibility = View.VISIBLE
+            recyclerView.visibility = View.GONE
         }
     }
 
