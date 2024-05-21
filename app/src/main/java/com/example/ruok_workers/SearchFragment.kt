@@ -24,6 +24,7 @@ class SearchFragment : Fragment() {
     private lateinit var centerTextView: TextView
     private lateinit var searchAdapter: SearchAdapter
 
+    //테스트 데이터셋
     private val initialData = listOf("one", "two1", "two2", "three1", "three2", "three3", "four")
     private val searchResults = mutableListOf<String>()
 
