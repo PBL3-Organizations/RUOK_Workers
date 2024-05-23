@@ -16,13 +16,17 @@ class DetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentDetailsBinding.inflate(inflater, container, false)
-
-        //btnLocationTracking클릭시 DatailsFragment에서 LocationTrackingFragment로 이동
-        binding.btnLocationTracking.setOnClickListener {
+        //btnGoRevision클릭시 DatailsFragment에서 RevisionFragment로 이동
+        binding.btnGoRevision.setOnClickListener {
             val DashboardActivity = activity as DashboardActivity
-            DashboardActivity.setFragment(LocationTrackingFragment())
+            DashboardActivity.setFragment(RevisionFragment())
         }
-        return binding!!.root
+        //btnGoList클릭시 DatailsFragment에서 ListFragment로 이동
+        binding.btnGoList.setOnClickListener {
+            val DashboardActivity = activity as DashboardActivity
+            DashboardActivity.setFragment(ListFragment())
+        }
+        return this.binding.root
     }
 
 }
