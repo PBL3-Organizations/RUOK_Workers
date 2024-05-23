@@ -21,6 +21,6 @@ class QuestionnaireFragment : Fragment() {
             val DashboardActivity = activity as DashboardActivity
             DashboardActivity.setFragment(ListFragment())
         }
-        return binding!!.root
+        return this.binding.root
     }
 }
