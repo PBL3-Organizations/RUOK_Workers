@@ -16,8 +16,16 @@ class DetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentDetailsBinding.inflate(inflater, container, false)
-
-
+        //btnGoRevision클릭시 DatailsFragment에서 RevisionFragment로 이동
+        binding.btnGoRevision.setOnClickListener {
+            val DashboardActivity = activity as DashboardActivity
+            DashboardActivity.setFragment(RevisionFragment())
+        }
+        //btnGoList클릭시 DatailsFragment에서 ListFragment로 이동
+        binding.btnGoList.setOnClickListener {
+            val DashboardActivity = activity as DashboardActivity
+            DashboardActivity.setFragment(ListFragment())
+        }
         return binding!!.root
     }
 

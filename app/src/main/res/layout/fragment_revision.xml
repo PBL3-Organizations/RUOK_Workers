@@ -137,12 +137,14 @@
         android:layout_height="match_parent">
 
         <Button
+            android:id="@+id/btnRevision"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="수정"
             android:textSize="18sp"
             android:textStyle="bold"
             android:backgroundTint="#F06F00"
+            android:layout_margin="5dp"
+            android:text="수정"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>

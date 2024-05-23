@@ -138,12 +138,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <Button
+            android:id="@+id/btnFinish"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="#F06F00"
-            android:text="입력"
+            android:layout_margin="5dp"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:text="입력"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
