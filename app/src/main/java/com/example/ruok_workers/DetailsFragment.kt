@@ -17,11 +17,7 @@ class DetailsFragment : Fragment() {
     ): View? {
         binding = FragmentDetailsBinding.inflate(inflater, container, false)
 
-        //btnLocationTracking클릭시 DatailsFragment에서 LocationTrackingFragment로 이동
-        binding.btnLocationTracking.setOnClickListener {
-            val DashboardActivity = activity as DashboardActivity
-            DashboardActivity.setFragment(LocationTrackingFragment())
-        }
+
         return binding!!.root
     }
 
