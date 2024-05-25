@@ -34,8 +34,20 @@ class CheckPwFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_check_pw, container, false)
+        val view = inflater.inflate(R.layout.fragment_check_pw, container, false)
+
+        // pwModifyConfirm 버튼을 찾아 클릭 리스너를 설정합니다.
+        val pwModifyConfirmButton = view.findViewById<Button>(R.id.pwModifyConfirm)
+        pwModifyConfirmButton.setOnClickListener {
+            // InfoRevisionFragment로 전환합니다.
+            val infoRevisionFragment = InfoRevisionFragment.newInstance("param1", "param2")
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.rootLayout, infoRevisionFragment)
+            transaction.addToBackStack(null) // 뒤로 가기 버튼을 눌렀을 때 이전 프래그먼트로 돌아갈 수 있도록 스택에 추가합니다.
+            transaction.commit()
+        }
+
+        return view
     }
 
     companion object {

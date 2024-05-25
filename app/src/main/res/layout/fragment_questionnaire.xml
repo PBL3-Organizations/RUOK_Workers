@@ -115,12 +115,14 @@
         android:textStyle="bold"
         android:layout_margin="10dp"
         android:text="아픈 곳" />
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:hint="내용을 입력해주세요"/>
+        android:hint="내용을 입력해주세요"
+        android:textSize="20sp" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -128,12 +130,14 @@
         android:textStyle="bold"
         android:layout_margin="10dp"
         android:text="특이사항" />
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:hint="내용을 입력해주세요"/>
+        android:hint="내용을 입력해주세요"
+        android:textSize="20sp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
