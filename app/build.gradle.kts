@@ -53,4 +53,6 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    // 네이버 지도 SDK
+    implementation("com.naver.maps:map-sdk:3.18.0")
 }
