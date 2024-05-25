@@ -36,10 +36,10 @@ class InfoRevisionFragment : Fragment() {
 
         val modifyButton = view.findViewById<Button>(R.id.modify_button)
         modifyButton.setOnClickListener {
-            // 로그인 버튼을 클릭하면 DashboardActivity로 이동
+            // 수정하기 버튼을 클릭하면 DashboardActivity로 이동
             val intent = Intent(activity, DashboardActivity::class.java)
             startActivity(intent)
-            activity?.finish() // 로그인 화면을 종료하여 뒤로 가기 버튼을 눌렀을 때 다시 로그인 화면이 나타나지 않도록 함
+            activity?.finish() // 회원정보 수정 화면을 종료하여 뒤로 가기 버튼을 눌렀을 때 다시 회원정보 수정 화면이 나타나지 않도록 함
         }
     }
 
