@@ -1,10 +1,12 @@
 package com.example.ruok_workers
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -28,6 +30,19 @@ class InfoRevisionFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val modifyButton = view.findViewById<Button>(R.id.modify_button)
+        modifyButton.setOnClickListener {
+            // 로그인 버튼을 클릭하면 DashboardActivity로 이동
+            val intent = Intent(activity, DashboardActivity::class.java)
+            startActivity(intent)
+            activity?.finish() // 로그인 화면을 종료하여 뒤로 가기 버튼을 눌렀을 때 다시 로그인 화면이 나타나지 않도록 함
+        }
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
