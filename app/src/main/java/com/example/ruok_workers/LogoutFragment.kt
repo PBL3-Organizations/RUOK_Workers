@@ -1,31 +1,22 @@
 package com.example.ruok_workers
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.ruok_workers.databinding.FragmentDashboardBinding
+import com.example.ruok_workers.databinding.FragmentLogoutBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [LogoutFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class LogoutFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    lateinit var binding: FragmentLogoutBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+
         }
     }
 
@@ -33,8 +24,22 @@ class LogoutFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_logout, container, false)
+        binding = FragmentLogoutBinding.inflate(inflater, container, false)
+
+        //btnYes 클릭시 LogoutFragment에서 MainActivity로 이동
+        binding.btnYes.setOnClickListener {
+            var intent = Intent(requireContext(), MainActivity::class.java)
+            startActivity(intent)
+        }
+
+        //btnNo 클릭시 LogoutFragment에서 DashboardFragment로 이동
+        binding.btnNo.setOnClickListener{
+            val parentActivity = activity as DashboardActivity
+            parentActivity.setFragment(DashboardFragment())
+        }
+
+        return binding.root
+
     }
 
     companion object {
@@ -46,13 +51,12 @@ class LogoutFragment : Fragment() {
          * @param param2 Parameter 2.
          * @return A new instance of fragment LogoutFragment.
          */
-        // TODO: Rename and change types and number of parameters
+
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             LogoutFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+
                 }
             }
     }
