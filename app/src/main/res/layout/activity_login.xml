@@ -11,7 +11,7 @@
         android:id="@+id/imageView"
         android:layout_width="289dp"
         android:layout_height="277dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="40dp"
         android:src="@drawable/aegis_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,8 +24,10 @@
         android:layout_marginStart="80dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="80dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/border"
         android:hint="  아이디"
+        app:layout_constraintBottom_toTopOf="@+id/input_password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
@@ -36,9 +38,11 @@
         android:layout_height="62dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="60dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/border"
         android:hint="  비밀번호"
         android:inputType="textPassword"
-        android:background="@drawable/border"
+        app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/input_id" />
 
