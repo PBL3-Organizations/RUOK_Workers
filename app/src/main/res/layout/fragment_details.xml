@@ -93,7 +93,7 @@
             android:backgroundTint="#EE7104"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:text="문진표 수정"
+            android:text="상담내역 수정"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
