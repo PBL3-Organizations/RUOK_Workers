@@ -1,5 +1,6 @@
 package com.example.ruok_workers
 
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
@@ -14,7 +15,8 @@ import androidx.core.view.WindowInsetsCompat
 
 class RegisterActivity : AppCompatActivity() {
 
-    private val organizations = listOf("Lover Center", "Vision Senter", "Apple Center")
+    private val organizations = listOf("Lover Center", "Vision Center", "Apple Center")
+    private val dummyIds = listOf("user1", "admin", "testuser") // 더미 데이터
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +38,11 @@ class RegisterActivity : AppCompatActivity() {
         val findOrganizationsButton = findViewById<Button>(R.id.find_organizations)
         findOrganizationsButton.setOnClickListener {
             showSearchDialog()
+        }
+
+        val checkIdButton = findViewById<Button>(R.id.check_id_duplicate)
+        checkIdButton.setOnClickListener {
+            checkIdDuplicate()
         }
     }
 
@@ -62,5 +69,22 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         dialog.show()
+    }
+
+    private fun checkIdDuplicate() {
+        val inputId = findViewById<EditText>(R.id.input_id).text.toString()
+        if (dummyIds.contains(inputId)) {
+            showAlertDialog("중복된 아이디", "다른 아이디를 선택해주세요")
+        } else {
+            showAlertDialog("사용 가능", "사용 가능한 아이디입니다")
+        }
+    }
+
+    private fun showAlertDialog(title: String, message: String) {
+        AlertDialog.Builder(this)
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton("확인", null)
+            .show()
     }
 }
