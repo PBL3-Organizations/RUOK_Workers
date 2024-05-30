@@ -62,8 +62,8 @@
             android:id="@+id/btnSearch"
             android:layout_width="0dp"
             android:layout_height="70dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:backgroundTint="#FFFFFF"
             android:gravity="center"
             android:text="노숙인 검색"
@@ -71,11 +71,31 @@
             android:textSize="20sp"
             android:textStyle="bold"
             app:cornerRadius="30dp"
-            app:layout_constraintBottom_toTopOf="@+id/tvProfile"
+            app:layout_constraintBottom_toTopOf="@+id/btnReset"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnList"
+            app:strokeColor="#808080"
+            app:strokeWidth="1dp" />
+
+        <Button
+            android:id="@+id/btnReset"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="20dp"
+            android:text="접촉 여부 초기화"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:cornerRadius="30dp"
+            app:layout_constraintBottom_toTopOf="@+id/tvProfile"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
             app:strokeColor="#808080"
             app:strokeWidth="1dp" />
 
@@ -93,7 +113,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnSearch"
+            app:layout_constraintTop_toBottomOf="@+id/btnReset"
             tools:ignore="MissingConstraints" />
 
         <androidx.recyclerview.widget.RecyclerView
