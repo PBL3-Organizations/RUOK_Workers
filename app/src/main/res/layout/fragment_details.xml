@@ -18,14 +18,16 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textStyle="bold"
+            android:layout_margin="10dp"
             android:text="이름 : " />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textStyle="bold"
+            android:layout_margin="10dp"
             android:text="생년월일 : " />
     </LinearLayout>
 
@@ -47,7 +49,7 @@
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_margin="10dp"
-            android:text="안부 : " />
+            android:text="만난 장소 : " />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -61,21 +63,28 @@
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_margin="10dp"
-            android:text="식사여부 : " />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_margin="10dp"
-            android:text="아픈 곳 : " />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_margin="10dp"
             android:text="특이사항 : " />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_margin="10dp"
+            android:text="상담 내용 : " />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_margin="10dp"
+            android:text="상담자 의견 : " />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_margin="10dp"
+            android:text="조치사항 : " />
     </LinearLayout>
 
 
@@ -93,7 +102,7 @@
             android:backgroundTint="#EE7104"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:text="상담내역 수정"
+            android:text="상담기록 수정"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
