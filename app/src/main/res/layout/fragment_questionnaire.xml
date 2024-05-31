@@ -12,43 +12,6 @@
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:layout_marginTop="100dp"
-        android:layout_margin="10dp"
-        android:text="안부" />
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:backgroundTint="#8F9090"
-            android:layout_marginLeft="10dp"
-            android:text="좋음"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:backgroundTint="#8F9090"
-            android:layout_marginLeft="10dp"
-            android:text="보통"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:backgroundTint="#8F9090"
-            android:layout_marginLeft="10dp"
-            android:text="나쁨"/>
-    </LinearLayout>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textStyle="bold"
         android:layout_margin="10dp"
         android:text="건강 상태" />
     <LinearLayout
@@ -62,7 +25,7 @@
             android:textStyle="bold"
             android:backgroundTint="#8F9090"
             android:layout_marginLeft="10dp"
-            android:text="좋음"/>
+            android:text="양호"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -70,23 +33,8 @@
             android:textStyle="bold"
             android:backgroundTint="#8F9090"
             android:layout_marginLeft="10dp"
-            android:text="보통"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:backgroundTint="#8F9090"
-            android:layout_marginLeft="10dp"
-            android:text="나쁨"/>
+            android:text="활동에 다소 지장"/>
     </LinearLayout>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_margin="10dp"
-        android:text="식사 여부" />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -98,7 +46,7 @@
             android:textStyle="bold"
             android:backgroundTint="#8F9090"
             android:layout_marginLeft="10dp"
-            android:text="식사 함"/>
+            android:text="활동에 많이 지장"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -106,15 +54,16 @@
             android:textStyle="bold"
             android:backgroundTint="#8F9090"
             android:layout_marginLeft="10dp"
-            android:text="식사 안 함"/>
+            android:text="재활치료 필요"/>
     </LinearLayout>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:textStyle="bold"
         android:layout_margin="10dp"
-        android:text="아픈 곳" />
+        android:text="특이사항" />
 
     <EditText
         android:layout_width="match_parent"
@@ -123,13 +72,46 @@
         android:layout_marginRight="10dp"
         android:hint="내용을 입력해주세요"
         android:textSize="20sp" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:textStyle="bold"
         android:layout_margin="10dp"
-        android:text="특이사항" />
+        android:text="상담 내용" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:hint="내용을 입력해주세요"
+        android:textSize="20sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_margin="10dp"
+        android:text="상담자 의견" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:hint="내용을 입력해주세요"
+        android:textSize="20sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_margin="10dp"
+        android:text="조치사항" />
 
     <EditText
         android:layout_width="match_parent"
