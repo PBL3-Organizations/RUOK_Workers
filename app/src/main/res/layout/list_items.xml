@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
-                android:id="@+id/tvMemberName"
+                android:id="@+id/tvHomelessName"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingLeft="10dp"
@@ -31,7 +31,7 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
             <TextView
-                android:id="@+id/tvMemberExpense"
+                android:id="@+id/tvHomelessUnusual"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingLeft="10dp"
@@ -40,7 +40,7 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
             <TextView
-                android:id="@+id/tvMemberLog"
+                android:id="@+id/tvHomelessLog"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="bottom|right"
