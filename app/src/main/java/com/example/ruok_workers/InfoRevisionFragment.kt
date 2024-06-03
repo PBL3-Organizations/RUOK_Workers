@@ -1,5 +1,6 @@
 package com.example.ruok_workers
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
@@ -14,7 +15,6 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
-
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -36,6 +36,7 @@ class InfoRevisionFragment : Fragment() {
 
     }
 
+    @SuppressLint("CutPasteId")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -80,7 +81,6 @@ class InfoRevisionFragment : Fragment() {
             checkIdDuplicate()
         }
 
-
         val modifyConfirmButton = view.findViewById<Button>(R.id.modify_button)
         modifyConfirmButton.setOnClickListener {
             // 수정하기 버튼을 클릭하면 DashboardActivity로 이동
@@ -89,6 +89,11 @@ class InfoRevisionFragment : Fragment() {
             activity?.finish() // 회원정보 수정 화면을 종료하여 뒤로 가기 버튼을 눌렀을 때 다시 회원정보 수정 화면이 나타나지 않도록 함
         }
 
+        // "회원탈퇴" 버튼 클릭 이벤트 핸들러 추가
+        val deleteButton = view.findViewById<Button>(R.id.delete_button)
+        deleteButton.setOnClickListener {
+            showDeleteConfirmationDialog()
+        }
     }
 
     override fun onCreateView(
@@ -139,6 +144,31 @@ class InfoRevisionFragment : Fragment() {
         }
 
         dialog.show()
+    }
+
+    // "회원탈퇴" 확인 다이얼로그 표시 함수
+    private fun showDeleteConfirmationDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("회원탈퇴")
+            .setMessage("정말로 회원탈퇴를 하시겠습니까?")
+            .setPositiveButton("예") { _, _ ->
+                deleteUserAccount()
+            }
+            .setNegativeButton("아니요", null)
+            .show()
+    }
+
+    // 회원 탈퇴 처리 함수
+    private fun deleteUserAccount() {
+        val sharedPreferences = requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+        editor.clear() // 모든 데이터 삭제
+        editor.apply()
+
+        // 로그인 화면으로 이동
+        val intent = Intent(activity, LoginActivity::class.java)
+        startActivity(intent)
+        activity?.finish() // 현재 화면 종료
     }
 
     companion object {
