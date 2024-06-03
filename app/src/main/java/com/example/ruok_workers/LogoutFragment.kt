@@ -1,62 +1,71 @@
 package com.example.ruok_workers
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.ruok_workers.databinding.FragmentDashboardBinding
 import com.example.ruok_workers.databinding.FragmentLogoutBinding
 
 class LogoutFragment : Fragment() {
-    lateinit var binding: FragmentLogoutBinding
 
+    private lateinit var binding: FragmentLogoutBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-
+            // Handle fragment arguments if any
         }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentLogoutBinding.inflate(inflater, container, false)
 
-        //btnYes 클릭시 LogoutFragment에서 MainActivity로 이동
+        // Retrieve the logged-in user's ID from SharedPreferences
+        val sharedPreferences = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val userId = sharedPreferences.getString("registered_id", "User")
+
+        // Set the text with the user ID
+        binding.tvName.text = "$userId\n님 로그아웃\n하시겠습니까?"
+
+        // btnYes 클릭시 LogoutFragment에서 MainActivity로 이동
         binding.btnYes.setOnClickListener {
-            var intent = Intent(requireContext(), MainActivity::class.java)
+            clearSavedCredentials()
+            val intent = Intent(requireContext(), MainActivity::class.java)
             startActivity(intent)
+            activity?.finish() // Finish current activity to prevent going back
         }
 
-        //btnNo 클릭시 LogoutFragment에서 DashboardFragment로 이동
-        binding.btnNo.setOnClickListener{
+        // btnNo 클릭시 LogoutFragment에서 DashboardFragment로 이동
+        binding.btnNo.setOnClickListener {
             val parentActivity = activity as DashboardActivity
             parentActivity.setFragment(DashboardFragment())
         }
 
         return binding.root
+    }
 
+    private fun clearSavedCredentials() {
+        val sharedPreferences = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        with(sharedPreferences.edit()) {
+            remove("saved_id")
+            remove("saved_password")
+            putBoolean("remember_me", false)
+            apply()
+        }
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment LogoutFragment.
-         */
-
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             LogoutFragment().apply {
                 arguments = Bundle().apply {
-
+                    // Add any required arguments here
                 }
             }
     }
