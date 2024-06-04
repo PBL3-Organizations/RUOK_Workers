@@ -27,36 +27,14 @@ class DashboardFragment : Fragment() {
             val parentActivity = activity as DashboardActivity
             parentActivity.setFragment(DashboardFragment())
 
-            // 현재 Fragment가 DashboardFragment인지 확인
+            // 현재 Fragment가 DashboardFragment인지 확인하고 백 스택 비우기
             if (requireActivity().supportFragmentManager.backStackEntryCount > 0) {
                 requireActivity().supportFragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
 
             } else {
-
-                // 뒤로가기 시 실행할 코드.
-                val transaction = requireActivity().supportFragmentManager.beginTransaction()
-
-                // Fragment 인스턴스 생성
-                val briefingBoardFragment = BriefingBoardFragment()
-                val listFragment = ListFragment()
-                val locationTrackingFragment = LocationTrackingFragment()
-                val countingMapFragment = CountingMapFragment()
-                val searchFragment = SearchFragment()
-                val profileDetailFragment = ProfileDetailFragment()
-
-                // R.id.rootLayout 위치에 프래그먼트 교체
-                transaction.replace(R.id.fragment_dashboard, briefingBoardFragment)
-                transaction.replace(R.id.fragment_dashboard, listFragment)
-                transaction.replace(R.id.fragment_dashboard, locationTrackingFragment)
-                transaction.replace(R.id.fragment_dashboard, countingMapFragment)
-                transaction.replace(R.id.fragment_dashboard, searchFragment)
-                transaction.replace(R.id.fragment_dashboard, profileDetailFragment)
-                transaction.addToBackStack(null) // 필요한 경우 뒤로가기 스택에 추가
-                transaction.commit()
-
+                // 뒤로 가기 기본 동작 수행
+                isEnabled = false
             }
-
-
         }
     }
 
