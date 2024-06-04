@@ -1,17 +1,17 @@
 package com.example.ruok_workers
 
-import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ruok_workers.databinding.FragmentDashboardBinding
 import java.util.Vector
-
 
 class DashboardFragment : Fragment() {
     lateinit var binding: FragmentDashboardBinding
@@ -19,6 +19,29 @@ class DashboardFragment : Fragment() {
 
     private lateinit var recyclerViewProfile: RecyclerView
 
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+
+            val parentActivity = activity as DashboardActivity
+            parentActivity.setFragment(DashboardFragment())
+
+            // 현재 Fragment가 DashboardFragment인지 확인
+            if (requireActivity().supportFragmentManager.backStackEntryCount > 0) {
+                requireActivity().supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+
+            } else {
+                // 기본 동작 수행
+                isEnabled = false
+            }
+
+
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,35 +81,39 @@ class DashboardFragment : Fragment() {
         adapter = DashboardAdapter(requireContext(), list)
         binding!!.recyclerViewProfile.adapter = adapter
 
-        //btnList 클릭시 DashboardFragment에서 ListFragment로 이동
-        binding.btnList.setOnClickListener{
+        //btnBriefing 클릭시 DashboardFragment에서 BriefingBoardFragment로 이동
+        binding.btnBriefing.setOnClickListener{
             val parentActivity = activity as DashboardActivity
-            parentActivity.setFragment(ListFragment())
+            parentActivity.setFragment(BriefingBoardFragment())
         }
 
-        //btnLocation 클릭시 DashboardFragment에서 LocationTrackingFragment로 이동
-        binding.btnLocation.setOnClickListener{
+        //btnCounsel 클릭시 DashboardFragment에서 QuestionnaireFragment로 이동
+        binding.btnCounsel.setOnClickListener{
+            val parentActivity = activity as DashboardActivity
+            parentActivity.setFragment(QuestionnaireFragment())
+        }
+
+        //btnOutReach 클릭시 DashboardFragment에서 LocationTrackingFragment로 이동
+        binding.btnOutreach.setOnClickListener{
             val parentActivity = activity as DashboardActivity
             parentActivity.setFragment(LocationTrackingFragment())
         }
 
-        //btnSearch 클릭시 DashboardFragment에서 SearchFragment로 이동
-        binding.btnSearch.setOnClickListener{
+        //btnCounting 클릭시 DashboardFragment에서 CountingMapFragment로 이동
+        binding.btnCounting.setOnClickListener{
             val parentActivity = activity as DashboardActivity
-            parentActivity.setFragment(SearchFragment())
+            parentActivity.setFragment(CountingMapFragment())
+        }
+
+        //tvProfile 클릭시 DashboardFragment에서 HomelessListFragment로 이동
+        binding.tvProfile.setOnClickListener {
+            val parentActivity = activity as DashboardActivity
+            parentActivity.setFragment(HomelessListFragment())
         }
 
         return binding.root
     }
 
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-
-        }
-    }
 
 
 }

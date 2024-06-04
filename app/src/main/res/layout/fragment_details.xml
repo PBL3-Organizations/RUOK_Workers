@@ -1,92 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_details"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#FFFFFF"
-    tools:context=".DetailsFragment"
-    android:id="@+id/fragment_details">
+    android:orientation="vertical"
+    tools:context=".DetailsFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_weight="2">
+        android:layout_weight="2"
+        android:orientation="vertical">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textStyle="bold"
             android:layout_margin="10dp"
-            android:text="이름 : " />
+            android:text="이름 : "
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textStyle="bold"
             android:layout_margin="10dp"
-            android:text="생년월일 : " />
+            android:text="생년월일 : "
+            android:textSize="20sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_weight="6">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_margin="10dp"
-            android:text="입력시간 :  " />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_margin="10dp"
-            android:text="만난 장소 : " />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_margin="10dp"
-            android:text="건강상태 : " />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_margin="10dp"
-            android:text="특이사항 : " />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_margin="10dp"
-            android:text="상담 내용 : " />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_margin="10dp"
-            android:text="상담자 의견 : " />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_margin="10dp"
-            android:text="조치사항 : " />
-    </LinearLayout>
+        android:layout_weight="6"
+        android:orientation="vertical">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="입력시간 :  "
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="만난 장소 : "
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="건강상태 : "
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="특이사항 : "
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="상담 내용 : "
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="상담자 의견 : "
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="조치사항 : "
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -98,12 +105,12 @@
             android:id="@+id/btnGoRevision"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
             android:backgroundTint="#EE7104"
+            android:text="내역 수정"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:text="상담내역 수정"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnGoList"
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
@@ -115,8 +122,20 @@
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnDelete"
             app:layout_constraintStart_toEndOf="@+id/btnGoRevision" />
+
+        <Button
+            android:id="@+id/btnDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#DC3400"
+            android:text="내역 삭제"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btnGoList" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>
