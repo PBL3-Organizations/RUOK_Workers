@@ -17,7 +17,7 @@
 
     <!-- 새 게시글 추가 버튼 -->
     <Button
-        android:id="@+id/btn_add_post"
+        android:id="@+id/btn_add_post0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="새 글 작성"
