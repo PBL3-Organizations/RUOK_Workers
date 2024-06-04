@@ -5,12 +5,16 @@
     android:id="@+id/fragment_dashboard"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FEF7F4"
+    android:backgroundTint="#FEF7F4"
     tools:context=".DashboardFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#FEF7F4"
+        android:backgroundTint="#FEF7F4"
         android:padding="10dp">
 
         <Button

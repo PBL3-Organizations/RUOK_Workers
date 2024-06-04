@@ -1,5 +1,6 @@
 package com.example.ruok_workers
 
+import ProfileDetailFragment
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.replace
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ruok_workers.databinding.FragmentDashboardBinding
@@ -27,11 +29,31 @@ class DashboardFragment : Fragment() {
 
             // 현재 Fragment가 DashboardFragment인지 확인
             if (requireActivity().supportFragmentManager.backStackEntryCount > 0) {
-                requireActivity().supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                requireActivity().supportFragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
 
             } else {
-                // 기본 동작 수행
-                isEnabled = false
+
+                // 뒤로가기 시 실행할 코드.
+                val transaction = requireActivity().supportFragmentManager.beginTransaction()
+
+                // Fragment 인스턴스 생성
+                val briefingBoardFragment = BriefingBoardFragment()
+                val listFragment = ListFragment()
+                val locationTrackingFragment = LocationTrackingFragment()
+                val countingMapFragment = CountingMapFragment()
+                val searchFragment = SearchFragment()
+                val profileDetailFragment = ProfileDetailFragment()
+
+                // R.id.rootLayout 위치에 프래그먼트 교체
+                transaction.replace(R.id.fragment_dashboard, briefingBoardFragment)
+                transaction.replace(R.id.fragment_dashboard, listFragment)
+                transaction.replace(R.id.fragment_dashboard, locationTrackingFragment)
+                transaction.replace(R.id.fragment_dashboard, countingMapFragment)
+                transaction.replace(R.id.fragment_dashboard, searchFragment)
+                transaction.replace(R.id.fragment_dashboard, profileDetailFragment)
+                transaction.addToBackStack(null) // 필요한 경우 뒤로가기 스택에 추가
+                transaction.commit()
+
             }
 
 
@@ -105,10 +127,10 @@ class DashboardFragment : Fragment() {
             parentActivity.setFragment(CountingMapFragment())
         }
 
-        //tvProfile 클릭시 DashboardFragment에서 HomelessListFragment로 이동
+        //tvProfile 클릭시 DashboardFragment에서 SearchFragment로 이동
         binding.tvProfile.setOnClickListener {
             val parentActivity = activity as DashboardActivity
-            parentActivity.setFragment(HomelessListFragment())
+            parentActivity.setFragment(SearchFragment())
         }
 
         return binding.root
