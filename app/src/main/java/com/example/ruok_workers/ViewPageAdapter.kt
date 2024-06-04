@@ -1,5 +1,6 @@
 package com.example.ruok_workers
 
+import BriefingDuringFragment
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 

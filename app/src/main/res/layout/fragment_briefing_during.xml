@@ -15,6 +15,13 @@
         android:divider="@android:color/transparent"
         android:dividerHeight="5dp"/>
 
+    <!-- 프래그먼트를 표시할 컨테이너 -->
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
     <!-- 새 게시글 추가 버튼 -->
     <Button
         android:id="@+id/btn_add_post2"
