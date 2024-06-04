@@ -6,21 +6,18 @@
     android:orientation="vertical"
     tools:context=".BriefingBoardFragment">
 
-    <!-- 게시글 목록 -->
-    <ListView
-        android:id="@+id/list_view_posts"
+    <!-- 아웃리치 상태를 선택할 수 있는 TabLayout -->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <!-- 각각의 프래그먼트를 표시할 ViewPager2 -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="5dp"/>
-
-    <!-- 새 게시글 추가 버튼 -->
-    <Button
-        android:id="@+id/btn_add_post"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="새 글 작성"
-        android:layout_gravity="center"/>
+        android:layout_weight="1"/>
 
 </LinearLayout>
