@@ -40,6 +40,15 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
             <TextView
+                android:id="@+id/tvHomelessPlace"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="10dp"
+                android:paddingTop="20dp"
+                android:text="RUOK_Worker"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            <TextView
                 android:id="@+id/tvHomelessLog"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
