@@ -4,7 +4,9 @@ import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ruok_workers.databinding.ListItemsBinding
@@ -37,5 +39,6 @@ class ListAdapter(private val context: Context, private val items: Vector<ListCa
             (context as AppCompatActivity).supportFragmentManager.beginTransaction().replace(R.id.rootLayout, DetailsFragment).commit()
         }
     }
+
     inner class ViewHolder(var binding: ListItemsBinding) : RecyclerView.ViewHolder(binding.root)
 }
