@@ -7,14 +7,14 @@
     tools:context=".LocationRevisionFragment">
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/map"
+        android:id="@+id/mapLocationRevision"
         android:name="com.naver.maps.map.MapFragment"
         android:layout_width="match_parent"
         android:layout_height="410dp"
         android:layout_gravity="top"
         android:gravity="top"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/btnSet"
+        app:layout_constraintBottom_toTopOf="@id/btnSetLocationRevision"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,7 +22,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <LinearLayout
-        android:id="@+id/Linear"
+        android:id="@+id/LinearLocationRevision"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="bottom"
@@ -31,7 +31,7 @@
         android:padding="10dp">
 
         <TextView
-            android:id="@+id/tvPlace"
+            android:id="@+id/tvPlaceLocationRevision"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
@@ -40,7 +40,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tvAddress"
+            android:id="@+id/tvAddressLocationRevision"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
@@ -48,7 +48,7 @@
             android:textSize="16sp" />
 
         <Button
-            android:id="@+id/btnSet"
+            android:id="@+id/btnSetLocationRevision"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
@@ -58,7 +58,7 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/map"
+            app:layout_constraintTop_toBottomOf="@id/mapLocationRevision"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -67,7 +67,7 @@
             android:layout_gravity="bottom">
 
             <Button
-                android:id="@+id/btnBefore"
+                android:id="@+id/btnBeforeLocationRevision"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#9D9D9D"
@@ -75,14 +75,14 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/btnComplete"
+                app:layout_constraintEnd_toStartOf="@+id/btnCompleteLocationRevision"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="1.0" />
 
             <Button
-                android:id="@+id/btnComplete"
+                android:id="@+id/btnCompleteLocationRevision"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:text="완료"
