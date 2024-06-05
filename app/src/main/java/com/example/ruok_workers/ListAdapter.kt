@@ -30,6 +30,7 @@ class ListAdapter(private val context: Context, private val items: Vector<ListCa
         holder.binding.tvHomelessName.text = "이름 : " + item.homelessName
         holder.binding.tvHomelessUnusual.text = "특이사항: " + item.homelessUnusual
         holder.binding.tvHomelessLog.text = "작성일 : " + item.homelessLog
+        holder.binding.tvHomelessPlace.text = "만난 장소 : " + item.homelessPlace
         holder.binding.root.setOnClickListener {
             DetailsFragment = DetailsFragment()
 
