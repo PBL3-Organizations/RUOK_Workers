@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import androidx.viewpager2.widget.ViewPager2
+import android.widget.Button
 
 class BriefingBoardFragment : Fragment() {
 
@@ -25,6 +26,7 @@ class BriefingBoardFragment : Fragment() {
         // TabLayout과 ViewPager2를 ID로 찾기
         val tabLayout = view.findViewById<TabLayout>(R.id.tab_layout)
         val viewPager = view.findViewById<ViewPager2>(R.id.view_pager)
+        val newPostButton = view.findViewById<Button>(R.id.btn_new_post)
 
         // ViewPager를 어댑터로 설정
         val adapter = ViewPagerAdapter(this)
@@ -47,5 +49,12 @@ class BriefingBoardFragment : Fragment() {
                 }
             }
         }.attach()
+
+        // 새 글 작성 버튼 클릭 시 이벤트 처리
+        newPostButton.setOnClickListener {
+            // BriefingAddFragment로 이동
+            val fragment = BriefingAddFragment()
+            parentFragmentManager.beginTransaction().replace(R.id.rootLayout, fragment).addToBackStack(null).commit()
+        }
     }
 }

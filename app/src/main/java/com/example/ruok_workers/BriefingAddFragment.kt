@@ -1,4 +1,4 @@
-// BriefingAddFragment.kt
+package com.example.ruok_workers
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,28 +11,19 @@ import com.example.ruok_workers.R
 
 class BriefingAddFragment : Fragment() {
 
-    private lateinit var titleEditText: EditText
-    private lateinit var contentEditText: EditText
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // 해당 프래그먼트의 레이아웃을 인플레이트
         val view = inflater.inflate(R.layout.fragment_briefing_add, container, false)
 
-        titleEditText = view.findViewById(R.id.edit_text_title)
-        contentEditText = view.findViewById(R.id.edit_text_content)
+        val submitButton = view.findViewById<Button>(R.id.button_submit_briefing)
 
-        val publishButton = view.findViewById<Button>(R.id.btn_publish_post)
-        publishButton.setOnClickListener {
-            val title = titleEditText.text.toString()
-            val content = contentEditText.text.toString()
+        submitButton.setOnClickListener {
+            // 저장 버튼 클릭 처리
 
-            // 작성한 제목과 내용을 BriefingDuringFragment로 전달하여 목록에 추가
-            val briefingDuringFragment = parentFragmentManager.findFragmentByTag("briefing_during") as? BriefingDuringFragment
-            briefingDuringFragment?.addPost("$title\n$content")
-
-            // 이전 화면으로 돌아가기
+            // 현재 프래그먼트 감추기
             parentFragmentManager.popBackStack()
         }
 
