@@ -1,4 +1,4 @@
-<!-- fragment_briefing_add.xml -->
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,22 +7,21 @@
     tools:context=".BriefingAddFragment">
 
     <EditText
-        android:id="@+id/edit_text_title"
+        android:id="@+id/editText_briefing_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="제목을 입력하세요"
+        android:hint="제목을 입력하세요."
         android:textSize="20sp" />
 
     <EditText
-        android:id="@+id/edit_text_content"
+        android:id="@+id/editText_briefing_content"
         android:layout_width="match_parent"
-        android:layout_height="169dp"
-        android:gravity="top"
-        android:hint="내용을 입력하세요"
-        android:minLines="5" />
+        android:layout_height="wrap_content"
+        android:hint="내용을 입력하세요."
+        android:textSize="20sp" />
 
     <Button
-        android:id="@+id/btn_publish_post"
+        android:id="@+id/button_submit_briefing"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="저장" />
