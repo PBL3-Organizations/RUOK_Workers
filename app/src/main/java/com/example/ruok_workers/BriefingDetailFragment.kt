@@ -44,12 +44,13 @@ class BriefingDetailFragment : Fragment() {
         val buttonDelete = view.findViewById<Button>(R.id.button_delete)
 
         buttonEdit.setOnClickListener {
-            val fragment = BriefingRevisionFragment.newInstance(param1 ?: "", param2 ?: "")
+            val fragment = BriefingRevisionFragment()
             parentFragmentManager.beginTransaction()
                 .replace(R.id.rootLayout, fragment)
                 .addToBackStack(null)
                 .commit()
         }
+
 
         buttonBack.setOnClickListener {
             requireActivity().onBackPressed()
