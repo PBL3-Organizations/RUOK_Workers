@@ -1,25 +1,26 @@
 package com.example.ruok_workers
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.ScrollView
+import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [HomelessRevisionFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class HomelessRevisionFragment : Fragment() {
-    // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private lateinit var searchEditText: EditText
+    private lateinit var profileList: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,20 +34,64 @@ class HomelessRevisionFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_homeless_revision, container, false)
+        val view = inflater.inflate(R.layout.fragment_homeless_revision, container, false)
+        searchEditText = view.findViewById(R.id.search_edit_text)
+        profileList = view.findViewById(R.id.profile_list)
+
+        val searchButton: Button = view.findViewById(R.id.search_button)
+        searchButton.setOnClickListener {
+            performSearch()
+        }
+
+        val nextButton: Button = view.findViewById(R.id.next_button)
+        nextButton.setOnClickListener {
+            goToLocationRevisionFragment()
+        }
+
+        return view
+    }
+
+    private fun performSearch() {
+        val query = searchEditText.text.toString()
+        profileList.removeAllViews()
+        // 더미 데이터 사용
+        val dummyProfiles = listOf("John Doe", "Jane Smith", "Emily Johnson")
+        for (profile in dummyProfiles) {
+            if (profile.contains(query, true)) {
+                val profileView = TextView(requireContext()).apply {
+                    text = profile
+                    textSize = 18f
+                    setPadding(16, 16, 16, 16)
+                    setOnClickListener {
+                        highlightProfile(this)
+                    }
+                }
+                profileList.addView(profileView)
+            }
+        }
+    }
+
+    private fun highlightProfile(profileView: TextView) {
+        // 모든 프로필 뷰의 배경을 기본값으로 설정
+        for (i in 0 until profileList.childCount) {
+            val child = profileList.getChildAt(i)
+            if (child is TextView) {
+                child.setBackgroundResource(R.drawable.border) // 기본 테두리
+            }
+        }
+        // 클릭된 프로필 뷰의 배경을 강조된 테두리로 설정
+        profileView.setBackgroundResource(R.drawable.highlight_border) // 강조된 테두리
+    }
+
+    private fun goToLocationRevisionFragment() {
+        val fragment = LocationRevisionFragment()
+        parentFragmentManager.commit {
+            replace(R.id.rootLayout, fragment)
+            addToBackStack(null)
+        }
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment HomelessRevisionFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             HomelessRevisionFragment().apply {
