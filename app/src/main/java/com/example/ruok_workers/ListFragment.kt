@@ -14,6 +14,7 @@ class ListFragment : Fragment() {
     lateinit var binding: FragmentListBinding
     lateinit var adapter: ListAdapter
 
+
     private lateinit var listRecyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {

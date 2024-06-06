@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="arrayList">
+        <item>날짜</item>
+        <item>작성자</item>
+        <item>작성기관</item>
+        <item>상담대상 노숙인</item>
+    </string-array>
+</resources>
