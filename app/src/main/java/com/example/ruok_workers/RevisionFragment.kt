@@ -17,10 +17,10 @@ class RevisionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentRevisionBinding.inflate(inflater, container, false)
-        //btnRevision클릭시 RevisionFragment에서 ListFragment로 이동
-        binding.btnRevision.setOnClickListener {
+        //btnRevision클릭시 RevisionFragment에서 PhotoRevisionFragment로 이동
+        binding.btnRevisionNext.setOnClickListener {
             val DashboardActivity = activity as DashboardActivity
-            DashboardActivity.setFragment(ListFragment())
+            DashboardActivity.setFragment(PhotoRevisionFragment())
         }
         return this.binding.root
     }

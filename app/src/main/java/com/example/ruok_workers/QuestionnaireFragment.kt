@@ -16,10 +16,10 @@ class QuestionnaireFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentQuestionnaireBinding.inflate(inflater, container, false)
-        //btnFinish클릭시 QuestionnaireFragment에서 ListFragment로 이동
+        //btnFinish클릭시 QuestionnaireFragment에서 PhotoAddFragment로 이동
         binding.btnFinish.setOnClickListener {
             val DashboardActivity = activity as DashboardActivity
-            DashboardActivity.setFragment(ListFragment())
+            DashboardActivity.setFragment(PhotoAddFragment())
         }
         return this.binding.root
     }
