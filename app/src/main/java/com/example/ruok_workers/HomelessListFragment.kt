@@ -39,6 +39,18 @@ class HomelessListFragment : Fragment() {
             parentActivity.setFragment(LocationAddFragment())
         }
 
+        //btnNoName 클릭시 HomelessListFragment에서 ProfileAddFragment로 이동
+        binding.btnNoName.setOnClickListener{
+            val parentActivity = activity as DashboardActivity
+            parentActivity.setFragment(ProfileAddFragment())
+        }
+
+        //btnNewHomeless 클릭시 HomelessListFragment에서 ProfileAddFragment로 이동
+        binding.btnNewHomeless.setOnClickListener{
+            val parentActivity = activity as DashboardActivity
+            parentActivity.setFragment(ProfileAddFragment())
+        }
+
         return binding.root
     }
 
