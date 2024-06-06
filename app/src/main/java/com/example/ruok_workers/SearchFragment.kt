@@ -11,28 +11,24 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+
 
 class SearchFragment : Fragment() {
-    private var param1: String? = null
-    private var param2: String? = null
 
     private lateinit var searchEditText: EditText
     private lateinit var searchButton: Button
     private lateinit var recyclerView: RecyclerView
     private lateinit var centerTextView: TextView
-    private lateinit var searchAdapter: SearchAdapter
+    private lateinit var faviconAdapter: FaviconAdapter
 
     //테스트 데이터셋
-    private val initialData = listOf("one", "two1", "two2", "three1", "three2", "three3", "four")
-    private val searchResults = mutableListOf<String>()
+    private val initialData = listOf(FaviconItem("김민수", "19650315"), FaviconItem("박지영", "19620722"), FaviconItem("최영준", "19591105"), FaviconItem("이서현", "19780510"), FaviconItem("Jenny", "19780510"), FaviconItem("Lisa", "19780510"), FaviconItem("Rose", "19780510"), FaviconItem("Jisoo", "19780510"))
+    private val itemList = ArrayList<FaviconItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+
         }
     }
 
@@ -48,17 +44,17 @@ class SearchFragment : Fragment() {
         recyclerView = view.findViewById(R.id.recycler_view)
         centerTextView = view.findViewById(R.id.center_text_view)
 
-        searchAdapter = SearchAdapter(searchResults)
+        // Initialize with initial data
+        itemList.addAll(initialData)
+        faviconAdapter = FaviconAdapter(itemList)
+        faviconAdapter.notifyDataSetChanged()
+
+        recyclerView.adapter = faviconAdapter
         recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = searchAdapter
 
         searchButton.setOnClickListener {
             performSearch()
         }
-
-        // Initialize with initial data
-        searchResults.addAll(initialData)
-        searchAdapter.notifyDataSetChanged()
 
         return view
     }
@@ -67,17 +63,17 @@ class SearchFragment : Fragment() {
         val query = searchEditText.text.toString().trim()
         if (query.isNotEmpty()) {
             // Filter initialData based on the query
-            val filteredResults = initialData.filter { it.contains(query, ignoreCase = true) }
-            searchResults.clear()
-            searchResults.addAll(filteredResults)
-            searchAdapter.notifyDataSetChanged()
+            val filteredResults = initialData.filter { it.name.contains(query, ignoreCase = true) }
+            itemList.clear()
+            itemList.addAll(filteredResults)
+            faviconAdapter.notifyDataSetChanged()
 
             centerTextView.text = "검색 결과: ${filteredResults.size}개"
             centerTextView.visibility = View.VISIBLE
             recyclerView.visibility = View.VISIBLE
         } else {
-            searchResults.clear()
-            searchAdapter.notifyDataSetChanged()
+            itemList.clear()
+            faviconAdapter.notifyDataSetChanged()
             centerTextView.text = "검색 결과가 없습니다."
             centerTextView.visibility = View.VISIBLE
             recyclerView.visibility = View.GONE
@@ -89,8 +85,7 @@ class SearchFragment : Fragment() {
         fun newInstance(param1: String, param2: String) =
             SearchFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+
                 }
             }
     }
