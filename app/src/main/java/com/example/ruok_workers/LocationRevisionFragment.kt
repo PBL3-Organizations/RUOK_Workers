@@ -26,6 +26,12 @@ class LocationRevisionFragment : Fragment() {
     ): View? {
         binding = FragmentLocationRevisionBinding.inflate(inflater, container, false)
 
+        //btnBeforeLocationRevision 클릭시 LocationRevisionFragment에서 HomelessRevisionFragment로 이동
+        binding.btnBeforeLocationRevision.setOnClickListener{
+            val parentActivity = activity as DashboardActivity
+            parentActivity.setFragment(HomelessRevisionFragment())
+        }
+
         //btnCompleteLocationRevision 클릭시 LocationRevisionFragment에서 DetailFragment로 이동
         binding.btnCompleteLocationRevision.setOnClickListener{
             val parentActivity = activity as DashboardActivity

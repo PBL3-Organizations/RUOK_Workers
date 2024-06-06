@@ -28,6 +28,12 @@ class LocationAddFragment : Fragment() {
     ): View? {
         binding = FragmentLocationAddBinding.inflate(inflater, container, false)
 
+        //btnBeforeLocationAdd 클릭시 LocationAddFragment에서 HomelessListFragment로 이동
+        binding.btnBeforeLocationAdd.setOnClickListener{
+            val parentActivity = activity as DashboardActivity
+            parentActivity.setFragment(HomelessListFragment())
+        }
+
         //btnCompleteLocationAdd 클릭시 LocationAddFragment에서 LocationTrackingFragment로 이동
         binding.btnCompleteLocationAdd.setOnClickListener{
             val parentActivity = activity as DashboardActivity
