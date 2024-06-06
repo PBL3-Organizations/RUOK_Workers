@@ -10,15 +10,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_weight="1">
-        <Button
+        android:layout_weight="1"
+        android:layout_margin="10dp">
+        <android.widget.Button
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
+            android:textColor="@color/md_theme_primary"
+            android:background="@drawable/button_stroke"
+            android:layout_marginBottom="10dp"
+            android:stateListAnimator="@null"
             android:text="갤러리에서 사진추가"/>
 
-        <Button
+        <android.widget.Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/md_theme_primary"
+            android:background="@drawable/button_stroke_line"
+            android:stateListAnimator="@null"
             android:text="사진 촬영"/>
     </LinearLayout>
     <androidx.constraintlayout.widget.ConstraintLayout
