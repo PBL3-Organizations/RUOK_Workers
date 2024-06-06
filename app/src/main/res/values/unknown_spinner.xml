@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="arrayUnknown">
+        <item>만난 날짜</item>
+        <item>만난 장소</item>
+    </string-array>
+</resources>
