@@ -58,11 +58,7 @@ class UnknownHomelessFragment : Fragment() {
 
         adapter = UnknownAdapter(requireContext(),list)
         binding!!.UnknownRecyclerView.adapter = adapter
-        //tvMeetPhoto클릭시 RevisionFragment에서 PhotoRevisionFragment로 이동
-        binding.tvMeetPhoto.setOnClickListener {
-            val DashboardActivity = activity as DashboardActivity
-            DashboardActivity.setFragment(PhotoRevisionFragment())
-        }
+
 
         return binding.root
     }
