@@ -16,10 +16,10 @@
         android:padding="10dp" >
         <ImageView
             android:id="@+id/tvMeetPhoto"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="100dp"
             tools:ignore="MissingConstraints"
-            tools:srcCompat="@tools:sample/avatars" />
+            android:src="@drawable/aegis_logo" />
 
         <LinearLayout
             android:layout_width="match_parent"
