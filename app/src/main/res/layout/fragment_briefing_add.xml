@@ -6,24 +6,43 @@
     android:orientation="vertical"
     tools:context=".BriefingAddFragment">
 
+    <CheckBox
+        android:id="@+id/checkbox_set_as_notice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="공지"
+        android:layout_marginLeft="20dp"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
     <EditText
         android:id="@+id/editText_briefing_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="제목을 입력하세요."
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
         android:textSize="20sp" />
 
     <EditText
         android:id="@+id/editText_briefing_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="내용을 입력하세요."
+        android:layout_height="342dp"
+        android:hint=" 내용을 입력하세요."
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:background="@drawable/edit_text_background"
         android:textSize="20sp" />
 
     <Button
         android:id="@+id/button_submit_briefing"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="저장" />
+        android:layout_gravity="bottom|end"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:text="저장"
+        android:textStyle="bold" />
 
 </LinearLayout>

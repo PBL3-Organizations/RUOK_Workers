@@ -11,6 +11,16 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+        <!-- 공지 설정 체크박스 -->
+        <CheckBox
+            android:id="@+id/checkbox_set_as_notice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="공지"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
         <!-- 제목 -->
         <TextView
             android:layout_width="wrap_content"
