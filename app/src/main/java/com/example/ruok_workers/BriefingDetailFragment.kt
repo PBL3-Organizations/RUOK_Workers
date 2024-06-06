@@ -1,10 +1,13 @@
 package com.example.ruok_workers
 
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.navigation.fragment.findNavController
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,7 +37,38 @@ class BriefingDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_briefing_detail, container, false)
+        val view = inflater.inflate(R.layout.fragment_briefing_detail, container, false)
+
+        val buttonEdit = view.findViewById<Button>(R.id.button_edit)
+        val buttonBack = view.findViewById<Button>(R.id.button_back)
+        val buttonDelete = view.findViewById<Button>(R.id.button_delete)
+
+        buttonEdit.setOnClickListener {
+            val fragment = BriefingRevisionFragment.newInstance(param1 ?: "", param2 ?: "")
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.rootLayout, fragment)
+                .addToBackStack(null)
+                .commit()
+        }
+
+        buttonBack.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
+
+        buttonDelete.setOnClickListener {
+            val alertDialogBuilder = AlertDialog.Builder(requireContext())
+            alertDialogBuilder.setTitle("삭제하시겠습니까?")
+            alertDialogBuilder.setPositiveButton("예") { dialog, which ->
+                // 삭제 동작을 여기에 추가
+                requireActivity().onBackPressed()
+            }
+            alertDialogBuilder.setNegativeButton("아니오") { dialog, which ->
+                // 아무 동작 없음
+            }
+            alertDialogBuilder.show()
+        }
+
+        return view
     }
 
     companion object {
