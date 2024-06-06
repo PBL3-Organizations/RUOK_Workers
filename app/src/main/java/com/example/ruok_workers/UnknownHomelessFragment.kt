@@ -1,55 +1,69 @@
 package com.example.ruok_workers
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.ruok_workers.databinding.FragmentUnknownHomelessBinding
+import java.util.Vector
 
-/**
- * A simple [Fragment] subclass.
- * Use the [UnknownHomelessFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class UnknownHomelessFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    lateinit var binding: FragmentUnknownHomelessBinding
+    lateinit var adapter: UnknownAdapter
+
+    private lateinit var listRecyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_unknown_homeless, container, false)
-    }
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentUnknownHomelessBinding.inflate(inflater, container,false)
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment UnknownHomelessFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic fun newInstance(param1: String, param2: String) =
-                UnknownHomelessFragment().apply {
-                    arguments = Bundle().apply {
-                        putString(ARG_PARAM1, param1)
-                        putString(ARG_PARAM2, param2)
-                    }
-                }
+        val list = Vector<UnknownCard>()
+
+        // 임시 데이터셋 추가
+        val sampleData = listOf(
+            UnknownCard("20241011", "서울역 5번 출구"),
+            UnknownCard("20240911", "서울역 4번 출구"),
+            UnknownCard("20240312", "서울역 5번 출구"),
+            UnknownCard("20240701", "서울역 13번 출구"),
+            UnknownCard("20240401", "서울역 1번 출구")
+        )
+
+        // 리스트에 데이터 추가
+        list.addAll(sampleData)
+        var meetPlace:String = ""
+        var meetLog:String=""
+
+
+        //리사이클러뷰 아이템 추가
+        val item = UnknownCard(meetPlace, meetLog )
+        list.add(item)
+        meetLog = ""
+        meetPlace = ""
+
+
+        val layoutManager = LinearLayoutManager(context)
+        binding!!.UnknownRecyclerView.layoutManager = layoutManager
+
+        adapter = UnknownAdapter(requireContext(),list)
+        binding!!.UnknownRecyclerView.adapter = adapter
+        //tvMeetPhoto클릭시 RevisionFragment에서 PhotoRevisionFragment로 이동
+        binding.tvMeetPhoto.setOnClickListener {
+            val DashboardActivity = activity as DashboardActivity
+            DashboardActivity.setFragment(PhotoRevisionFragment())
+        }
+
+        return binding.root
     }
 }
