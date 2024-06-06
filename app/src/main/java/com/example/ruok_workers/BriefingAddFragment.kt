@@ -1,10 +1,9 @@
-package com.example.ruok_workers
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import com.example.ruok_workers.R
@@ -15,15 +14,25 @@ class BriefingAddFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // 해당 프래그먼트의 레이아웃을 인플레이트
+        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_briefing_add, container, false)
 
         val submitButton = view.findViewById<Button>(R.id.button_submit_briefing)
+        val setAsNoticeCheckbox = view.findViewById<CheckBox>(R.id.checkbox_set_as_notice)
+        val titleEditText = view.findViewById<EditText>(R.id.editText_briefing_title)
+        val contentEditText = view.findViewById<EditText>(R.id.editText_briefing_content)
 
         submitButton.setOnClickListener {
-            // 저장 버튼 클릭 처리
+            // Check if the checkbox is checked
+            val isSetAsNotice = setAsNoticeCheckbox.isChecked
 
-            // 현재 프래그먼트 감추기
+            // Get title and content from EditText fields
+            val title = titleEditText.text.toString()
+            val content = contentEditText.text.toString()
+
+            // Save or handle the data according to the checkbox state and other conditions
+
+            // For now, just hide the fragment
             parentFragmentManager.popBackStack()
         }
 
