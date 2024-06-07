@@ -96,7 +96,7 @@ class DashboardFragment : Fragment() {
         //btnOutReach 클릭시 DashboardFragment에서 LocationTrackingFragment로 이동
         binding.btnOutreach.setOnClickListener{
             val parentActivity = activity as DashboardActivity
-            parentActivity.setFragment(LocationTrackingFragment())
+            parentActivity.setFragment(LocationTrackingFragment.newInstance(LocationTrackingFragment.State.START))
         }
 
         //btnCounting 클릭시 DashboardFragment에서 CountingMapFragment로 이동
