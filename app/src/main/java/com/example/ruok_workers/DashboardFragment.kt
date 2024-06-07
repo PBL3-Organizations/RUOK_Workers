@@ -99,10 +99,10 @@ class DashboardFragment : Fragment() {
             parentActivity.setFragment(LocationTrackingFragment())
         }
 
-        //btnCounting 클릭시 DashboardFragment에서 CountingMapFragment로 이동
+        //btnCounting 클릭시 DashboardFragment에서 CountingTableFragment로 이동
         binding.btnCounting.setOnClickListener{
             val parentActivity = activity as DashboardActivity
-            parentActivity.setFragment(CountingMapFragment())
+            parentActivity.setFragment(CountingTableFragment())
         }
 
         //tvProfile 클릭시 DashboardFragment에서 SearchFragment로 이동

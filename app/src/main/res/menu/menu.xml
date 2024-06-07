@@ -19,8 +19,8 @@
             android:title="상담내역 목록"
             />
         <item
-            android:id="@+id/tabCountingMap"
-            android:title="카운팅 맵"
+            android:id="@+id/tabCountingList"
+            android:title="카운팅 테이블 목록"
             />
         <item
             android:id="@+id/tabBriefingBoard"
