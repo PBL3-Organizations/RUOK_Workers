@@ -2,7 +2,7 @@
 <resources>
     <string-array name="arrayList">
         <item>날짜</item>
-        <item>만난 장소</item>
+        <item>만난장소</item>
         <item>작성자</item>
         <item>작성기관</item>
         <item>내담자</item>
