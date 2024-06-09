@@ -31,6 +31,10 @@
             android:title="이름을 알 수 없는 노숙인 모음"
             />
         <item
+            android:id="@+id/tabHomelessList"
+            android:title="노숙인 목록,검색"
+            />
+        <item
             android:id="@+id/tabQuestion"
             android:title="+상담내역 작성"
             />
