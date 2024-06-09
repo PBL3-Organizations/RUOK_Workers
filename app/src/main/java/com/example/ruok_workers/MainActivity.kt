@@ -44,11 +44,6 @@ class MainActivity : AppCompatActivity() {
 
         dbManager = DBManager(this, "RUOKsample", null, 1)
 
-        //데이터 삽입 테스트
-        sqlitedb = dbManager.writableDatabase
-        sqlitedb.execSQL("INSERT INTO welfare_facilities VALUES (101, '다시서기종합지원센터', '서울 용산구 한강대로92길 6 갈월동빌딩');")
-        sqlitedb.close()
-
         //데이터 조회 테스트
         sqlitedb = dbManager.readableDatabase
         var cursor: Cursor
