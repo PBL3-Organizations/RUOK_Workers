@@ -47,7 +47,7 @@ class UnknownHomelessFragment : Fragment() {
 
 
         //리사이클러뷰 아이템 추가
-        val item = UnknownCard(meetPlace, meetLog )
+        val item = UnknownCard(meetPlace, meetLog)
         list.add(item)
         meetLog = ""
         meetPlace = ""
