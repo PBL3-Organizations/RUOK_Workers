@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,14 +10,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="16dp"
-        tools:ignore="UselessParent">
+        android:padding="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
             android:orientation="horizontal"
+            android:layout_marginTop="30dp"
             android:gravity="center_vertical">
 
             <TextView
@@ -34,13 +34,6 @@
                 android:text=""
                 android:textSize="18sp"
                 android:layout_marginStart="8dp" />
-
-            <Button
-                android:id="@+id/btnSurvey"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="문진표 작성"
-                android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout
@@ -54,10 +47,12 @@
                 android:layout_height="wrap_content"
                 android:text="생년월일:"
                 android:textSize="18sp"
+                android:layout_marginTop="16dp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvBirthdate"
+                android:layout_marginTop="16dp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -76,6 +71,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="전화번호:"
+                android:layout_marginTop="16dp"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -86,26 +82,56 @@
                 android:layout_weight="1"
                 android:text=""
                 android:textSize="18sp"
+                android:layout_marginTop="16dp"
                 android:layout_marginStart="8dp" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvRequestHistory"
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="25dp"
+            android:src="@drawable/aegis_logo" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
+            android:orientation="horizontal"
             android:layout_marginTop="16dp"
-            android:text="요청사항 이력"
-            android:textAlignment="center"
-            android:textColor="#6750A3"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            tools:ignore="RtlCompat" />
+            android:gravity="center">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+            <Button
+                android:id="@+id/btn_EditProfile"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="#E3AC09"
+                android:text="프로필 수정"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btn_goTolist"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:backgroundTint="#3E3D39"
+                android:text="목록으로"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btn_removeProfile"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="#F44336"
+                android:text="프로필 삭제"
+                android:textStyle="bold" />
+
+        </LinearLayout>
 
     </LinearLayout>
 </FrameLayout>

@@ -1,10 +1,12 @@
 package com.example.ruok_workers
 
+import ProfileDetailFragment
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -36,6 +38,34 @@ class ProfileRevisionFragment : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile_revision, container, false)
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // '수정하기' 버튼 찾기
+        val editButton = view.findViewById<Button>(R.id.profile_revieion_ok)
+
+        // OnClickListener 설정
+        editButton.setOnClickListener {
+            // ProfileDetailFragment.kt로 이동
+            val fragment = ProfileDetailFragment()
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.rootLayout, fragment)
+                .addToBackStack(null)
+                .commit()
+        }
+    }
+
+
+    fun onEditProfileClicked(view: View) {
+        // ProfileDetailFragment.kt로 이동
+        val fragment = ProfileDetailFragment()
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.rootLayout, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
 
     companion object {
         /**
