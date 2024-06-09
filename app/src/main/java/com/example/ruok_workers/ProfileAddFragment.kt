@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,7 +35,21 @@ class ProfileAddFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile_add, container, false)
+        val view =  inflater.inflate(R.layout.fragment_profile_add, container, false)
+
+        // 버튼을 찾습니다.
+        val saveButton = view.findViewById<Button>(R.id.save_button_in_add_profile)
+
+        // OnClickListener를 설정
+        saveButton.setOnClickListener {
+            // SearchFragment로 이동
+            val fragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.rootLayout, SearchFragment())
+            fragmentTransaction.addToBackStack(null)
+            fragmentTransaction.commit()
+        }
+
+        return view
     }
 
     companion object {

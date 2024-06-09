@@ -56,6 +56,19 @@ class SearchFragment : Fragment() {
             performSearch()
         }
 
+        // add_new_profile 버튼을 찾기
+        val addNewProfileButton: Button = view.findViewById(R.id.add_new_profile)
+
+        // 버튼에 OnClickListener 설정
+        addNewProfileButton.setOnClickListener {
+            // ProfileAddFragment로 이동
+            val profileAddFragment = ProfileAddFragment()
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.rootLayout, profileAddFragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
+
         return view
     }
 
