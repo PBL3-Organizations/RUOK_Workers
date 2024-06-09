@@ -5,15 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.ruok_workers.databinding.FragmentCountingAddBinding
-import com.example.ruok_workers.databinding.FragmentDashboardBinding
-import com.example.ruok_workers.databinding.FragmentLocationAddBinding
+import com.example.ruok_workers.databinding.FragmentCountingRevisionBinding
 
 
-class CountingAddFragment : Fragment() {
-    lateinit var binding: FragmentCountingAddBinding
-
-
+class CountingRevisionFragment : Fragment() {
+    lateinit var binding: FragmentCountingRevisionBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,14 +22,13 @@ class CountingAddFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentCountingAddBinding.inflate(inflater, container, false)
+        binding = FragmentCountingRevisionBinding.inflate(inflater, container, false)
 
-        //btnCompleteCountingAdd 클릭시 CountingAddFragment에서 CountingTableFragment로 이동
-        binding.btnCountingAdd.setOnClickListener {
+        binding.btnCountingRevision.setOnClickListener {
             val parentActivity = activity as DashboardActivity
-            parentActivity.setFragment(CountingTableFragment())
+            parentActivity.setFragment(CountingDetailFragment())
         }
-        
+
         return binding.root
     }
 
@@ -41,7 +36,7 @@ class CountingAddFragment : Fragment() {
 
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            CountingAddFragment().apply {
+            CountingRevisionFragment().apply {
                 arguments = Bundle().apply {
 
                 }
