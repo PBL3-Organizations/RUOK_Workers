@@ -3,9 +3,12 @@ package com.example.ruok_workers
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,23 +16,34 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.ruok_workers.databinding.FragmentLocationTrackingBinding
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.LocationTrackingMode
+import com.naver.maps.map.MapFragment
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.util.FusedLocationSource
+import kotlinx.coroutines.launch
+import java.io.IOException
+import java.util.Locale
 
 
+@Suppress("DEPRECATION")
 class LocationTrackingFragment : Fragment(), OnMapReadyCallback {
+
+    lateinit var binding: FragmentLocationTrackingBinding
 
     private lateinit var locationSource: FusedLocationSource
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var naverMap: NaverMap
 
     private val LOCATION_PERMISSION_REQUEST_CODE = 1000
+    private var cameraMoved = false  // 카메라가 이동되었는지 여부를 나타내는 플래그
 
     //위치 정보 동의
     private val PERMISSIONS = arrayOf(
@@ -39,23 +53,31 @@ class LocationTrackingFragment : Fragment(), OnMapReadyCallback {
 
     private val requestMultiplePermissions =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-            if (permissions[android.Manifest.permission.ACCESS_FINE_LOCATION] == true) {
-                locationSource = FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
-                setUpMap()
+            if (permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true) {
+                Log.d(TAG, "Location permission granted")
+                initMapView()
+            }
+            else {
+                Log.e(TAG, "Location permission not granted")
+                // 권한이 거부된 경우 사용자에게 알림
+                requestPermissions(PERMISSIONS, LOCATION_PERMISSION_REQUEST_CODE)
             }
         }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         if (!hasPermission()) {
+            Log.d(TAG, "Requesting location permissions")
             requestMultiplePermissions.launch(PERMISSIONS)
         } else {
+            Log.d(TAG, "Location permissions already granted")
             locationSource = FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
-            setUpMap()
+            initMapView()
         }
     }
 
-    // hasPermission()에서는 위치 권한 있 -> true , 없 -> false
+    // 권한 확인
     private fun hasPermission(): Boolean {
         for (permission in PERMISSIONS) {
             if (activity?.let { ContextCompat.checkSelfPermission(it, permission) }
@@ -67,47 +89,97 @@ class LocationTrackingFragment : Fragment(), OnMapReadyCallback {
         return true
     }
 
-    private fun updateMarkerLocation(location: Location) {
-        val marker = Marker()
-        marker.position = LatLng(location.latitude, location.longitude)
-        marker.zIndex = 10
-        marker.map = naverMap
-        marker.isIconPerspectiveEnabled = true
-        marker.width = Marker.SIZE_AUTO
-        marker.height = Marker.SIZE_AUTO
-    }
-
-    private fun setUpMap() {
-        if (::naverMap.isInitialized) {
-            naverMap.locationSource = locationSource
-            naverMap.uiSettings.isLocationButtonEnabled = true
-            naverMap.locationTrackingMode = LocationTrackingMode.Follow
-        }
+    private fun initMapView() {
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as MapFragment?
+            ?: MapFragment.newInstance().also {
+                childFragmentManager.beginTransaction().add(R.id.map, it).commit()
+            }
+        // fragment의 getMapAsync() 메서드로 OnMapReadyCallBack 콜백을 등록하면, 비동기로 NaverMap 객체를 얻을 수 있음
+        mapFragment.getMapAsync(this)
+        locationSource = FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
     }
 
     @SuppressLint("MissingPermission")
     override fun onMapReady(naverMap: NaverMap) {
         this.naverMap = naverMap
+        Log.d(TAG, "NaverMap is ready")
         setUpMap()
 
         fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
             location?.let {
+                Log.d(TAG, "Last known location: ${location.latitude}, ${location.longitude}")
                 updateMarkerLocation(it)
+                updateAddress(it)
+            }?: run {
+                Log.e(TAG, "Failed to get last known location")
             }
+
+        }
+
+        naverMap.addOnLocationChangeListener { location ->
+            Log.d(TAG, "Location changed: ${location.latitude}, ${location.longitude}")
+            updateMarkerLocation(location)
+            updateAddress(location)
         }
     }
 
+    private fun setUpMap() {
+        if (::naverMap.isInitialized) {
+            naverMap.locationSource = locationSource //현 위치
+            naverMap.uiSettings.isLocationButtonEnabled = true //현 위치 버튼 기능
+            naverMap.locationTrackingMode = LocationTrackingMode.Follow //위치를 추적하면서 카메라도 같이 움직임
+        } else {
+            Log.e(TAG, "NaverMap is not initialized")
+        }
+    }
+
+    private fun updateMarkerLocation(location: Location): Marker {
+        Log.d(TAG, "Updating marker location to: ${location.latitude}, ${location.longitude}")
+        val marker = Marker()
+        marker.position = LatLng(location.latitude, location.longitude) //마커 위치
+//        marker.zIndex = 10 //마커 우선순위
+        marker.map = naverMap //마커 표시
+        marker.isIconPerspectiveEnabled = true //원근감 표시
+        marker.width = Marker.SIZE_AUTO
+        marker.height = Marker.SIZE_AUTO
+
+        if (!cameraMoved) {  // 카메라가 아직 이동되지 않은 경우에만 이동
+            val cameraUpdate = CameraUpdate.scrollTo(marker.position)
+            naverMap.moveCamera(cameraUpdate)
+            cameraMoved = true  // 플래그를 true로 설정하여 이후에는 카메라를 이동하지 않음
+        }
+
+        return marker
+    }
+
+    @Suppress("DEPRECATION")
+    private fun updateAddress(location: Location) {
+        val geocoder = context?.let { Geocoder(it, Locale.getDefault()) }
+        lifecycleScope.launch {
+            try {
+                val addresses: List<Address>? =
+                    geocoder?.getFromLocation(location.latitude, location.longitude, 1)
+                if (!addresses.isNullOrEmpty()) {
+                    val address = addresses[0].getAddressLine(0)
+                    Log.d(TAG, "Current address: $address")
+                } else {
+                    Log.e(TAG, "No address found")
+                }
+            } catch (e: IOException) {
+                Log.e(TAG, "Geocoder failed", e)
+            }
+        }
+    }
 
     enum class State {
         START, STOP, OTHER
     }
 
-    lateinit var binding: FragmentLocationTrackingBinding
-    //private var fstate: State = State.START
-    private var fstate: State? = null
+    private var state: State? = State.START
 
     companion object {
-        const val ARG_STATE = "state"
+        const val ARG_STATE = "State"
+        private const val TAG = "LocationTrackingFragment"
 
         @JvmStatic
         fun newInstance(state: State) =
@@ -118,11 +190,13 @@ class LocationTrackingFragment : Fragment(), OnMapReadyCallback {
             }
     }
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            fstate = it.getSerializable(ARG_STATE, State::class.java)
+        state = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arguments?.getSerializable(ARG_STATE, State::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            arguments?.getSerializable(ARG_STATE) as? State
         }
     }
 
@@ -135,7 +209,7 @@ class LocationTrackingFragment : Fragment(), OnMapReadyCallback {
 
         binding = FragmentLocationTrackingBinding.inflate(inflater, container, false)
 
-        fstate?.let { updateButtonVisibility(it) }
+        state?.let { updateButtonVisibility(it) }
 
         //활성화 버튼 교체
         binding.btnStartOutreach.setOnClickListener {
@@ -165,7 +239,7 @@ class LocationTrackingFragment : Fragment(), OnMapReadyCallback {
         return binding.root
     }
 
-    fun updateButtonVisibility(state: State) {
+    private fun updateButtonVisibility(state: State) {
         when (state) {
             State.START -> {
                 binding.btnStartOutreach.visibility = View.VISIBLE

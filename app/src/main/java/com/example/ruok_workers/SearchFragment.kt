@@ -46,7 +46,7 @@ class SearchFragment : Fragment() {
 
         // Initialize with initial data
         itemList.addAll(initialData)
-        faviconAdapter = FaviconAdapter(itemList)
+        faviconAdapter = FaviconAdapter(requireContext(), itemList)
         faviconAdapter.notifyDataSetChanged()
 
         recyclerView.adapter = faviconAdapter
@@ -69,6 +69,10 @@ class SearchFragment : Fragment() {
             transaction.commit()
         }
 
+        // 초기 상태에서 모든 데이터를 표시
+        centerTextView.visibility = View.VISIBLE
+        recyclerView.visibility = View.VISIBLE
+
         return view
     }
 
@@ -86,10 +90,11 @@ class SearchFragment : Fragment() {
             recyclerView.visibility = View.VISIBLE
         } else {
             itemList.clear()
+            itemList.addAll(initialData)
             faviconAdapter.notifyDataSetChanged()
             centerTextView.text = "검색 결과가 없습니다."
             centerTextView.visibility = View.VISIBLE
-            recyclerView.visibility = View.GONE
+            recyclerView.visibility = View.VISIBLE
         }
     }
 
