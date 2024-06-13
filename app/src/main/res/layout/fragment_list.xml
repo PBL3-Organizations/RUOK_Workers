@@ -20,9 +20,11 @@
             android:entries="@array/arrayList"/>
 
         <SearchView
+            android:id="@+id/searchviewList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
+            android:queryHint="검색어를 입력하세요"
             />
 
     </LinearLayout>

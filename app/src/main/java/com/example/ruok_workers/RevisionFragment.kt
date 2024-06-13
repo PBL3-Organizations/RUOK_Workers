@@ -1,5 +1,6 @@
 package com.example.ruok_workers
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -22,7 +23,29 @@ class RevisionFragment : Fragment() {
             val DashboardActivity = activity as DashboardActivity
             DashboardActivity.setFragment(PhotoRevisionFragment())
         }
+        //건강상태 버튼 클릭시 색변경
+        binding.btnRevisionGood.setOnClickListener {
+            setFirstBtnColor()
+            binding.btnRevisionGood.setBackgroundColor(Color.GREEN)
+        }
+        binding.btnRevisionNotbad.setOnClickListener {
+            setFirstBtnColor()
+            binding.btnRevisionNotbad.setBackgroundColor(Color.BLUE)
+        }
+        binding.btnRevisionBad.setOnClickListener {
+            setFirstBtnColor()
+            binding.btnRevisionBad.setBackgroundColor(Color.parseColor("#FAA900"))
+        }
+        binding.btnRevisionNeed.setOnClickListener {
+            setFirstBtnColor()
+            binding.btnRevisionNeed.setBackgroundColor(Color.RED)
+        }
         return this.binding.root
     }
-
+    private fun setFirstBtnColor(){
+        binding.btnRevisionGood.setBackgroundColor(Color.parseColor("#8F9090"))
+        binding.btnRevisionNotbad.setBackgroundColor(Color.parseColor("#8F9090"))
+        binding.btnRevisionBad.setBackgroundColor(Color.parseColor("#8F9090"))
+        binding.btnRevisionNeed.setBackgroundColor(Color.parseColor("#8F9090"))
+    }
 }

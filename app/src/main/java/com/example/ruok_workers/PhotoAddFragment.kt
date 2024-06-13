@@ -21,6 +21,7 @@ import com.example.ruok_workers.databinding.FragmentPhotoAddBinding
 
 class PhotoAddFragment : Fragment() {
     lateinit var binding : FragmentPhotoAddBinding
+    //갤러리 launcher
     private var launcher = registerForActivityResult(ActivityResultContracts.GetContent()){
         it -> setGallery(uri = it)
     }
@@ -39,12 +40,15 @@ class PhotoAddFragment : Fragment() {
             val DashboardActivity = activity as DashboardActivity
             DashboardActivity.setFragment(HomelessListFragment())
         }
+        //btnPhotoAddNext클릭시 카메라열고 찍은 사진 ivPhotoAdd에 넣기
         binding.btnPhotoAddCamera.setOnClickListener{
             if (ContextCompat.checkSelfPermission(
+                    //카메라 접근 권한 확인
                     requireActivity().applicationContext,
                     android.Manifest.permission.CAMERA
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
+                //카메라 열기
                 val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                 startActivityForResult(intent, 1000)
             } else {
@@ -52,39 +56,46 @@ class PhotoAddFragment : Fragment() {
                     arrayOf(Manifest.permission.CAMERA),1000)
             }
         }
+        //btnPhotoAddNext클릭시 갤러리열고 선택한 사진 ivPhotoAdd에 넣기
         binding.btnPhotoAddGallery.setOnClickListener{
             if (ContextCompat.checkSelfPermission(
+                    //갤러리 접근 권한 확인
                     requireActivity().applicationContext,
                     android.Manifest.permission.READ_MEDIA_IMAGES
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
+                //갤러리 열기
                 launcher.launch("image/*")
             } else {
+                //갤러리 접근 권한 요청
                 ActivityCompat.requestPermissions(requireActivity(),
                     arrayOf(Manifest.permission.READ_MEDIA_IMAGES),2000)
             }
         }
         return this.binding.root
     }
-
+    //접근 권한 허용 요청 결과
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        //카메라 접근 권한 & 권한 요청 거부 안당했을 때 카메라 열기, 찍은 사진 imageView에 넣기
         if (requestCode == 1000 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             startActivityForResult(intent, 1000)
         }
+        //갤러리 접근 권한 & 권한 요청 거부 안당했을 때 카메라 열기, 찍은 사진 imageView에 넣기
         if (requestCode == 2000 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
             launcher.launch("image/*")
         }
+        //접근 요청 당했을 때
         else{
             Toast.makeText(activity, "fail", Toast.LENGTH_SHORT).show()
         }
     }
-
+    //찍은 사진 ivPhotoAdd에 넣기
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK && requestCode == 1000){
@@ -92,6 +103,7 @@ class PhotoAddFragment : Fragment() {
             binding.ivPhotoAdd.setImageBitmap(imageBitmap)
         }
     }
+    //선택한 사진 ivPhotoAdd에 넣기
     fun setGallery(uri: Uri?){
         binding.ivPhotoAdd.setImageURI(uri)
     }
