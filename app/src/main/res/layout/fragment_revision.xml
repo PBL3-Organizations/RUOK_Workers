@@ -24,6 +24,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <Button
+            android:id="@+id/btnRevisionGood"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
@@ -32,6 +33,7 @@
             android:layout_marginLeft="10dp"
             android:text="양호"/>
         <Button
+            android:id="@+id/btnRevisionNotbad"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
@@ -45,6 +47,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <Button
+            android:id="@+id/btnRevisionBad"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
@@ -53,6 +56,7 @@
             android:layout_marginLeft="10dp"
             android:text="활동에 많이 지장"/>
         <Button
+            android:id="@+id/btnRevisionNeed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
