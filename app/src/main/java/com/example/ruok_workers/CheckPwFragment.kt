@@ -1,5 +1,6 @@
 package com.example.ruok_workers
 
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -22,6 +23,9 @@ class CheckPwFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    lateinit var dbManager: DBManager
+    lateinit var sqlitedb: SQLiteDatabase
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -39,6 +43,11 @@ class CheckPwFragment : Fragment() {
         // pwModifyConfirm 버튼을 찾아 클릭 리스너를 설정합니다.
         val pwModifyConfirmButton = view.findViewById<Button>(R.id.pwModifyConfirm)
         pwModifyConfirmButton.setOnClickListener {
+
+            //데이터베이스 연동
+            dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+            dbManager.close()
+
             // InfoRevisionFragment로 전환합니다.
             val infoRevisionFragment = InfoRevisionFragment.newInstance("param1", "param2")
             val transaction = requireActivity().supportFragmentManager.beginTransaction()

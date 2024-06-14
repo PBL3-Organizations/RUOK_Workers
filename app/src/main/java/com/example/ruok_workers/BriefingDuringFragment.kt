@@ -1,3 +1,4 @@
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,10 +12,14 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.ruok_workers.R
 import com.example.ruok_workers.BriefingDetailFragment
+import com.example.ruok_workers.DBManager
 import java.text.SimpleDateFormat
 import java.util.*
 
 class BriefingDuringFragment : Fragment() {
+
+    lateinit var dbManager: DBManager
+    lateinit var sqlitedb: SQLiteDatabase
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -22,6 +27,10 @@ class BriefingDuringFragment : Fragment() {
     ): View? {
         // Fragment의 레이아웃을 인플레이트
         val view = inflater.inflate(R.layout.fragment_briefing_during, container, false)
+
+        //데이터베이스 연동
+        dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+        dbManager.close()
 
         // 더미 데이터
         val dummyData = arrayOf("During 1", "아이템 2", "아이템 3", "아이템 4", "아이템 5")

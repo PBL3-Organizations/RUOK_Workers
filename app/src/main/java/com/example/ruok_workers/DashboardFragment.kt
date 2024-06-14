@@ -1,6 +1,7 @@
 package com.example.ruok_workers
 
 import ProfileDetailFragment
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -21,6 +22,9 @@ class DashboardFragment : Fragment() {
     lateinit var adapter: DashboardAdapter
 
     private lateinit var recyclerViewProfile: RecyclerView
+
+    lateinit var dbManager: DBManager
+    lateinit var sqlitedb: SQLiteDatabase
 
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
@@ -51,6 +55,9 @@ class DashboardFragment : Fragment() {
     ): View? {
         binding = FragmentDashboardBinding.inflate(inflater, container, false)
 
+        //데이터베이스 연동
+        dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+        dbManager.close()
 
         val list = Vector<Dashboard>()
 
