@@ -54,11 +54,9 @@ class LocationTrackingFragment : Fragment(), OnMapReadyCallback {
     private val requestMultiplePermissions =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
             if (permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true) {
-                Log.d(TAG, "Location permission granted")
                 initMapView()
             }
             else {
-                Log.e(TAG, "Location permission not granted")
                 // 권한이 거부된 경우 사용자에게 알림
                 requestPermissions(PERMISSIONS, LOCATION_PERMISSION_REQUEST_CODE)
             }
@@ -68,10 +66,8 @@ class LocationTrackingFragment : Fragment(), OnMapReadyCallback {
         super.onViewCreated(view, savedInstanceState)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         if (!hasPermission()) {
-            Log.d(TAG, "Requesting location permissions")
             requestMultiplePermissions.launch(PERMISSIONS)
         } else {
-            Log.d(TAG, "Location permissions already granted")
             locationSource = FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
             initMapView()
         }
@@ -102,22 +98,16 @@ class LocationTrackingFragment : Fragment(), OnMapReadyCallback {
     @SuppressLint("MissingPermission")
     override fun onMapReady(naverMap: NaverMap) {
         this.naverMap = naverMap
-        Log.d(TAG, "NaverMap is ready")
         setUpMap()
 
         fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
             location?.let {
-                Log.d(TAG, "Last known location: ${location.latitude}, ${location.longitude}")
                 updateMarkerLocation(it)
                 updateAddress(it)
-            }?: run {
-                Log.e(TAG, "Failed to get last known location")
             }
-
         }
 
         naverMap.addOnLocationChangeListener { location ->
-            Log.d(TAG, "Location changed: ${location.latitude}, ${location.longitude}")
             updateMarkerLocation(location)
             updateAddress(location)
         }
@@ -128,20 +118,22 @@ class LocationTrackingFragment : Fragment(), OnMapReadyCallback {
             naverMap.locationSource = locationSource //현 위치
             naverMap.uiSettings.isLocationButtonEnabled = true //현 위치 버튼 기능
             naverMap.locationTrackingMode = LocationTrackingMode.Follow //위치를 추적하면서 카메라도 같이 움직임
-        } else {
-            Log.e(TAG, "NaverMap is not initialized")
         }
     }
 
     private fun updateMarkerLocation(location: Location): Marker {
-        Log.d(TAG, "Updating marker location to: ${location.latitude}, ${location.longitude}")
+
         val marker = Marker()
-        marker.position = LatLng(location.latitude, location.longitude) //마커 위치
-//        marker.zIndex = 10 //마커 우선순위
-        marker.map = naverMap //마커 표시
-        marker.isIconPerspectiveEnabled = true //원근감 표시
-        marker.width = Marker.SIZE_AUTO
-        marker.height = Marker.SIZE_AUTO
+        marker.setMap(null)
+
+        Marker().apply{
+            marker.position = LatLng(location.latitude, location.longitude) //마커 위치
+//          marker.zIndex = 10 //마커 우선순위
+            marker.map = naverMap //마커 표시
+            marker.isIconPerspectiveEnabled = true //원근감 표시
+            marker.width = Marker.SIZE_AUTO
+            marker.height = Marker.SIZE_AUTO
+        }
 
         if (!cameraMoved) {  // 카메라가 아직 이동되지 않은 경우에만 이동
             val cameraUpdate = CameraUpdate.scrollTo(marker.position)
@@ -154,16 +146,14 @@ class LocationTrackingFragment : Fragment(), OnMapReadyCallback {
 
     @Suppress("DEPRECATION")
     private fun updateAddress(location: Location) {
-        val geocoder = context?.let { Geocoder(it, Locale.getDefault()) }
+        val geocoder = context?.let { Geocoder(it, Locale.KOREA) }  // 한국어로 설정
         lifecycleScope.launch {
             try {
                 val addresses: List<Address>? =
                     geocoder?.getFromLocation(location.latitude, location.longitude, 1)
                 if (!addresses.isNullOrEmpty()) {
                     val address = addresses[0].getAddressLine(0)
-                    Log.d(TAG, "Current address: $address")
-                } else {
-                    Log.e(TAG, "No address found")
+                    val placeName = addresses[0].featureName
                 }
             } catch (e: IOException) {
                 Log.e(TAG, "Geocoder failed", e)
@@ -179,7 +169,7 @@ class LocationTrackingFragment : Fragment(), OnMapReadyCallback {
 
     companion object {
         const val ARG_STATE = "State"
-        private const val TAG = "LocationTrackingFragment"
+        const val TAG = "LocationTrackingFragment"
 
         @JvmStatic
         fun newInstance(state: State) =
