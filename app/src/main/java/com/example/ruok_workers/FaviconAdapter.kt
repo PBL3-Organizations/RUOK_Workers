@@ -1,24 +1,32 @@
 package com.example.ruok_workers
 
+import ProfileDetailFragment
+import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.example.ruok_workers.databinding.FaviconEditItemsBinding
 
-class FaviconAdapter(val itemList: ArrayList<FaviconItem>) : RecyclerView.Adapter<FaviconAdapter.FaviconViewHolder>(){
-    inner class FaviconViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class FaviconAdapter(private val context: Context, val itemList: ArrayList<FaviconItem>) : RecyclerView.Adapter<FaviconAdapter.FaviconViewHolder>(){
+    lateinit var profileDetailFragment: ProfileDetailFragment
+
+    inner class FaviconViewHolder(var binding: FaviconEditItemsBinding) : RecyclerView.ViewHolder(binding.root) {
         val tvfeName = itemView.findViewById<TextView>(R.id.tvfeName)
         val tvfeBirth = itemView.findViewById<TextView>(R.id.tvfeBirth)
         val ibtnStar = itemView.findViewById<ImageButton>(R.id.ibtnStar)
     }
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): FaviconAdapter.FaviconViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.favicon_edit_items, parent, false)
-        return FaviconViewHolder(view)
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val binding = FaviconEditItemsBinding.inflate(layoutInflater, parent, false)
+        return FaviconViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: FaviconAdapter.FaviconViewHolder, position: Int) {
@@ -41,6 +49,22 @@ class FaviconAdapter(val itemList: ArrayList<FaviconItem>) : RecyclerView.Adapte
                 holder.ibtnStar.setImageResource(android.R.drawable.btn_star_big_on)
                 holder.ibtnStar.tag = "on"
             }
+        }
+
+        // 카드뷰를 클릭하면 ProfileDetailFragment로 이동
+        holder.binding.root.setOnClickListener {
+            profileDetailFragment = ProfileDetailFragment()
+
+            var bundle = Bundle().apply {
+                putString("name", itemList[position].name)
+                putString("birth", itemList[position].birth)
+            }
+
+            profileDetailFragment.arguments = bundle
+
+            (context as AppCompatActivity).supportFragmentManager.beginTransaction()
+                .replace(R.id.rootLayout, profileDetailFragment)
+                .commit()
         }
     }
 
