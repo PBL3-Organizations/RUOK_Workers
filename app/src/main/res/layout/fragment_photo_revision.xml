@@ -18,12 +18,14 @@
             android:orientation="horizontal"
             android:layout_marginBottom="10dp">
             <ImageView
+                android:id="@+id/ivPhotoRevision"
                 android:layout_width="wrap_content"
                 android:layout_height="100dp"
                 tools:ignore="MissingConstraints"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <android.widget.Button
+                android:id="@+id/btnPhotoRevisionGallery"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:text="갤러리에서 사진추가"
@@ -34,6 +36,7 @@
 
         </LinearLayout>
         <android.widget.Button
+            android:id="@+id/btnPhotoRevisionCamera"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/md_theme_primary"

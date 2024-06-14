@@ -5,8 +5,11 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.hardware.camera2.CameraCharacteristics
+import android.hardware.camera2.CameraManager
 import android.net.Uri
 import android.os.Bundle
+import android.os.Process
 import android.provider.MediaStore
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -16,7 +19,10 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.android.car.ui.pluginsupport.PluginConfigProvider
 import com.example.ruok_workers.databinding.FragmentPhotoAddBinding
+import java.security.Provider
+import java.util.concurrent.Future
 
 
 class PhotoAddFragment : Fragment() {
@@ -40,7 +46,7 @@ class PhotoAddFragment : Fragment() {
             val DashboardActivity = activity as DashboardActivity
             DashboardActivity.setFragment(HomelessListFragment())
         }
-        //btnPhotoAddNext클릭시 카메라열고 찍은 사진 ivPhotoAdd에 넣기
+        //btnPhotoAddCamera클릭시 카메라열고 찍은 사진 ivPhotoAdd에 넣기
         binding.btnPhotoAddCamera.setOnClickListener{
             if (ContextCompat.checkSelfPermission(
                     //카메라 접근 권한 확인
@@ -56,7 +62,7 @@ class PhotoAddFragment : Fragment() {
                     arrayOf(Manifest.permission.CAMERA),1000)
             }
         }
-        //btnPhotoAddNext클릭시 갤러리열고 선택한 사진 ivPhotoAdd에 넣기
+        //btnPhotoAddGallery클릭시 갤러리열고 선택한 사진 ivPhotoAdd에 넣기
         binding.btnPhotoAddGallery.setOnClickListener{
             if (ContextCompat.checkSelfPermission(
                     //갤러리 접근 권한 확인
