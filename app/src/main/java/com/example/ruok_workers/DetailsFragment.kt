@@ -1,5 +1,6 @@
 package com.example.ruok_workers
 
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,11 +14,18 @@ import com.example.ruok_workers.databinding.FragmentDetailsBinding
 class DetailsFragment : Fragment() {
     lateinit var binding: FragmentDetailsBinding
 
+    lateinit var dbManager: DBManager
+    lateinit var sqlitedb: SQLiteDatabase
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentDetailsBinding.inflate(inflater, container, false)
+
+        //데이터베이스 연동
+        dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+        dbManager.close()
 
         //btnGoRevision클릭시 DatailsFragment에서 RevisionFragment로 이동
         binding.btnGoRevision.setOnClickListener {

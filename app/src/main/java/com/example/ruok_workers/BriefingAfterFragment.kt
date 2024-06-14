@@ -1,5 +1,6 @@
 package com.example.ruok_workers
 
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -13,12 +14,19 @@ import android.widget.AdapterView
 
 class BriefingAfterFragment : Fragment() {
 
+    lateinit var dbManager: DBManager
+    lateinit var sqlitedb: SQLiteDatabase
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Fragment의 레이아웃을 인플레이트
         val view = inflater.inflate(R.layout.fragment_briefing_after, container, false)
+
+        //데이터베이스 연동
+        dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+        dbManager.close()
 
         // 더미 데이터
         val dummyData = arrayOf("After 1", "아이템 2", "아이템 3", "아이템 4", "아이템 5")

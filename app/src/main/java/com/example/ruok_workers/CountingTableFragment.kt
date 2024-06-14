@@ -1,5 +1,6 @@
 package com.example.ruok_workers
 
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.text.InputType
 import androidx.fragment.app.Fragment
@@ -16,6 +17,8 @@ import com.example.ruok_workers.databinding.FragmentCountingTableBinding
 class CountingTableFragment : Fragment() {
     lateinit var binding: FragmentCountingTableBinding
 
+    lateinit var dbManager: DBManager
+    lateinit var sqlitedb: SQLiteDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +32,10 @@ class CountingTableFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentCountingTableBinding.inflate(inflater, container, false)
+
+        //데이터베이스 연동
+        dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+        dbManager.close()
 
         binding.btnSaveCountingTable.setOnClickListener {
             val parentActivity = activity as DashboardActivity
