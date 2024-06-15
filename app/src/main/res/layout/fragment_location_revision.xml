@@ -23,6 +23,44 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <LinearLayout
+        android:id="@+id/llPopLocationRevision"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:background="#FBA700"
+        android:orientation="vertical"
+        android:paddingTop="10dp"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/tvMeetingLocationRevision"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="만난 위치"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF" />
+
+        <TextView
+            android:id="@+id/tvPlacePopLocationRevision"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="장소명"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvAddressPopLocationRevision"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="주소"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/LinearLocationRevision"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
