@@ -3,6 +3,7 @@ package com.example.ruok_workers
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
@@ -28,6 +29,7 @@ import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.util.FusedLocationSource
+import com.naver.maps.map.util.MarkerIcons
 import kotlinx.coroutines.launch
 import java.io.IOException
 import java.util.Locale
@@ -133,6 +135,8 @@ class LocationTrackingFragment : Fragment(), OnMapReadyCallback {
             marker.isIconPerspectiveEnabled = true //원근감 표시
             marker.width = Marker.SIZE_AUTO
             marker.height = Marker.SIZE_AUTO
+            marker.icon = MarkerIcons.BLACK
+            marker.iconTintColor = Color.RED
         }
 
         if (!cameraMoved) {  // 카메라가 아직 이동되지 않은 경우에만 이동

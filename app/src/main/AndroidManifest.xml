@@ -49,6 +49,9 @@
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="eq7ehlqkoi" />
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_SECRET"
+            android:value="X1a6qGJw50arH64FEUE2Ojs87L172L6GP7FLGixU" />
     </application>
 
 </manifest>
