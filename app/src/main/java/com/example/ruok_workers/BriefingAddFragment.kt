@@ -29,7 +29,7 @@ class BriefingAddFragment : Fragment() {
         val titleEditText = view.findViewById<EditText>(R.id.editText_briefing_title)
         val contentEditText = view.findViewById<EditText>(R.id.editText_briefing_content)
 
-        val tabPosition = arguments?.getInt("tabPosition", 0) ?: 0
+        val tabPosition = requireArguments().getInt("tabPosition", 0)
 
         submitButton.setOnClickListener {
             val isSetAsNotice = setAsNoticeCheckbox.isChecked
@@ -42,9 +42,9 @@ class BriefingAddFragment : Fragment() {
             val currentDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
             val isNotice = if (isSetAsNotice) 1 else 0
 
-            // 데이터베이스에 탭 위치에 맞게 새로운 브리핑 추가
             sqlitedb.execSQL("INSERT INTO briefing (b_title, b_content, m_num, b_time, b_type, b_notice) " +
                     "VALUES ('$title', '$content', 1, '$currentDate', $tabPosition, $isNotice);")
+
 
             dbManager.close()
 

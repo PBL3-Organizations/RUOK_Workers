@@ -14,8 +14,8 @@ class ViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> BriefingBeforeFragment()
-            1 -> BriefingAfterFragment1()
+            1 -> BriefingBeforeFragment()
+            0 -> BriefingAfterFragment1()
             2 -> BriefingDuringFragment()
             else -> throw IllegalStateException("Unexpected position $position")
         }

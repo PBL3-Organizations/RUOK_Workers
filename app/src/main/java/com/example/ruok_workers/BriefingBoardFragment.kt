@@ -38,11 +38,11 @@ class BriefingBoardFragment : Fragment() {
         // 탭과 뷰페이저를 연결하는 부분
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             when (position) {
-                0 -> {
+                1 -> {
                     tab.text = "아웃리치 전"
                     tab.contentDescription = "아웃리치 전 탭"
                 }
-                1 -> {
+                0 -> {
                     tab.text = "아웃리치 후"
                     tab.contentDescription = "아웃리치 후 탭"
                 }
