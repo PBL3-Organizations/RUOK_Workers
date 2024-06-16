@@ -1,4 +1,5 @@
 import android.app.AlertDialog
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import com.example.ruok_workers.DBManager
 import com.example.ruok_workers.ProfileRevisionFragment
 import com.example.ruok_workers.QuestionnaireFragment
 import com.example.ruok_workers.R
@@ -16,11 +18,18 @@ class ProfileDetailFragment : Fragment() {
 
     private lateinit var btnSurvey: Button
 
+    lateinit var dbManager: DBManager
+    lateinit var sqlitedb: SQLiteDatabase
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_profile_detail, container, false)
+
+        //데이터베이스 연동
+        dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+        dbManager.close()
 
         btnSurvey = view.findViewById(R.id.btn_EditProfile)
         btnSurvey.setOnClickListener {
@@ -92,6 +101,10 @@ class ProfileDetailFragment : Fragment() {
             .setMessage("본 프로필을 삭제하시겠습니까?")
             .setPositiveButton("삭제") { dialog, _ ->
                 // "Yes" 버튼을 클릭하면 프로필 삭제 처리를 수행
+                //데이터베이스 연동
+                dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+                dbManager.close()
+
                 // 여기서는 SearchFragment로 이동
                 loadSearchFragment()
                 dialog.dismiss()

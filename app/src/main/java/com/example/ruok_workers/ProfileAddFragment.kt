@@ -1,5 +1,6 @@
 package com.example.ruok_workers
 
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -22,6 +23,9 @@ class ProfileAddFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    lateinit var dbManager: DBManager
+    lateinit var sqlitedb: SQLiteDatabase
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -36,6 +40,10 @@ class ProfileAddFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view =  inflater.inflate(R.layout.fragment_profile_add, container, false)
+
+        //데이터베이스 연동
+        dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+        dbManager.close()
 
         // 버튼을 찾습니다.
         val saveButton = view.findViewById<Button>(R.id.save_button_in_add_profile)

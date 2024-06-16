@@ -2,6 +2,7 @@ package com.example.ruok_workers
 
 import android.content.Context
 import android.content.Intent
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.widget.Button
 import android.widget.CheckBox
@@ -13,6 +14,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 class LoginActivity : AppCompatActivity() {
+
+    lateinit var dbManager: DBManager
+    lateinit var sqlitedb: SQLiteDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +49,10 @@ class LoginActivity : AppCompatActivity() {
         loginButton.setOnClickListener {
             val inputId = inputIdEditText.text.toString()
             val inputPassword = inputPasswordEditText.text.toString()
+
+            //데이터베이스 연동
+            dbManager = DBManager(this, "RUOKsample", null, 1)
+            dbManager.close()
 
             val registeredId = sharedPreferences.getString("registered_id", null)
             val registeredPassword = sharedPreferences.getString("registered_password", null)

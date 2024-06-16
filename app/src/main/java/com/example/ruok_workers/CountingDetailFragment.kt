@@ -49,6 +49,10 @@ class CountingDetailFragment : Fragment() {
             AlertDialog.Builder(requireContext())
                 .setMessage("본 카운팅 테이블을 삭제하시겠습니까?")
                 .setPositiveButton("삭제") { dialog, which ->
+                    //데이터베이스 연동
+                    dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+                    dbManager.close()
+
                     val DashboardActivity = activity as DashboardActivity
                     DashboardActivity.setFragment(CountingListFragment())
                     Toast.makeText(requireContext(), "카운팅 삭제!", Toast.LENGTH_SHORT).show()

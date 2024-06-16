@@ -1,5 +1,6 @@
 package com.example.ruok_workers
 
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,6 +13,8 @@ import com.example.ruok_workers.databinding.FragmentHomelessListBinding
 class HomelessListFragment : Fragment() {
     lateinit var binding: FragmentHomelessListBinding
 
+    lateinit var dbManager: DBManager
+    lateinit var sqlitedb: SQLiteDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +29,10 @@ class HomelessListFragment : Fragment() {
     ): View? {
 
         binding = FragmentHomelessListBinding.inflate(inflater, container, false)
+
+        //데이터베이스 연동
+        dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+        dbManager.close()
 
         //btnBeforeHomelessList 클릭시 HomelessListFragment에서 PhotoAddFragment로 이동
         binding.btnBeforeHomelessList.setOnClickListener{

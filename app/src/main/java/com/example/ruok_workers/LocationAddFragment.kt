@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.pm.PackageManager
+import android.database.sqlite.SQLiteDatabase
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
@@ -45,6 +46,9 @@ class LocationAddFragment : Fragment(), OnMapReadyCallback {
     private val LOCATION_PERMISSION_REQUEST_CODE = 1000
     private var cameraMoved = false  // 카메라가 이동되었는지 여부를 나타내는 플래그
     private var isManualLocation = false // 위치 업데이트를 수동으로 설정하는 플래그
+
+    lateinit var dbManager: DBManager
+    lateinit var sqlitedb: SQLiteDatabase
 
     //위치 정보 동의
     private val PERMISSIONS = arrayOf(
@@ -213,6 +217,10 @@ class LocationAddFragment : Fragment(), OnMapReadyCallback {
 
         //btnCompleteLocationAdd 클릭시 LocationAddFragment에서 LocationTrackingFragment로 이동
         binding.btnCompleteLocationAdd.setOnClickListener{
+            //데이터베이스 연동
+            dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+            dbManager.close()
+
             val parentActivity = activity as DashboardActivity
             parentActivity.setFragment(LocationTrackingFragment.newInstance(LocationTrackingFragment.State.OTHER))
             Toast.makeText(context, "상담내역 저장!", Toast.LENGTH_SHORT).show()
