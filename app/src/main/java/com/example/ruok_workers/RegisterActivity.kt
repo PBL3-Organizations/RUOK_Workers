@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Button
@@ -19,6 +20,9 @@ class RegisterActivity : AppCompatActivity() {
 
     private val organizations = listOf("Lover Center", "Vision Center", "Apple Center")
     private val dummyIds = listOf("user1", "admin", "testuser") // 더미 데이터
+
+    lateinit var dbManager: DBManager
+    lateinit var sqlitedb: SQLiteDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +49,10 @@ class RegisterActivity : AppCompatActivity() {
             } else if (inputPassword != inputCheckPassword) {
                 Toast.makeText(this, "비밀번호가 일치하지 않습니다", Toast.LENGTH_SHORT).show()
             } else if (dummyIds.contains(inputId)) {
+                //데이터베이스 연동
+                dbManager = DBManager(this, "RUOKsample", null, 1)
+                dbManager.close()
+
                 Toast.makeText(this, "중복된 아이디입니다", Toast.LENGTH_SHORT).show()
             } else {
                 // 회원 정보를 SharedPreferences에 저장
@@ -57,6 +65,11 @@ class RegisterActivity : AppCompatActivity() {
                     putString("user_organization", inputOrganization) // 사용자 소속 저장
                     apply()
                 }
+
+                //데이터베이스 연동
+                dbManager = DBManager(this, "RUOKsample", null, 1)
+                dbManager.close()
+
                 Toast.makeText(this, "회원가입 성공", Toast.LENGTH_SHORT).show()
 
                 val intent = Intent(this, LoginActivity::class.java)
@@ -87,6 +100,11 @@ class RegisterActivity : AppCompatActivity() {
 
         searchButton.setOnClickListener {
             val query = searchInput.text.toString()
+
+            //데이터베이스 연동
+            dbManager = DBManager(this, "RUOKsample", null, 1)
+            dbManager.close()
+
             val filteredOrganizations = organizations.filter { it.contains(query, ignoreCase = true) }
             val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, filteredOrganizations)
             searchResults.adapter = adapter
@@ -104,6 +122,11 @@ class RegisterActivity : AppCompatActivity() {
 
     fun checkIdDuplicate() {
         val inputId = findViewById<EditText>(R.id.input_id).text.toString()
+
+        //데이터베이스 연동
+        dbManager = DBManager(this, "RUOKsample", null, 1)
+        dbManager.close()
+
         if (dummyIds.contains(inputId)) {
             showAlertDialog("중복된 아이디", "다른 아이디를 선택해주세요")
         } else {

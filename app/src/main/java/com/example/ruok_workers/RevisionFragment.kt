@@ -1,5 +1,6 @@
 package com.example.ruok_workers
 
+import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,12 +13,19 @@ import com.example.ruok_workers.databinding.FragmentRevisionBinding
 class RevisionFragment : Fragment() {
     lateinit var binding: FragmentRevisionBinding
 
+    lateinit var dbManager: DBManager
+    lateinit var sqlitedb: SQLiteDatabase
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentRevisionBinding.inflate(inflater, container, false)
+
+        //데이터베이스 연동
+        dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+        dbManager.close()
+
         //btnRevision클릭시 RevisionFragment에서 PhotoRevisionFragment로 이동
         binding.btnRevisionNext.setOnClickListener {
             val DashboardActivity = activity as DashboardActivity

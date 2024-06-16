@@ -4,8 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.pm.PackageManager
-import android.database.sqlite.SQLiteDatabase
-import android.graphics.Color
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
@@ -31,7 +29,6 @@ import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.util.FusedLocationSource
-import com.naver.maps.map.util.MarkerIcons
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.IOException
@@ -48,9 +45,6 @@ class LocationAddFragment : Fragment(), OnMapReadyCallback {
     private val LOCATION_PERMISSION_REQUEST_CODE = 1000
     private var cameraMoved = false  // 카메라가 이동되었는지 여부를 나타내는 플래그
     private var isManualLocation = false // 위치 업데이트를 수동으로 설정하는 플래그
-
-    lateinit var dbManager: DBManager
-    lateinit var sqlitedb: SQLiteDatabase
 
     //위치 정보 동의
     private val PERMISSIONS = arrayOf(
@@ -157,8 +151,6 @@ class LocationAddFragment : Fragment(), OnMapReadyCallback {
             marker.isIconPerspectiveEnabled = true //원근감 표시
             marker.width = Marker.SIZE_AUTO
             marker.height = Marker.SIZE_AUTO
-            marker.icon = MarkerIcons.BLACK
-            marker.iconTintColor = Color.RED
         }
 
         if (!cameraMoved) {  // 카메라가 아직 이동되지 않은 경우에만 이동
@@ -221,10 +213,6 @@ class LocationAddFragment : Fragment(), OnMapReadyCallback {
 
         //btnCompleteLocationAdd 클릭시 LocationAddFragment에서 LocationTrackingFragment로 이동
         binding.btnCompleteLocationAdd.setOnClickListener{
-            //데이터베이스 연동
-            dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
-            dbManager.close()
-
             val parentActivity = activity as DashboardActivity
             parentActivity.setFragment(LocationTrackingFragment.newInstance(LocationTrackingFragment.State.OTHER))
             Toast.makeText(context, "상담내역 저장!", Toast.LENGTH_SHORT).show()

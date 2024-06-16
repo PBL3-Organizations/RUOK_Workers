@@ -1,5 +1,6 @@
 package com.example.ruok_workers
 
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,9 +17,10 @@ class ListFragment : Fragment() {
     lateinit var binding: FragmentListBinding
     lateinit var adapter: ListAdapter
 
-
     private lateinit var listRecyclerView: RecyclerView
 
+    lateinit var dbManager: DBManager
+    lateinit var sqlitedb: SQLiteDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +35,10 @@ class ListFragment : Fragment() {
         binding = FragmentListBinding.inflate(inflater, container,false)
 
         val list = Vector<ListCard>()
+
+        //데이터베이스 연동
+        dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+        dbManager.close()
 
         // 임시 데이터셋 추가
         val sampleData = listOf(

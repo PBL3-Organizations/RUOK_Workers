@@ -1,5 +1,6 @@
 package com.example.ruok_workers
 
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +23,9 @@ class HomelessRevisionFragment : Fragment() {
     private lateinit var searchEditText: EditText
     private lateinit var profileList: LinearLayout
 
+    lateinit var dbManager: DBManager
+    lateinit var sqlitedb: SQLiteDatabase
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -37,6 +41,10 @@ class HomelessRevisionFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_homeless_revision, container, false)
         searchEditText = view.findViewById(R.id.search_edit_text)
         profileList = view.findViewById(R.id.profile_list)
+
+        //데이터베이스 연동
+        dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+        dbManager.close()
 
         val searchButton: Button = view.findViewById(R.id.search_button)
         searchButton.setOnClickListener {
