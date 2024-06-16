@@ -70,6 +70,10 @@ class BriefingDetailFragment : Fragment() {
             alertDialogBuilder.setTitle("삭제하시겠습니까?")
             alertDialogBuilder.setPositiveButton("예") { dialog, which ->
                 // 삭제 동작을 여기에 추가
+                //데이터베이스 연동
+                dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+                dbManager.close()
+
                 requireActivity().onBackPressed()
             }
             alertDialogBuilder.setNegativeButton("아니오") { dialog, which ->

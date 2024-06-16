@@ -1,5 +1,6 @@
 package com.example.ruok_workers
 
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -21,6 +22,9 @@ class SearchFragment : Fragment() {
     private lateinit var centerTextView: TextView
     private lateinit var faviconAdapter: FaviconAdapter
 
+    lateinit var dbManager: DBManager
+    lateinit var sqlitedb: SQLiteDatabase
+
     //테스트 데이터셋
     private val initialData = listOf(FaviconItem("김민수", "19650315"), FaviconItem("박지영", "19620722"), FaviconItem("최영준", "19591105"), FaviconItem("이서현", "19780510"), FaviconItem("Jenny", "19780510"), FaviconItem("Lisa", "19780510"), FaviconItem("Rose", "19780510"), FaviconItem("Jisoo", "19780510"))
     private val itemList = ArrayList<FaviconItem>()
@@ -38,6 +42,10 @@ class SearchFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_search, container, false)
+
+        //데이터베이스 연동
+        dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+        dbManager.close()
 
         searchEditText = view.findViewById(R.id.search_edit_text)
         searchButton = view.findViewById(R.id.search_button)
@@ -79,6 +87,10 @@ class SearchFragment : Fragment() {
     private fun performSearch() {
         val query = searchEditText.text.toString().trim()
         if (query.isNotEmpty()) {
+            //데이터베이스 연동
+            dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+            dbManager.close()
+
             // Filter initialData based on the query
             val filteredResults = initialData.filter { it.name.contains(query, ignoreCase = true) }
             itemList.clear()

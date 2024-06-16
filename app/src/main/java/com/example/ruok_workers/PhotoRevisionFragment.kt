@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.sqlite.SQLiteDatabase
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
@@ -25,11 +26,20 @@ class PhotoRevisionFragment : Fragment() {
     private var launcher = registerForActivityResult(ActivityResultContracts.GetContent()){
             it -> setGallery(uri = it)
     }
+
+    lateinit var dbManager: DBManager
+    lateinit var sqlitedb: SQLiteDatabase
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentPhotoRevisionBinding.inflate(inflater, container, false)
+
+        //데이터베이스 연동
+        dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+        dbManager.close()
+
         //btnPhotoRevisionBack클릭시 PhotoRevisionFragment에서 RevisionFragment로 이동
         binding.btnPhotoRevisionBack.setOnClickListener {
             val DashboardActivity = activity as DashboardActivity
