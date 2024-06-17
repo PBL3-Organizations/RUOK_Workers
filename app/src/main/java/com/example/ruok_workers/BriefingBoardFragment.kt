@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
+import com.example.ruok_workers.BriefingAddFragment
 import com.example.ruok_workers.R
 import com.example.ruok_workers.ViewPagerAdapter
 import com.google.android.material.tabs.TabLayout

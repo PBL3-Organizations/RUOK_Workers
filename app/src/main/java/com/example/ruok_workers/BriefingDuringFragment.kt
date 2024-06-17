@@ -37,12 +37,19 @@ class BriefingDuringFragment : Fragment() {
     private fun displayBriefings() {
         val briefingsDuring = mutableListOf<String>()
 
-        val cursor: Cursor = sqlitedb.rawQuery("SELECT * FROM briefing WHERE b_type = 2", null)
+        val cursor: Cursor = sqlitedb.rawQuery("SELECT * FROM briefing WHERE b_type = 2 ORDER BY b_notice DESC, b_time DESC", null)
 
         while (cursor.moveToNext()) {
             val title = cursor.getString(cursor.getColumnIndex("b_title"))
             val bTime = cursor.getString(cursor.getColumnIndex("b_time"))
-            briefingsDuring.add("$title - $bTime")
+            val isNotice = cursor.getInt(cursor.getColumnIndex("b_notice"))
+
+            val displayTitle = if (isNotice == 1) {
+                "\uD83D\uDD34 $title"  // Red circle emoji
+            } else {
+                title
+            }
+            briefingsDuring.add("$displayTitle - $bTime")
         }
 
         cursor.close()
