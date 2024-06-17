@@ -1,3 +1,4 @@
+package com.example.ruok_workers
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,8 +9,6 @@ import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.ruok_workers.DBManager
-import com.example.ruok_workers.R
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -44,7 +43,6 @@ class BriefingAddFragment : Fragment() {
 
             sqlitedb.execSQL("INSERT INTO briefing (b_title, b_content, m_num, b_time, b_type, b_notice) " +
                     "VALUES ('$title', '$content', 1, '$currentDate', $tabPosition, $isNotice);")
-
 
             dbManager.close()
 

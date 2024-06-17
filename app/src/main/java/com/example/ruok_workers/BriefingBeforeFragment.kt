@@ -38,12 +38,19 @@ class BriefingBeforeFragment : Fragment() {
         val briefingsBefore = mutableListOf<String>()
 
         //여기서 b_type 번호(0 - 후 / 1 - 전 / 2 - 중)
-        val cursor: Cursor = sqlitedb.rawQuery("SELECT * FROM briefing WHERE b_type = 1", null)
+        val cursor: Cursor = sqlitedb.rawQuery("SELECT * FROM briefing WHERE b_type = 1 ORDER BY b_notice DESC, b_time DESC", null)
 
         while (cursor.moveToNext()) {
             val title = cursor.getString(cursor.getColumnIndex("b_title"))
             val bTime = cursor.getString(cursor.getColumnIndex("b_time"))
-            briefingsBefore.add("$title - $bTime")
+            val isNotice = cursor.getInt(cursor.getColumnIndex("b_notice"))
+
+            val displayTitle = if (isNotice == 1) {
+                "\uD83D\uDD34 $title"  // Red circle emoji
+            } else {
+                title
+            }
+            briefingsBefore.add("$displayTitle - $bTime")
         }
 
         cursor.close()
