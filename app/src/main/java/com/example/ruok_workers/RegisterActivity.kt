@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.widget.ArrayAdapter
@@ -19,10 +20,11 @@ import androidx.core.view.WindowInsetsCompat
 class RegisterActivity : AppCompatActivity() {
 
     private val organizations = listOf("Lover Center", "Vision Center", "Apple Center")
-    private val dummyIds = listOf("user1", "admin", "testuser") // 더미 데이터
 
     lateinit var dbManager: DBManager
     lateinit var sqlitedb: SQLiteDatabase
+
+    private val ID_list = ArrayList<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,15 +46,24 @@ class RegisterActivity : AppCompatActivity() {
             val inputBirth = findViewById<EditText>(R.id.input_workerBirth).text.toString() // 사용자 생년월일 입력
             val inputOrganization = findViewById<EditText>(R.id.input_organizations).text.toString() // 사용자 소속 입력
 
+            //데이터베이스 연동: 기존 아이디 리스트 가져오기
+            dbManager = DBManager(this, "RUOKsample", null, 1)
+            sqlitedb = dbManager.readableDatabase
+            var cursor: Cursor
+            val pstmt = "SELECT m_id FROM member WHERE m_id=?;"
+            cursor = sqlitedb.rawQuery(pstmt, arrayOf(inputId))
+
+            val count = cursor.count
+
+            cursor.close()
+            sqlitedb.close()
+            dbManager.close()
+
             if (inputId.isBlank() || inputPassword.isBlank() || inputCheckPassword.isBlank() || inputName.isBlank() || inputBirth.isBlank() || inputOrganization.isBlank()) {
                 Toast.makeText(this, "모든 필드를 입력해주세요", Toast.LENGTH_SHORT).show()
             } else if (inputPassword != inputCheckPassword) {
                 Toast.makeText(this, "비밀번호가 일치하지 않습니다", Toast.LENGTH_SHORT).show()
-            } else if (dummyIds.contains(inputId)) {
-                //데이터베이스 연동
-                dbManager = DBManager(this, "RUOKsample", null, 1)
-                dbManager.close()
-
+            } else if (count > 0) {
                 Toast.makeText(this, "중복된 아이디입니다", Toast.LENGTH_SHORT).show()
             } else {
                 // 회원 정보를 SharedPreferences에 저장
@@ -123,11 +134,20 @@ class RegisterActivity : AppCompatActivity() {
     fun checkIdDuplicate() {
         val inputId = findViewById<EditText>(R.id.input_id).text.toString()
 
-        //데이터베이스 연동
+        //데이터베이스 연동: 기존 아이디 리스트 가져오기
         dbManager = DBManager(this, "RUOKsample", null, 1)
+        sqlitedb = dbManager.readableDatabase
+        var cursor: Cursor
+        val pstmt = "SELECT m_id FROM member WHERE m_id=?;"
+        cursor = sqlitedb.rawQuery(pstmt, arrayOf(inputId))
+
+        val count = cursor.count
+
+        cursor.close()
+        sqlitedb.close()
         dbManager.close()
 
-        if (dummyIds.contains(inputId)) {
+        if (count > 0) {
             showAlertDialog("중복된 아이디", "다른 아이디를 선택해주세요")
         } else {
             showAlertDialog("사용 가능", "사용 가능한 아이디입니다")
