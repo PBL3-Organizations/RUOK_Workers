@@ -31,13 +31,10 @@ class UnknownDialog (place:String, time:String):
         _binding = FragmentUnknownDialogBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        // 제목
         binding.tvDialogPlace.text = "만난 장소 : "+place
+        binding.tvDialogTime.text = "만난 날짜 : "+ time
 
-        // 확인 버튼 텍스트
-        binding.tvDialogPlace.text = "만난 날짜 : "+ time
-
-        // 취소 버튼 클릭
+        // x 버튼 클릭
         binding.btnDialogBack.setOnClickListener {
             dismiss()
         }
