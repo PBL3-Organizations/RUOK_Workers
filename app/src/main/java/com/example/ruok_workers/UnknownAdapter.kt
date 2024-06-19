@@ -25,14 +25,14 @@ class UnknownAdapter(private val context: Context, private val items: Vector<Unk
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
+        holder.binding.tvMeetPhoto.setImageResource(item.meetPhoto)
         holder.binding.tvMeetLog.text = "만난 날짜 : " + item.meeetLog
         holder.binding.tvMeetPlace.text = "만난 장소 : " + item.meetPlace
         holder.binding.root.setOnClickListener {
             val place = item.meetPlace
-            val image = R.drawable.p1
+            val image = item.meetPhoto
             val time = item.meeetLog
-            var bundle = Bundle()
-            val dialog = UnknownDialog(place = place, time = time)
+            val dialog = UnknownDialog(image= image,place = place, time = time)
             dialog.isCancelable = false
             dialog.show((context as AppCompatActivity).supportFragmentManager, "UnknownDialog")
 
