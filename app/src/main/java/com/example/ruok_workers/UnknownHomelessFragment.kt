@@ -41,22 +41,24 @@ class UnknownHomelessFragment : Fragment() {
 
         // 임시 데이터셋 추가
         val sampleData = listOf(
-            UnknownCard("20241011", "서울역 5번 출구"),
-            UnknownCard("20240911", "서울역 4번 출구"),
-            UnknownCard("20240312", "서울역 5번 출구"),
-            UnknownCard("20240701", "서울역 13번 출구"),
-            UnknownCard("20240401", "서울역 1번 출구")
+            UnknownCard(R.drawable.homeless1,"20241011", "서울역 5번 출구"),
+            UnknownCard(R.drawable.homeless2,"20240911", "서울역 4번 출구"),
+            UnknownCard(R.drawable.p1,"20240312", "서울역 5번 출구"),
+            UnknownCard(R.drawable.p2,"20240701", "서울역 13번 출구"),
+            UnknownCard(R.drawable.p3,"20240401", "서울역 1번 출구")
         )
 
         // 리스트에 데이터 추가
         list.addAll(sampleData)
+        var meetPhoto:Int = R.drawable.aegis_logo
         var meetPlace:String = ""
         var meetLog:String=""
 
 
         //리사이클러뷰 아이템 추가
-        val item = UnknownCard(meetPlace, meetLog)
+        val item = UnknownCard(meetPhoto,meetPlace, meetLog)
         list.add(item)
+        meetPhoto = R.drawable.aegis_logo
         meetLog = ""
         meetPlace = ""
 
