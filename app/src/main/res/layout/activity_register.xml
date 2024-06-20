@@ -197,6 +197,13 @@
         app:layout_constraintStart_toEndOf="@+id/organizations"
         app:layout_constraintTop_toTopOf="@+id/organizations" />
 
+    <TextView
+        android:id="@+id/organization_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:ignore="MissingConstraints" />
+
     <Button
         android:id="@+id/check_id_duplicate"
         android:layout_width="120dp"

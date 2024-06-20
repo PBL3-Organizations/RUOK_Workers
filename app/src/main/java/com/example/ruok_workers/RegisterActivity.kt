@@ -1,5 +1,6 @@
 package com.example.ruok_workers
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
@@ -7,24 +8,30 @@ import android.content.Intent
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
-import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ListView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 class RegisterActivity : AppCompatActivity() {
-
-    private val organizations = listOf("Lover Center", "Vision Center", "Apple Center")
+    private lateinit var recyclerView: RecyclerView
 
     lateinit var dbManager: DBManager
     lateinit var sqlitedb: SQLiteDatabase
 
-    private val ID_list = ArrayList<String>()
+    lateinit var input_workerName: EditText
+    lateinit var input_workerBirth: EditText
+    lateinit var input_id: EditText
+    lateinit var input_password: EditText
+    lateinit var input_check_password: EditText
+    lateinit var input_organization: EditText
+    lateinit var organization_number: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,17 +43,25 @@ class RegisterActivity : AppCompatActivity() {
             view.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        input_workerName = findViewById(R.id.input_workerName)
+        input_workerBirth = findViewById(R.id.input_workerBirth)
+        input_id = findViewById(R.id.input_id)
+        input_password = findViewById(R.id.input_password)
+        input_check_password = findViewById(R.id.input_check_password)
+        input_organization = findViewById(R.id.input_organizations)
+        organization_number = findViewById(R.id.organization_num)
 
         val signUpButton = findViewById<Button>(R.id.signUp_button2)
         signUpButton.setOnClickListener {
-            val inputId = findViewById<EditText>(R.id.input_id).text.toString()
-            val inputPassword = findViewById<EditText>(R.id.input_password).text.toString()
-            val inputCheckPassword = findViewById<EditText>(R.id.input_check_password).text.toString()
-            val inputName = findViewById<EditText>(R.id.input_workerName).text.toString() // 사용자 이름 입력
-            val inputBirth = findViewById<EditText>(R.id.input_workerBirth).text.toString() // 사용자 생년월일 입력
-            val inputOrganization = findViewById<EditText>(R.id.input_organizations).text.toString() // 사용자 소속 입력
+            val inputId = input_id.text.toString()
+            val inputPassword = input_password.text.toString()
+            val inputCheckPassword = input_check_password.text.toString()
+            val inputName = input_workerName.text.toString() // 사용자 이름 입력
+            val inputBirth = input_workerBirth.text.toString() // 사용자 생년월일 입력
+            val inputOrganization = input_organization.text.toString() // 사용자 소속 입력
+            val organization_num = organization_number.text.toString()
 
-            //데이터베이스 연동: 기존 아이디 리스트 가져오기
+            //데이터베이스 연동: 아이디 중복검사
             dbManager = DBManager(this, "RUOKsample", null, 1)
             sqlitedb = dbManager.readableDatabase
             var cursor: Cursor
@@ -89,7 +104,6 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
 
-
         val findOrganizationsButton = findViewById<Button>(R.id.find_organizations)
         findOrganizationsButton.setOnClickListener {
             showSearchDialog()
@@ -101,31 +115,38 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("Range", "ResourceType")
     fun showSearchDialog() {
         val dialog = Dialog(this)
         dialog.setContentView(R.layout.dialog_search_organizations)
 
         val searchInput = dialog.findViewById<EditText>(R.id.search_input)
         val searchButton = dialog.findViewById<Button>(R.id.search_button)
-        val searchResults = dialog.findViewById<ListView>(R.id.search_results)
 
         searchButton.setOnClickListener {
             val query = searchInput.text.toString()
 
-            //데이터베이스 연동
+            //데이터베이스 연동: 복지시설 정보 가져오기
             dbManager = DBManager(this, "RUOKsample", null, 1)
+            sqlitedb = dbManager.readableDatabase
+            var cursor: Cursor
+            val pstmt = "SELECT * FROM welfare_facilities WHERE wf_name LIKE ?;";
+            cursor = sqlitedb.rawQuery(pstmt, arrayOf("%$query%"))
+
+            var orgList = ArrayList<OrganizationItem>()
+            while (cursor.moveToNext()) {
+                val wfNum = cursor.getInt(cursor.getColumnIndex("wf_num"))
+                val wfName = cursor.getString(cursor.getColumnIndex("wf_name")).toString()
+                val wfAddr  = cursor.getString(cursor.getColumnIndex("wf_addr")).toString()
+                orgList.add(OrganizationItem(wfNum, wfName, wfAddr))
+            }
+            cursor.close()
+            sqlitedb.close()
             dbManager.close()
 
-            val filteredOrganizations = organizations.filter { it.contains(query, ignoreCase = true) }
-            val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, filteredOrganizations)
-            searchResults.adapter = adapter
-        }
-
-        searchResults.setOnItemClickListener { _, _, position, _ ->
-            val selectedOrganization = searchResults.getItemAtPosition(position) as String
-            val inputOrganizations = findViewById<EditText>(R.id.input_organizations)
-            inputOrganizations.setText(selectedOrganization)
-            dialog.dismiss()
+            recyclerView = dialog.findViewById(R.id.rvOrg)
+            recyclerView.layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.VERTICAL, false)
+            recyclerView.adapter = OrganizationAdapter(applicationContext, orgList, dialog, input_organization, organization_number)
         }
 
         dialog.show()
