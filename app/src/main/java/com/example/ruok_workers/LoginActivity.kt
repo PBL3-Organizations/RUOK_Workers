@@ -1,9 +1,12 @@
 package com.example.ruok_workers
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
@@ -18,6 +21,7 @@ class LoginActivity : AppCompatActivity() {
     lateinit var dbManager: DBManager
     lateinit var sqlitedb: SQLiteDatabase
 
+    @SuppressLint("Range")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -50,34 +54,27 @@ class LoginActivity : AppCompatActivity() {
             val inputId = inputIdEditText.text.toString()
             val inputPassword = inputPasswordEditText.text.toString()
 
-            //데이터베이스 연동
+            //데이터베이스 연동: 로그인 검사
             dbManager = DBManager(this, "RUOKsample", null, 1)
-            dbManager.close()
+            sqlitedb = dbManager.readableDatabase
+            val sql = "SELECT m_num FROM member WHERE m_id=? AND m_pw=?;"
+            var cursor: Cursor
+            cursor = sqlitedb.rawQuery(sql, arrayOf(inputId, inputPassword))
 
-            val registeredId = sharedPreferences.getString("registered_id", null)
-            val registeredPassword = sharedPreferences.getString("registered_password", null)
-
-            if (inputId == registeredId && inputPassword == registeredPassword) {
-                // 로그인 저장 클릭된 경우 --> 로그인 창 갔을 때 사용자 정보 자동 불러오기
-                val editor = sharedPreferences.edit()
-                if (rememberMeCheckBox.isChecked) {
-                    editor.putString("saved_id", inputId)
-                    editor.putString("saved_password", inputPassword)
-                    editor.putBoolean("remember_me", true)
-                } else {
-                    editor.remove("saved_id")
-                    editor.remove("saved_password")
-                    editor.putBoolean("remember_me", false)
-                }
-                editor.apply()
-
+            if (cursor.count > 0) {
                 // 로그인 성공 시 DashboardActivity로 이동
                 val intent = Intent(this, DashboardActivity::class.java)
+                cursor.moveToNext()
+                val num = cursor.getInt(cursor.getColumnIndex("m_num"))
+                intent.putExtra("m_num", num)
                 startActivity(intent)
-                finish() // 로그인 화면을 종료하여 뒤로 가기 버튼을 눌렀을 때 다시 로그인 화면이 나타나지 않도록 함
+                finish()
             } else {
                 Toast.makeText(this, "아이디 또는 비밀번호가 잘못되었습니다", Toast.LENGTH_SHORT).show()
             }
+            cursor.close()
+            sqlitedb.close()
+            dbManager.close()
         }
     }
 }
