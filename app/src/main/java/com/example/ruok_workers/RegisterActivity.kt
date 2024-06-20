@@ -59,7 +59,7 @@ class RegisterActivity : AppCompatActivity() {
             val inputName = input_workerName.text.toString() // 사용자 이름 입력
             val inputBirth = input_workerBirth.text.toString() // 사용자 생년월일 입력
             val inputOrganization = input_organization.text.toString() // 사용자 소속 입력
-            val organization_num = organization_number.text.toString()
+            val organization_num = organization_number.text.toString().toInt()
 
             //데이터베이스 연동: 아이디 중복검사
             dbManager = DBManager(this, "RUOKsample", null, 1)
@@ -80,6 +80,8 @@ class RegisterActivity : AppCompatActivity() {
                 Toast.makeText(this, "비밀번호가 일치하지 않습니다", Toast.LENGTH_SHORT).show()
             } else if (count > 0) {
                 Toast.makeText(this, "중복된 아이디입니다", Toast.LENGTH_SHORT).show()
+            } else if (inputBirth.length != 8) {
+                Toast.makeText(this, "생년월일을 YYYYMMDD 형식으로 입력해주세요", Toast.LENGTH_SHORT).show()
             } else {
                 // 회원 정보를 SharedPreferences에 저장
                 val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
@@ -94,6 +96,11 @@ class RegisterActivity : AppCompatActivity() {
 
                 //데이터베이스 연동
                 dbManager = DBManager(this, "RUOKsample", null, 1)
+                sqlitedb = dbManager.writableDatabase
+                var sql = "INSERT INTO member (m_name, m_id, m_pw, m_birth, m_type, m_photo, wf_num) VALUES (?, ?, ?, ?, 1, 'default.jpeg', ?);"
+                sqlitedb.execSQL(sql, arrayOf(inputName, inputId, inputPassword, inputBirth, organization_num))
+
+                sqlitedb.close()
                 dbManager.close()
 
                 Toast.makeText(this, "회원가입 성공", Toast.LENGTH_SHORT).show()
