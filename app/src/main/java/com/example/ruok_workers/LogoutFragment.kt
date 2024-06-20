@@ -1,8 +1,11 @@
 package com.example.ruok_workers
 
-import android.content.Context
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +16,9 @@ class LogoutFragment : Fragment() {
 
     private lateinit var binding: FragmentLogoutBinding
 
+    lateinit var dbManager: DBManager
+    lateinit var sqlitedb: SQLiteDatabase
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -20,22 +26,28 @@ class LogoutFragment : Fragment() {
         }
     }
 
+    @SuppressLint("Range")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentLogoutBinding.inflate(inflater, container, false)
 
-        // Retrieve the logged-in user's ID from SharedPreferences
-        val sharedPreferences = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-        val userId = sharedPreferences.getString("registered_id", "User")
+        //데이터베이스 연동: 로그인한 회원 이름 불러오기
+        Log.i("경화", "a")
+        dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+        sqlitedb = dbManager.readableDatabase
+        var cursor: Cursor
+        val sql = "SELECT m_name FROM member WHERE m_num = " + arguments?.getInt("m_num").toString()
+        cursor = sqlitedb.rawQuery(sql, null)
+        cursor.moveToNext()
+        val userName = cursor.getString(cursor.getColumnIndex("m_name"))
 
         // Set the text with the user ID
-        binding.tvName.text = "$userId\n님 로그아웃\n하시겠습니까?"
+        binding.tvName.text = "$userName\n님 로그아웃\n하시겠습니까?"
 
         // btnYes 클릭시 LogoutFragment에서 MainActivity로 이동
         binding.btnYes.setOnClickListener {
-            clearSavedCredentials()
             val intent = Intent(requireContext(), MainActivity::class.java)
             startActivity(intent)
             activity?.finish() // Finish current activity to prevent going back
@@ -48,16 +60,6 @@ class LogoutFragment : Fragment() {
         }
 
         return binding.root
-    }
-
-    private fun clearSavedCredentials() {
-        val sharedPreferences = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-        with(sharedPreferences.edit()) {
-            remove("saved_id")
-            remove("saved_password")
-            putBoolean("remember_me", false)
-            apply()
-        }
     }
 
     companion object {

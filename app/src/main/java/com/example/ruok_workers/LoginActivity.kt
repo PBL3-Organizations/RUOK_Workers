@@ -1,12 +1,10 @@
 package com.example.ruok_workers
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
@@ -37,18 +35,18 @@ class LoginActivity : AppCompatActivity() {
         val inputIdEditText = findViewById<EditText>(R.id.input_id)
         val inputPasswordEditText = findViewById<EditText>(R.id.input_password)
 
-        val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-
-        // 로그인 이력 저장 체크되었을 경우
-        val savedId = sharedPreferences.getString("saved_id", null)
-        val savedPassword = sharedPreferences.getString("saved_password", null)
-        val rememberMeChecked = sharedPreferences.getBoolean("remember_me", false)
-
-        if (rememberMeChecked) {
-            inputIdEditText.setText(savedId)
-            inputPasswordEditText.setText(savedPassword)
-            rememberMeCheckBox.isChecked = true
-        }
+//        val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+//
+//        // 로그인 이력 저장 체크되었을 경우
+//        val savedId = sharedPreferences.getString("saved_id", null)
+//        val savedPassword = sharedPreferences.getString("saved_password", null)
+//        val rememberMeChecked = sharedPreferences.getBoolean("remember_me", false)
+//
+//        if (rememberMeChecked) {
+//            inputIdEditText.setText(savedId)
+//            inputPasswordEditText.setText(savedPassword)
+//            rememberMeCheckBox.isChecked = true
+//        }
 
         loginButton.setOnClickListener {
             val inputId = inputIdEditText.text.toString()

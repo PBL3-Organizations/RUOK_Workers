@@ -3,7 +3,6 @@ package com.example.ruok_workers
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.Context
 import android.content.Intent
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
@@ -83,18 +82,7 @@ class RegisterActivity : AppCompatActivity() {
             } else if (inputBirth.length != 8) {
                 Toast.makeText(this, "생년월일을 YYYYMMDD 형식으로 입력해주세요", Toast.LENGTH_SHORT).show()
             } else {
-                // 회원 정보를 SharedPreferences에 저장
-                val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-                with(sharedPreferences.edit()) {
-                    putString("registered_id", inputId)
-                    putString("registered_password", inputPassword)
-                    putString("user_name", inputName) // 사용자 이름 저장
-                    putString("user_birth", inputBirth) // 사용자 생년월일 저장
-                    putString("user_organization", inputOrganization) // 사용자 소속 저장
-                    apply()
-                }
-
-                //데이터베이스 연동
+                //데이터베이스 연동: 회원정보 저장
                 dbManager = DBManager(this, "RUOKsample", null, 1)
                 sqlitedb = dbManager.writableDatabase
                 var sql = "INSERT INTO member (m_name, m_id, m_pw, m_birth, m_type, m_photo, wf_num) VALUES (?, ?, ?, ?, 1, 'default.jpeg', ?);"
