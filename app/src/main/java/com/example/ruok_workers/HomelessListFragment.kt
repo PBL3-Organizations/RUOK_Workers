@@ -36,40 +36,47 @@ class HomelessListFragment : Fragment() {
 
         //데이터베이스 연동
         dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
-        sqlitedb = dbManager.readableDatabase
 
         var list = ArrayList<FaviconItem>()
         var name: String
         var birth: String
 
         binding.searchButton2.setOnClickListener {
+
+            list.clear()
             val filter = binding.searchEditText2.text.toString().trim()
 
-            var query = "SELECT * FROM homeless h WHERE h_name LIKE '%$filter%';"
+            if (filter.isNotEmpty()) {
+                sqlitedb = dbManager.readableDatabase
+                var query = "SELECT * FROM homeless h WHERE h_name LIKE '%${filter}%';"
 
-            var cursor: Cursor
-            cursor = sqlitedb.rawQuery(query, arrayOf(filter))
-            while (cursor.moveToNext()){
+                var cursor: Cursor
+                cursor = sqlitedb.rawQuery(query, arrayOf())
+                while (cursor.moveToNext()){
 
-                name = cursor.getString(cursor.getColumnIndexOrThrow("h.h_name")).toString()
-                birth = cursor.getString(cursor.getColumnIndexOrThrow("h.h_birth")).toString()
+                    name = cursor.getString(cursor.getColumnIndexOrThrow("h.h_name")).toString()
+                    birth = cursor.getString(cursor.getColumnIndexOrThrow("h.h_birth")).toString()
 
-                var item = FaviconItem(name, birth)
+                    var item = FaviconItem(name, birth)
 
-                //list.clear()
-                list.add(item)
+                    list.add(item)
+                }
+                cursor.close()
+
+                binding!!.centerTextView2.visibility = View.VISIBLE
+                binding!!.recyclerView.visibility = View.VISIBLE
+
+                val layoutManager = LinearLayoutManager(context)
+                binding!!.recyclerView.layoutManager = layoutManager
+
+                adapter = HomelessListAdapter(requireContext(), list)
+                binding!!.recyclerView.adapter = adapter
+
+                sqlitedb.close()
             }
-            cursor.close()
-
-            binding!!.centerTextView2.visibility = View.VISIBLE
-            binding!!.recyclerView.visibility = View.VISIBLE
-
-            val layoutManager = LinearLayoutManager(context)
-            binding!!.recyclerView.layoutManager = layoutManager
-
-            adapter = HomelessListAdapter(requireContext(), list)
-            binding!!.recyclerView.adapter = adapter
         }
+
+        dbManager.close()
 
         //btnBeforeHomelessList 클릭시 HomelessListFragment에서 PhotoAddFragment로 이동
         binding.btnBeforeHomelessList.setOnClickListener{
@@ -94,9 +101,6 @@ class HomelessListFragment : Fragment() {
             val parentActivity = activity as DashboardActivity
             parentActivity.setFragment(ProfileAddFragment())
         }
-
-        sqlitedb.close()
-        dbManager.close()
 
         return binding!!.root
     }
