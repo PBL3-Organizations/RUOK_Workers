@@ -1,5 +1,6 @@
 package com.example.ruok_workers
 
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,6 +29,8 @@ class CheckPwFragment : Fragment() {
     lateinit var dbManager: DBManager
     lateinit var sqlitedb: SQLiteDatabase
 
+    lateinit var editTextPassword: EditText
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -40,20 +45,33 @@ class CheckPwFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_check_pw, container, false)
 
+        //로그인 정보 가져오기
+        val loginNum = arguments?.getInt("m_num")
+
         // pwModifyConfirm 버튼을 찾아 클릭 리스너를 설정합니다.
         val pwModifyConfirmButton = view.findViewById<Button>(R.id.pwModifyConfirm)
         pwModifyConfirmButton.setOnClickListener {
+            editTextPassword = view.findViewById(R.id.editTextPassword)
 
             //데이터베이스 연동
             dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
-            dbManager.close()
+            sqlitedb = dbManager.readableDatabase
+            var cursor: Cursor
+            val sql = "SELECT m_num FROM member WHERE m_num=? AND m_pw=?;"
+            cursor = sqlitedb.rawQuery(sql, arrayOf(loginNum.toString(), editTextPassword.text.toString()))
+            if (cursor.count > 0) {
+                // InfoRevisionFragment로 전환합니다.
+                val infoRevisionFragment = InfoRevisionFragment.newInstance("param1", "param2")
+                val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.rootLayout, infoRevisionFragment)
+                transaction.addToBackStack(null) // 뒤로 가기 버튼을 눌렀을 때 이전 프래그먼트로 돌아갈 수 있도록 스택에 추가합니다.
+                transaction.commit()
+            } else {
+                Toast.makeText(requireContext(), "비밀번호가 틀립니다.", Toast.LENGTH_SHORT).show()
+                editTextPassword.setText("")
+            }
 
-            // InfoRevisionFragment로 전환합니다.
-            val infoRevisionFragment = InfoRevisionFragment.newInstance("param1", "param2")
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.rootLayout, infoRevisionFragment)
-            transaction.addToBackStack(null) // 뒤로 가기 버튼을 눌렀을 때 이전 프래그먼트로 돌아갈 수 있도록 스택에 추가합니다.
-            transaction.commit()
+            dbManager.close()
         }
 
         return view
