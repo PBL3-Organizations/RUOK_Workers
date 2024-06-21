@@ -9,7 +9,7 @@
 
     <!-- Search bar layout -->
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/search_bar_layout"
+        android:id="@+id/search_bar_layout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
@@ -57,7 +57,7 @@
         app:layout_constraintBottom_toTopOf="@+id/recycler_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_bar_layout"
+        app:layout_constraintTop_toBottomOf="@+id/search_bar_layout2"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <!-- RecyclerView to display search results -->
@@ -115,7 +115,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_bar_layout"
+        app:layout_constraintTop_toBottomOf="@+id/search_bar_layout2"
         app:layout_constraintVertical_bias="0.0"
         app:strokeColor="#808080"
         app:strokeWidth="1dp" />
@@ -134,7 +134,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_bar_layout"
+        app:layout_constraintTop_toBottomOf="@+id/search_bar_layout2"
         app:layout_constraintVertical_bias="0.0"
         app:strokeColor="#808080"
         app:strokeWidth="1dp" />

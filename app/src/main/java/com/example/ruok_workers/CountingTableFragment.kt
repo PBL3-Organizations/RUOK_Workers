@@ -1,5 +1,7 @@
 package com.example.ruok_workers
 
+import android.app.DownloadManager.Query
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.text.InputType
@@ -10,12 +12,15 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ruok_workers.databinding.FragmentCountingAddBinding
 import com.example.ruok_workers.databinding.FragmentCountingTableBinding
+import java.util.Vector
 
 
 class CountingTableFragment : Fragment() {
     lateinit var binding: FragmentCountingTableBinding
+    lateinit var adapter: CountingTableAdapter
 
     lateinit var dbManager: DBManager
     lateinit var sqlitedb: SQLiteDatabase
@@ -35,7 +40,33 @@ class CountingTableFragment : Fragment() {
 
         //데이터베이스 연동
         dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
-        dbManager.close()
+        sqlitedb = dbManager.readableDatabase
+
+        var list = Vector<CountingTableItem>()
+        var place: String = ""
+        var sum: Int = 0
+        var women: Int = 0
+        var men: Int = 0
+
+        var query: String = ""
+
+        var cursor: Cursor
+        cursor = sqlitedb.rawQuery(query, arrayOf())
+
+        while (cursor.moveToNext()){
+
+            var item = CountingTableItem(place, sum, women, men)
+            list.add(item)
+
+        }
+
+
+        val layoutManager = LinearLayoutManager(context)
+        binding!!.rvCountingTable.layoutManager = layoutManager
+
+        adapter = CountingTableAdapter(requireContext(), list)
+        binding!!.rvCountingTable.adapter = adapter
+
 
         binding.btnSaveCountingTable.setOnClickListener {
             val parentActivity = activity as DashboardActivity
@@ -45,7 +76,7 @@ class CountingTableFragment : Fragment() {
             builder.setTitle("몇 차 카운팅 업무인가요?")
 
             // 숫자를 입력받기 위한 EditText 생성
-            val input = EditText(parentActivity)
+            var input = EditText(parentActivity)
             input.inputType = InputType.TYPE_CLASS_NUMBER
             input.hint = "0"
             builder.setView(input)
@@ -53,13 +84,13 @@ class CountingTableFragment : Fragment() {
             // 확인 버튼 설정
             builder.setPositiveButton("확인") { dialog, which ->
                 // 입력된 숫자 가져오기
-                val inputValue = input.text.toString().toInt()
+                var inputValue = input.text.toString().toInt()
 
                 // 프래그먼트로 숫자 값 전달 및 이동
-                val bundle = Bundle().apply {
+                var bundle = Bundle().apply {
                     putInt("counting_value", inputValue)
                 }
-                val countingListFragment = CountingListFragment().apply {
+                var countingListFragment = CountingListFragment().apply {
                     arguments = bundle
                 }
                 parentActivity.setFragment(CountingListFragment())
@@ -74,6 +105,10 @@ class CountingTableFragment : Fragment() {
             // AlertDialog 보여주기
             builder.show()
         }
+
+        cursor.close()
+        sqlitedb.close()
+        dbManager.close()
 
         return binding.root
     }

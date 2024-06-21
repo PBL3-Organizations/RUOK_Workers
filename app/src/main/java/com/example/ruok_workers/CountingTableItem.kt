@@ -1,8 +1,8 @@
 package com.example.ruok_workers
 
 data class CountingTableItem (
-    val place: String,
-    val people: Int,
-    val women: Int,
-    val men: Int
+    var place: String,
+    var women: Int,
+    var men: Int,
+    var sum: Int = women + men
 )

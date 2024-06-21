@@ -24,16 +24,12 @@ class CountingRevisionAdapter (private val context: Context, private val items: 
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int){
-        val item = items[position]
+        var item = items[position]
 
-        holder.binding.root.setOnClickListener{
-            countingRevisionFragment = CountingRevisionFragment()
-
-            var bundle = Bundle()
-
-            countingRevisionFragment.arguments = bundle
-            (context as AppCompatActivity).supportFragmentManager.beginTransaction().replace(R.id.rootLayout, countingRevisionFragment).commit()
-        }
+        holder.binding.tvPlaceCountingRevisionItems.text = item.place
+        holder.binding.tvWorkerCountingRevisionItems.text = "담당: " + item.worker
+        holder.binding.etMenCountingRevisionItems.setText(item.men.toString())
+        holder.binding.etWomenCountingRevisionItems.setText(item.women.toString())
 
     }
 
