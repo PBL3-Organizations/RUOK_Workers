@@ -46,7 +46,8 @@ class CheckPwFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_check_pw, container, false)
 
         //로그인 정보 가져오기
-        val loginNum = arguments?.getInt("m_num")
+        var loginNum = -1
+        loginNum = arguments?.getInt("m_num")!!
 
         // pwModifyConfirm 버튼을 찾아 클릭 리스너를 설정합니다.
         val pwModifyConfirmButton = view.findViewById<Button>(R.id.pwModifyConfirm)
@@ -62,6 +63,10 @@ class CheckPwFragment : Fragment() {
             if (cursor.count > 0) {
                 // InfoRevisionFragment로 전환합니다.
                 val infoRevisionFragment = InfoRevisionFragment.newInstance("param1", "param2")
+                val bundle = Bundle()
+                bundle.putInt("m_num", loginNum)
+                infoRevisionFragment.arguments = bundle
+
                 val transaction = requireActivity().supportFragmentManager.beginTransaction()
                 transaction.replace(R.id.rootLayout, infoRevisionFragment)
                 transaction.addToBackStack(null) // 뒤로 가기 버튼을 눌렀을 때 이전 프래그먼트로 돌아갈 수 있도록 스택에 추가합니다.
@@ -70,7 +75,8 @@ class CheckPwFragment : Fragment() {
                 Toast.makeText(requireContext(), "비밀번호가 틀립니다.", Toast.LENGTH_SHORT).show()
                 editTextPassword.setText("")
             }
-
+            cursor.close()
+            sqlitedb.close()
             dbManager.close()
         }
 

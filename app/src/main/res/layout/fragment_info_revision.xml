@@ -153,11 +153,12 @@
             android:layout_width="148dp"
             android:layout_height="49dp"
             android:layout_marginTop="-20dp"
-            android:hint="YYYY-MM-DD"
+            android:hint="YYYYMMDD"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.102"
             app:layout_constraintStart_toEndOf="@+id/worker_birth"
-            app:layout_constraintTop_toTopOf="@+id/worker_birth" />
+            app:layout_constraintTop_toTopOf="@+id/worker_birth"
+            android:inputType="numberDecimal"/>
 
         <Button
             android:id="@+id/modify_button"
@@ -209,6 +210,8 @@
 
         <EditText
             android:id="@+id/input_organizations"
+            android:clickable="false"
+            android:focusable="false"
             android:layout_width="wrap_content"
             android:layout_height="49dp"
             android:layout_marginStart="16dp"
@@ -219,6 +222,13 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/organizations"
             app:layout_constraintTop_toBottomOf="@+id/input_check_password" />
+
+        <TextView
+            android:id="@+id/organization_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:ignore="MissingConstraints" />
 
         <Button
             android:id="@+id/find_organizations"
