@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".UnknownDialog">
+    <Button
+        android:id="@+id/btnDialogBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="X"
+        android:textSize="20dp"
+        android:textColor="@color/md_theme_onBackground"
+        android:backgroundTint="#00FFFFFF"/>
+    <ImageView
+        android:layout_margin="10dp"
+        android:id="@+id/ivDialog"
+        android:layout_gravity="center"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        tools:ignore="MissingConstraints"
+        android:src="@drawable/aegis_logo"/>
+    <TextView
+        android:layout_margin="10dp"
+        android:id="@+id/tvDialogPlace"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="만난 장소 : "
+        android:textStyle="bold"
+        android:textSize="16dp"
+        android:gravity="center"/>
+    <TextView
+        android:gravity="center"
+        android:layout_margin="10dp"
+        android:id="@+id/tvDialogTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="만난 날짜 : "
+        android:textStyle="bold"
+        android:textSize="16dp"/>
+</LinearLayout>
