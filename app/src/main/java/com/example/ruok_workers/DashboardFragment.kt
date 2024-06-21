@@ -1,18 +1,14 @@
 package com.example.ruok_workers
 
 import BriefingBoardFragment
-import ProfileDetailFragment
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.replace
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ruok_workers.databinding.FragmentDashboardBinding
