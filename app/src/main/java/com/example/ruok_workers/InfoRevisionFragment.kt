@@ -244,10 +244,13 @@ class InfoRevisionFragment : Fragment() {
 
     // 회원 탈퇴 처리 함수
     private fun deleteUserAccount() {
-        val sharedPreferences = requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-        val editor: SharedPreferences.Editor = sharedPreferences.edit()
-        editor.clear() // 모든 데이터 삭제
-        editor.apply()
+        //데이터베이스 연동: 회원정보 삭제
+        dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+        sqlitedb = dbManager.writableDatabase
+        val sql = "DELETE FROM member WHERE m_num = ?;"
+        sqlitedb.execSQL(sql, arrayOf(loginNum))
+        sqlitedb.close()
+        dbManager.close()
 
         // 로그인 화면으로 이동
         val intent = Intent(activity, LoginActivity::class.java)
