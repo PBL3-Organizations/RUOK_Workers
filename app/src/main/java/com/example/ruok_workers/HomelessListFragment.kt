@@ -1,17 +1,21 @@
 package com.example.ruok_workers
 
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ruok_workers.databinding.FragmentDashboardBinding
 import com.example.ruok_workers.databinding.FragmentHomelessListBinding
+import java.util.Vector
 
 
 class HomelessListFragment : Fragment() {
     lateinit var binding: FragmentHomelessListBinding
+    lateinit var adapter: HomelessListAdapter
 
     lateinit var dbManager: DBManager
     lateinit var sqlitedb: SQLiteDatabase
@@ -32,6 +36,46 @@ class HomelessListFragment : Fragment() {
 
         //데이터베이스 연동
         dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+
+        var list = ArrayList<FaviconItem>()
+        var name: String
+        var birth: String
+
+        binding.searchButton2.setOnClickListener {
+
+            list.clear()
+            val filter = binding.searchEditText2.text.toString().trim()
+
+            if (filter.isNotEmpty()) {
+                sqlitedb = dbManager.readableDatabase
+                var query = "SELECT * FROM homeless h WHERE h_name LIKE '%${filter}%';"
+
+                var cursor: Cursor
+                cursor = sqlitedb.rawQuery(query, arrayOf())
+                while (cursor.moveToNext()){
+
+                    name = cursor.getString(cursor.getColumnIndexOrThrow("h.h_name")).toString()
+                    birth = cursor.getString(cursor.getColumnIndexOrThrow("h.h_birth")).toString()
+
+                    var item = FaviconItem(name, birth)
+
+                    list.add(item)
+                }
+                cursor.close()
+
+                binding!!.centerTextView2.visibility = View.VISIBLE
+                binding!!.recyclerView.visibility = View.VISIBLE
+
+                val layoutManager = LinearLayoutManager(context)
+                binding!!.recyclerView.layoutManager = layoutManager
+
+                adapter = HomelessListAdapter(requireContext(), list)
+                binding!!.recyclerView.adapter = adapter
+
+                sqlitedb.close()
+            }
+        }
+
         dbManager.close()
 
         //btnBeforeHomelessList 클릭시 HomelessListFragment에서 PhotoAddFragment로 이동
@@ -58,7 +102,7 @@ class HomelessListFragment : Fragment() {
             parentActivity.setFragment(ProfileAddFragment())
         }
 
-        return binding.root
+        return binding!!.root
     }
 
     companion object {

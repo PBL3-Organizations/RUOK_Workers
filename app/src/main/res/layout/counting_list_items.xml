@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/cvCountingList"
+    android:id="@+id/cvCountingListItems"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="10dp"
     android:backgroundTint="#FFFFFF"
     android:elevation="20dp"
     app:cardCornerRadius="20dp">
@@ -13,10 +14,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="15dp" >
+        android:padding="15dp">
 
         <TextView
-            android:id="@+id/tvCountingList"
+            android:id="@+id/tvCountingListItems"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -25,7 +26,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tvPlaceCountingList"
+            android:id="@+id/tvCourseCountingListItems"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -37,7 +38,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tvPeopleCountingList"
+            android:id="@+id/tvNumCountingListItems"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"

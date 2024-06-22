@@ -4,10 +4,11 @@
     android:id="@+id/cvCountingRevision"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="10dp"
     android:backgroundTint="#FFFFFF"
     app:cardCornerRadius="30dp"
     app:strokeColor="#EE7012"
-    app:strokeWidth="2dp" >
+    app:strokeWidth="2dp">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout

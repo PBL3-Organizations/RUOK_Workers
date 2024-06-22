@@ -1,5 +1,6 @@
 package com.example.ruok_workers
 
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.ruok_workers.databinding.FragmentCountingRevisionBinding
+import java.util.Vector
 
 
 class CountingRevisionFragment : Fragment() {
@@ -30,12 +32,33 @@ class CountingRevisionFragment : Fragment() {
 
         //데이터베이스 연동
         dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
-        dbManager.close()
+        sqlitedb = dbManager.readableDatabase
+
+        var list = Vector<CountingRevisionItem>()
+        var place: String = ""
+        var worker: String = ""
+        var women: Int = 0
+        var men: Int = 0
+
+        var query: String = ""
+
+        var cursor: Cursor
+        cursor = sqlitedb.rawQuery(query, arrayOf())
+
+        while (cursor.moveToNext()){
+
+            var item = CountingRevisionItem(place, worker, women, men)
+            list.add(item)
+        }
 
         binding.btnCountingRevision.setOnClickListener {
             val parentActivity = activity as DashboardActivity
             parentActivity.setFragment(CountingDetailFragment())
         }
+
+        cursor.close()
+        sqlitedb.close()
+        dbManager.close()
 
         return binding.root
     }

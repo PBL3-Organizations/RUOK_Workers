@@ -1,9 +1,9 @@
 package com.example.ruok_workers
 
 data class CountingRevisionItem(
-    val place: String,
-    val worker: String,
-    val women: Int,
-    val men: Int
+    var place: String,
+    var worker: String,
+    var women: Int,
+    var men: Int
 )
 

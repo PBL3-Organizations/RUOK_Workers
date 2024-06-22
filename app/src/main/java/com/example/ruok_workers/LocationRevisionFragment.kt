@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
@@ -28,6 +29,7 @@ import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.util.FusedLocationSource
+import com.naver.maps.map.util.MarkerIcons
 import kotlinx.coroutines.launch
 import java.io.IOException
 import java.util.Locale
@@ -150,6 +152,8 @@ class LocationRevisionFragment : Fragment(), OnMapReadyCallback {
             marker.isIconPerspectiveEnabled = true //원근감 표시
             marker.width = Marker.SIZE_AUTO
             marker.height = Marker.SIZE_AUTO
+            marker.icon = MarkerIcons.BLACK
+            marker.iconTintColor = Color.RED
         }
 
         if (!cameraMoved) {  // 카메라가 아직 이동되지 않은 경우에만 이동
@@ -170,13 +174,14 @@ class LocationRevisionFragment : Fragment(), OnMapReadyCallback {
                     geocoder?.getFromLocation(location.latitude, location.longitude, 1)
                 if (!addresses.isNullOrEmpty()) {
                     val address = addresses[0].getAddressLine(0)
-                    val placeName = addresses[0].featureName
+
+                    // "대한민국" 제거
+                    val addressParts = address.split(" ")
+                    val filteredAddress = addressParts.drop(1).joinToString(" ")
 
                     // TextView에 동적으로 값 설정
-                    binding.tvAddressLocationRevision.text = address
-                    binding.tvPlaceLocationRevision.text = placeName
-                    binding.tvAddressPopLocationRevision.text = address
-                    binding.tvPlacePopLocationRevision.text = placeName
+                    binding.tvAddressLocationRevision.text = filteredAddress
+                    binding.tvAddressPopLocationRevision.text = filteredAddress
                 }
             } catch (e: IOException) {
                 Log.e(LocationTrackingFragment.TAG, "Geocoder failed", e)

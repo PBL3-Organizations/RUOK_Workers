@@ -26,14 +26,10 @@ class CountingDetailAdapter (private val context: Context, private val items: Ve
     override fun onBindViewHolder(holder: ViewHolder, position: Int){
         val item = items[position]
 
-        holder.binding.root.setOnClickListener{
-            countingDetailFragment = CountingDetailFragment()
-
-            var bundle = Bundle()
-
-            countingDetailFragment.arguments = bundle
-            (context as AppCompatActivity).supportFragmentManager.beginTransaction().replace(R.id.rootLayout, countingDetailFragment).commit()
-        }
+        holder.binding.tvPlaceCountingDetailItems.text = item.place
+        holder.binding.tvWorkerCountingDetailItems.text = "담당: " + item.worker
+        holder.binding.tvTotalCountingDetailItems.text = item.sum.toString() + "명"
+        holder.binding.tvSumCountingDetailItems.text = "남 " + item.men.toString() + " | 여 " + item.women.toString()
 
     }
 

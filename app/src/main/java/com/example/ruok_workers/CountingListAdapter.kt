@@ -11,7 +11,7 @@ import com.example.ruok_workers.databinding.CountingTableItemsBinding
 import java.util.Vector
 
 class CountingListAdapter (private val context: Context, private val items: Vector<CountingListItem>) : RecyclerView.Adapter<CountingListAdapter.ViewHolder>() {
-    lateinit var countingListFragment: CountingListFragment
+    lateinit var countingDetailFragment: CountingDetailFragment
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CountingListAdapter.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -26,13 +26,20 @@ class CountingListAdapter (private val context: Context, private val items: Vect
     override fun onBindViewHolder(holder: ViewHolder, position: Int){
         val item = items[position]
 
-        holder.binding.root.setOnClickListener{
-            countingListFragment = CountingListFragment()
+        holder.binding.tvCountingListItems.text = item.title
+        holder.binding.tvCourseCountingListItems.text = item.course
+        holder.binding.tvNumCountingListItems.text = "총 인원: " + item.sum.toString() + "명"
+
+        holder.binding.cvCountingListItems.setOnClickListener{
+            countingDetailFragment = CountingDetailFragment()
 
             var bundle = Bundle()
+            bundle.putString("CL_TITLE", item.title)
+            bundle.putString("CC_NAME", item.course)
+            bundle.putInt("CL_SUM", item.sum)
 
-            countingListFragment.arguments = bundle
-            (context as AppCompatActivity).supportFragmentManager.beginTransaction().replace(R.id.rootLayout, countingListFragment).commit()
+            countingDetailFragment.arguments = bundle
+            (context as AppCompatActivity).supportFragmentManager.beginTransaction().replace(R.id.rootLayout, countingDetailFragment).commit()
         }
     }
 

@@ -4,10 +4,11 @@
     android:id="@+id/cvCountingDetail"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="10dp"
     android:backgroundTint="#FFFFFF"
     app:cardCornerRadius="30dp"
     app:strokeColor="#EE7012"
-    app:strokeWidth="2dp" >
+    app:strokeWidth="2dp">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -60,7 +61,7 @@
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
-            android:id="@+id/tvPeopleCountingDetailItems"
+            android:id="@+id/tvSumCountingDetailItems"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="남 | 여"

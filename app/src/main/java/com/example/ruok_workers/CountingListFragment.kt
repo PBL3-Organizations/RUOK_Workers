@@ -1,17 +1,20 @@
 package com.example.ruok_workers
 
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.ruok_workers.databinding.FragmentCountingAddBinding
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ruok_workers.databinding.FragmentCountingListBinding
+import java.util.Vector
 
 
 class CountingListFragment : Fragment() {
     lateinit var binding: FragmentCountingListBinding
+    lateinit var adapter: CountingListAdapter
 
     lateinit var dbManager: DBManager
     lateinit var sqlitedb: SQLiteDatabase
@@ -31,9 +34,41 @@ class CountingListFragment : Fragment() {
 
         //데이터베이스 연동
         dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+        sqlitedb = dbManager.readableDatabase
+
+        var list = Vector<CountingListItem>()
+        var title: String
+        var course: String
+        var sum: Int
+
+        var query: String = ""
+        query += "SELECT cl.cl_title, cl.cl_sum, cc.cc_name "
+        query += "FROM counting_list cl JOIN counting_course cc "
+        query += "ON cl.cc_num = cc.cc_num ORDER BY cl.cl_title DESC"
+        var cursor: Cursor
+        cursor = sqlitedb.rawQuery(query, arrayOf())
+        while (cursor.moveToNext()){
+
+            title = cursor.getString(cursor.getColumnIndexOrThrow("cl.cl_title")).toString()
+            course = cursor.getString(cursor.getColumnIndexOrThrow("cc.cc_name")).toString()
+            sum = cursor.getInt(cursor.getColumnIndexOrThrow("cl.cl_sum"))
+
+            var item = CountingListItem(title, course, sum)
+            list.add(item)
+        }
+
+        cursor.close()
+
+        val layoutManager = LinearLayoutManager(context)
+        binding!!.rvCountingList.layoutManager = layoutManager
+
+        adapter = CountingListAdapter(requireContext(), list)
+        binding!!.rvCountingList.adapter = adapter
+
+        sqlitedb.close()
         dbManager.close()
 
-        return binding.root
+        return binding!!.root
     }
 
     companion object {

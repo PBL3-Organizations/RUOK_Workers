@@ -25,15 +25,10 @@ class CountingTableAdapter(private val context: Context, private val items:Vecto
     override fun onBindViewHolder(holder: ViewHolder, position: Int){
         val item = items[position]
 
-        holder.binding.root.setOnClickListener{
-            countingTableFragment = CountingTableFragment()
-
-            var bundle = Bundle()
-
-            countingTableFragment.arguments = bundle
-            (context as AppCompatActivity).supportFragmentManager.beginTransaction().replace(R.id.rootLayout, countingTableFragment).commit()
-        }
-
+        holder.binding.tvPlaceCountingTable.text = item.place
+        holder.binding.tvSumCountingTable.text = "인원: " + item.sum.toString() + "명"
+        holder.binding.etCountingTableWomen.setText(item.women.toString())
+        holder.binding.etCountingTableMen.setText(item.men.toString())
     }
 
     inner class ViewHolder(var binding: CountingTableItemsBinding) : RecyclerView.ViewHolder(binding.root)
