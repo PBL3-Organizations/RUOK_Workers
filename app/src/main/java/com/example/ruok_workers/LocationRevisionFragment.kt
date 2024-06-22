@@ -174,13 +174,14 @@ class LocationRevisionFragment : Fragment(), OnMapReadyCallback {
                     geocoder?.getFromLocation(location.latitude, location.longitude, 1)
                 if (!addresses.isNullOrEmpty()) {
                     val address = addresses[0].getAddressLine(0)
-                    val placeName = addresses[0].featureName
+
+                    // "대한민국" 제거
+                    val addressParts = address.split(" ")
+                    val filteredAddress = addressParts.drop(1).joinToString(" ")
 
                     // TextView에 동적으로 값 설정
-                    binding.tvAddressLocationRevision.text = address
-                    binding.tvPlaceLocationRevision.text = placeName
-                    binding.tvAddressPopLocationRevision.text = address
-                    binding.tvPlacePopLocationRevision.text = placeName
+                    binding.tvAddressLocationRevision.text = filteredAddress
+                    binding.tvAddressPopLocationRevision.text = filteredAddress
                 }
             } catch (e: IOException) {
                 Log.e(LocationTrackingFragment.TAG, "Geocoder failed", e)

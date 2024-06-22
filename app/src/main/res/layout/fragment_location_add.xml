@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="top"
-        android:layout_marginBottom="200dp"
+        android:layout_marginBottom="180dp"
         android:gravity="top"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintBottom_toTopOf="@id/btnSetLocationAdd"
@@ -25,30 +25,20 @@
     <LinearLayout
         android:id="@+id/llPopLocationAdd"
         android:layout_width="match_parent"
-        android:layout_height="110dp"
+        android:layout_height="100dp"
         android:background="#FBA700"
         android:orientation="vertical"
         android:paddingTop="10dp"
-        android:visibility="gone" >
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/tvMeetingLocationAdd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="15dp"
             android:text="만난 위치"
             android:textAlignment="center"
             android:textColor="#FFFFFF" />
-
-        <TextView
-            android:id="@+id/tvPlacePopLocationAdd"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="장소명"
-            android:textAlignment="center"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp"
-            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvAddressPopLocationAdd"
@@ -57,7 +47,9 @@
             android:text="주소"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
-            android:textSize="16sp" />
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:breakStrategy="high_quality" />
     </LinearLayout>
 
     <LinearLayout
@@ -70,21 +62,14 @@
         android:padding="10dp">
 
         <TextView
-            android:id="@+id/tvPlaceLocationAdd"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:text="장소명"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <TextView
             android:id="@+id/tvAddressLocationAdd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="15dp"
             android:text="주소"
-            android:textSize="16sp" />
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:breakStrategy="high_quality" />
 
         <Button
             android:id="@+id/btnSetLocationAdd"
