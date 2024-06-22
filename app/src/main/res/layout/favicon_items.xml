@@ -8,30 +8,41 @@
     android:backgroundTint="#FFFFFF"
     android:elevation="20dp"
     android:padding="20dp"
-    app:cardCornerRadius="20dp">
-
-
+    app:cardCornerRadius="20dp"
+    android:orientation="horizontal">
     <LinearLayout
-        android:id="@+id/LinearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        android:background="#FFFFFFFF"
-        android:orientation="vertical"
-        android:paddingStart="20dp">
-
-        <TextView
-            android:id="@+id/tvfName"
-            android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:padding="10dp">
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="이름: "
-            android:textStyle="bold" />
+            android:paddingStart="10dp">
+            <ImageView
+                android:id="@+id/ivProfile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/dflt"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingStart="20dp">
+            <TextView
+                android:id="@+id/tvfName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="이름: "
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tvfBirth"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="생년월일: "
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tvfBirth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="생년월일: "
+                android:textStyle="bold" />
+        </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

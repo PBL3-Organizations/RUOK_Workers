@@ -1,8 +1,11 @@
 package com.example.ruok_workers
 
 import BriefingBoardFragment
+import android.annotation.SuppressLint
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +25,8 @@ class DashboardFragment : Fragment() {
 
     lateinit var dbManager: DBManager
     lateinit var sqlitedb: SQLiteDatabase
+
+    var loginNum: Int = -1
 
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
@@ -45,6 +50,7 @@ class DashboardFragment : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
 
+    @SuppressLint("Range")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -52,33 +58,31 @@ class DashboardFragment : Fragment() {
     ): View? {
         binding = FragmentDashboardBinding.inflate(inflater, container, false)
 
+        //기존 로그인 정보 가져오기
+        loginNum = arguments?.getInt("m_num")!!
+
         //데이터베이스 연동
         dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
-        dbManager.close()
+        sqlitedb = dbManager.readableDatabase
+        var cursor: Cursor
+        val sql = "SELECT h.h_num, h.h_name, h.h_birth, h.h_photo FROM homeless h JOIN bookmark b ON h.h_num = b.h_num WHERE b.m_num = ?;"
+        cursor = sqlitedb.rawQuery(sql, arrayOf(loginNum.toString()))
 
         val list = Vector<Dashboard>()
+        while(cursor.moveToNext()) {
+            var hNum: Int = cursor.getInt(cursor.getColumnIndex("h.h_num"))
+            var photoFilename: String = cursor.getString(cursor.getColumnIndex("h.h_photo"))
+            var hName:String = cursor.getString(cursor.getColumnIndex("h.h_name"))
+            var hBirth:String = cursor.getString(cursor.getColumnIndex("h.h_birth"))
 
-        // 임시 데이터셋 추가
-        val sampleData = listOf(
-            Dashboard("hyorim", "20021002"),
-            Dashboard("Alice", "19900101"),
-            Dashboard("Bob", "19850523"),
-            Dashboard("Charlie", "19921112"),
-            Dashboard("Diana", "19880704"),
-            Dashboard("Edward", "19950930")
-        )
+            var resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
+            val item = Dashboard(hNum, resId, hName, hBirth)
+            list.add(item)
+        }
 
-        // 리스트에 데이터 추가
-        list.addAll(sampleData)
-
-        var hName:String = ""
-        var hBirth:String = ""
-
-        //리사이클러뷰 아이템 추가
-        val item = Dashboard(hName, hBirth)
-        list.add(item)
-        hName = ""
-        hBirth = ""
+        cursor.close()
+        sqlitedb.close()
+        dbManager.close()
 
         val layoutManager = LinearLayoutManager(context)
         binding!!.recyclerViewProfile.layoutManager = layoutManager
