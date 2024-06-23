@@ -1,6 +1,7 @@
 package com.example.ruok_workers
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
@@ -35,18 +36,16 @@ class LoginActivity : AppCompatActivity() {
         val inputIdEditText = findViewById<EditText>(R.id.input_id)
         val inputPasswordEditText = findViewById<EditText>(R.id.input_password)
 
-//        val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-//
-//        // 로그인 이력 저장 체크되었을 경우
-//        val savedId = sharedPreferences.getString("saved_id", null)
-//        val savedPassword = sharedPreferences.getString("saved_password", null)
-//        val rememberMeChecked = sharedPreferences.getBoolean("remember_me", false)
-//
-//        if (rememberMeChecked) {
-//            inputIdEditText.setText(savedId)
-//            inputPasswordEditText.setText(savedPassword)
-//            rememberMeCheckBox.isChecked = true
-//        }
+        //자동 로그인 이력이 있는 경우
+        val auto = getSharedPreferences("autoLogin", Context.MODE_PRIVATE)
+        if(auto.getInt("saved_loginNum", -1) > 0) {
+            //DashboardActivity로 이동
+            val intent = Intent(this, DashboardActivity::class.java)
+            val loginNum = auto.getInt("saved_loginNum", -1)
+            intent.putExtra("m_num", loginNum)
+            startActivity(intent)
+            finish()
+        }
 
         loginButton.setOnClickListener {
             val inputId = inputIdEditText.text.toString()
@@ -58,12 +57,19 @@ class LoginActivity : AppCompatActivity() {
             val sql = "SELECT m_num FROM member WHERE m_id=? AND m_pw=?;"
             var cursor: Cursor
             cursor = sqlitedb.rawQuery(sql, arrayOf(inputId, inputPassword))
+            cursor.moveToNext()
+            val num = cursor.getInt(cursor.getColumnIndex("m_num"))
 
-            if (cursor.count > 0) {
+            if (cursor.count > 0) { //로그인 성공
+                // 로그인 이력 저장 체크되었을 경우
+                if (rememberMeCheckBox.isChecked) {
+                    val autoLoginEdit = auto.edit()
+                    autoLoginEdit.putInt("saved_loginNum", num)
+                    autoLoginEdit.commit()
+                }
+
                 // 로그인 성공 시 DashboardActivity로 이동
                 val intent = Intent(this, DashboardActivity::class.java)
-                cursor.moveToNext()
-                val num = cursor.getInt(cursor.getColumnIndex("m_num"))
                 intent.putExtra("m_num", num)
                 startActivity(intent)
                 finish()
