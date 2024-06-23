@@ -27,4 +27,14 @@ class DBManager(
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {}
+
+    inline fun SQLiteDatabase.transaction(action: SQLiteDatabase.() -> Unit) {
+        beginTransaction()
+        try {
+            action()
+            setTransactionSuccessful()
+        } finally {
+            endTransaction()
+        }
+    }
 }

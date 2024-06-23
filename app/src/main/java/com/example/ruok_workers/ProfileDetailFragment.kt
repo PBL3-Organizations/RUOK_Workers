@@ -1,4 +1,3 @@
-
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.database.sqlite.SQLiteDatabase
@@ -20,6 +19,7 @@ class ProfileDetailFragment : Fragment() {
     private lateinit var tvBirthdate: TextView
     private lateinit var tvPhoneNumber: TextView
     private lateinit var btnRemoveProfile: Button
+    private lateinit var btnGoToList: Button
 
     private lateinit var dbManager: DBManager
     private lateinit var sqlitedb: SQLiteDatabase
@@ -38,6 +38,7 @@ class ProfileDetailFragment : Fragment() {
         tvBirthdate = view.findViewById(R.id.tvBirthdate)
         tvPhoneNumber = view.findViewById(R.id.tvPhoneNumber)
         btnRemoveProfile = view.findViewById(R.id.btn_removeProfile)
+        btnGoToList = view.findViewById(R.id.btn_goTolist)
 
         // FaviconAdapter에서 전달받은 데이터
         val name = arguments?.getString("name") ?: ""
@@ -59,6 +60,17 @@ class ProfileDetailFragment : Fragment() {
         }
         cursor.close()
 
+        // '프로필 수정' 버튼 클릭 이벤트 처리
+        view.findViewById<Button>(R.id.btn_EditProfile).setOnClickListener {
+            val phoneNumber = tvPhoneNumber.text.toString()
+            navigateToProfileRevisionFragment(name, birth, phoneNumber)
+        }
+
+        // btnGoToList 버튼 클릭 리스너 설정
+        btnGoToList.setOnClickListener {
+            loadSearchFragment()
+        }
+
         // 프로필 삭제 버튼 클릭 리스너 설정
         btnRemoveProfile.setOnClickListener {
             showRemoveProfileDialog()
@@ -71,6 +83,21 @@ class ProfileDetailFragment : Fragment() {
         super.onDestroy()
         sqlitedb.close()
         dbManager.close()
+    }
+
+    private fun navigateToProfileRevisionFragment(name: String, birth: String, phone: String) {
+        // ProfileRevisionFragment로 이동
+        val fragment = ProfileRevisionFragment()
+        val args = Bundle()
+        args.putString("name", name)
+        args.putString("birth", birth)
+        args.putString("phone", phone)
+        fragment.arguments = args
+
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.rootLayout, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     private fun showRemoveProfileDialog() {

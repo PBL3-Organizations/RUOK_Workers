@@ -25,14 +25,14 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <TextView
+            <EditText
                 android:id="@+id/profile_revision_Name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_weight="1"
-                android:text=""
-                android:textSize="18sp"
-                android:layout_marginStart="8dp" />
+                android:hint="이름을 입력하세요"
+                android:textSize="20sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -49,15 +49,14 @@
                 android:layout_marginTop="16dp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/profile_revison_Birth"
-                android:layout_marginTop="16dp"
+            <EditText
+                android:id="@+id/profile_revision_Birth"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_weight="1"
-                android:text=""
-                android:textSize="18sp"
-                android:layout_marginStart="8dp" />
+                android:hint="생년월일을 입력하세요"
+                android:textSize="20sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -74,21 +73,22 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <TextView
+            <EditText
                 android:id="@+id/profile_revision_PhoneNumber"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text=""
-                android:textSize="18sp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginStart="8dp" />
+                android:layout_weight="1"
+                android:hint="전화번호를 입력하세요 (숫자만 입력)"
+                android:inputType="phone"
+                android:textSize="20sp" />
         </LinearLayout>
 
         <ImageView
             android:id="@+id/imageView_profile_revison"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             android:layout_gravity="center"
             android:layout_marginTop="25dp"
             android:layout_marginBottom="25dp"
