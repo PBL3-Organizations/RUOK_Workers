@@ -53,17 +53,23 @@ class FaviconAdapter(private val context: Context, val itemList: ArrayList<Favic
 
         // 카드뷰를 클릭하면 ProfileDetailFragment로 이동
         holder.binding.root.setOnClickListener {
-            profileDetailFragment = ProfileDetailFragment()
+            val name = itemList[position].name
+            val birth = itemList[position].birth
 
-            var bundle = Bundle().apply {
-                putString("name", itemList[position].name)
-                putString("birth", itemList[position].birth)
+            // ProfileDetailFragment의 인스턴스 생성
+            val profileDetailFragment = ProfileDetailFragment()
+
+            // ProfileDetailFragment로 전달할 데이터 번들 생성
+            val bundle = Bundle().apply {
+                putString("name", name)
+                putString("birth", birth)
             }
-
             profileDetailFragment.arguments = bundle
 
+            // ProfileDetailFragment로 이동
             (context as AppCompatActivity).supportFragmentManager.beginTransaction()
                 .replace(R.id.rootLayout, profileDetailFragment)
+                .addToBackStack(null)
                 .commit()
         }
     }
