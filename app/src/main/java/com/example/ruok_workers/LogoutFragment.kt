@@ -1,7 +1,9 @@
 package com.example.ruok_workers
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
@@ -46,6 +48,12 @@ class LogoutFragment : Fragment() {
 
         // btnYes 클릭시 LogoutFragment에서 MainActivity로 이동
         binding.btnYes.setOnClickListener {
+            //자동 로그인 이력 지우기
+            val auto = this.activity?.getSharedPreferences("autoLogin", Context.MODE_PRIVATE)
+            val autoLoginEdit = auto?.edit()
+            autoLoginEdit?.putInt("saved_loginNum", -1)
+            autoLoginEdit?.commit()
+
             val intent = Intent(requireContext(), MainActivity::class.java)
             startActivity(intent)
             activity?.finish() // Finish current activity to prevent going back
