@@ -2,11 +2,12 @@ package com.example.ruok_workers
 
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
+import androidx.fragment.app.Fragment
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -38,19 +39,29 @@ class ProfileAddFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        val view =  inflater.inflate(R.layout.fragment_profile_add, container, false)
+        // 프래그먼트의 레이아웃을 인플레이트합니다.
+        val view = inflater.inflate(R.layout.fragment_profile_add, container, false)
 
-        //데이터베이스 연동
+        // 데이터베이스와 연결합니다.
         dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
-        dbManager.close()
+        sqlitedb = dbManager.writableDatabase
 
-        // 버튼을 찾습니다.
+        // 저장 버튼을 찾습니다.
         val saveButton = view.findViewById<Button>(R.id.save_button_in_add_profile)
 
-        // OnClickListener를 설정
+        // 저장 버튼 클릭 이벤트를 설정합니다.
         saveButton.setOnClickListener {
-            // SearchFragment로 이동
+            // 입력 필드에서 사용자 입력을 가져옵니다.
+            val name = view.findViewById<EditText>(R.id.name_input).text.toString()
+            val birth = view.findViewById<EditText>(R.id.birth_input_profile_add).text.toString()
+            val phone = view.findViewById<EditText>(R.id.phone_input).text.toString()
+
+            // SQL 쿼리를 생성하여 실행합니다.
+            val query = "INSERT INTO homeless (h_name, h_birth, h_phone, h_photo) " +
+                    "VALUES ('$name', '$birth', '$phone', 'default.jpeg')"
+            sqlitedb.execSQL(query)
+
+            // 저장 후에는 검색 화면(SearchFragment)으로 이동합니다.
             val fragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.rootLayout, SearchFragment())
             fragmentTransaction.addToBackStack(null)
@@ -59,6 +70,7 @@ class ProfileAddFragment : Fragment() {
 
         return view
     }
+
 
     companion object {
         /**
