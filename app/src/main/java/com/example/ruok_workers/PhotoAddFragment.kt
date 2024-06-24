@@ -2,12 +2,15 @@ package com.example.ruok_workers
 
 import android.Manifest
 import android.app.Activity.RESULT_OK
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +20,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.ruok_workers.databinding.FragmentPhotoAddBinding
+import java.io.InputStream
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 
 class PhotoAddFragment : Fragment() {
@@ -25,25 +32,31 @@ class PhotoAddFragment : Fragment() {
     private var launcher = registerForActivityResult(ActivityResultContracts.GetContent()){
             it -> setGallery(uri = it)
     }
+
+    var loginNum = -1
+    lateinit var item: ConsultationItem
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentPhotoAddBinding.inflate(inflater, container, false)
 
+        //로그인 정보 가져오기
+        loginNum = arguments?.getInt("m_num", 0)!!
+
         val onRecording = arguments?.getInt("onRecording", 0)!!
         val bundle = Bundle()
         bundle.putInt("onRecording", onRecording)
 
-        val item = arguments?.getParcelable<ConsultationItem>("consultation_item")!!
+        item = arguments?.getParcelable<ConsultationItem>("consultation_item")!!
         val hasConsultation = arguments?.getInt("hasConsultation")!!
-        bundle.putInt("hasConsultation", hasConsultation)
-        bundle.putParcelable("consultation_item", item)
 
         //btnPhotoAddBack클릭시 PhotoAddFragment에서 QuestionnaireFragment로 이동
         binding.btnPhotoAddBack.setOnClickListener {
             val DashboardActivity = activity as DashboardActivity
             val questionnaireFragment = QuestionnaireFragment()
+            bundle.putInt("hasConsultation", hasConsultation)
+            bundle.putParcelable("consultation_item", item)
             questionnaireFragment.arguments = bundle
             DashboardActivity.setFragment(questionnaireFragment)
         }
@@ -51,6 +64,8 @@ class PhotoAddFragment : Fragment() {
         binding.btnPhotoAddNext.setOnClickListener {
             val DashboardActivity = activity as DashboardActivity
             val homelessListFragment = HomelessListFragment()
+            bundle.putInt("hasConsultation", hasConsultation)
+            bundle.putParcelable("consultation_item", item)
             homelessListFragment.arguments = bundle
             DashboardActivity.setFragment(homelessListFragment)
         }
@@ -114,12 +129,42 @@ class PhotoAddFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK && requestCode == 1000){
             val imageBitmap = data?.extras?.get("data") as Bitmap
+
+            //사진 내부 저장소에 저장하기
+            val currentTime = System.currentTimeMillis()
+            val sdf = SimpleDateFormat("yyyyMMddHHmmssSSS", Locale.getDefault())
+            val filename = loginNum.toString() + "_" + sdf.format(Date(currentTime))
+            saveImageToInternalStorage(imageBitmap, filename)
+            item.filename = arrayOf(filename)
+
             binding.ivPhotoAdd.setImageBitmap(imageBitmap)
         }
     }
     //선택한 사진 ivPhotoAdd에 넣기
-    fun setGallery(uri: Uri?){
+    fun setGallery(uri: Uri?) {
         binding.ivPhotoAdd.setImageURI(uri)
+        val inputStream: InputStream? = requireContext().contentResolver.openInputStream(uri!!)
+        val imageBitmap = BitmapFactory.decodeStream(inputStream) ?: throw IllegalArgumentException(
+            "이미지를 로드할 수 없습니다."
+        )
+
+        //사진 내부 저장소에 저장하기
+        val currentTime = System.currentTimeMillis()
+        val sdf = SimpleDateFormat("yyyyMMddHHmmssSSS", Locale.getDefault())
+        val filename = loginNum.toString() + "_" + sdf.format(Date(currentTime))
+        saveImageToInternalStorage(imageBitmap, filename)
+        item.filename = arrayOf(filename)
+    }
+
+    //사진 내부 저장소에 저장하기
+    private fun saveImageToInternalStorage(bitmap: Bitmap, filename: String) {
+        try {
+            val fileOutputStream = requireContext().openFileOutput(filename, Context.MODE_PRIVATE)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream)
+            fileOutputStream.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
 }
