@@ -14,7 +14,7 @@ data class ConsultationItem(
     val addr: String, //주소
     val latitude: Double, //위도
     val logitude: Double, //경도
-    val filename: Array<String>//사진파일명
+    var filename: Array<String>//사진파일명
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
