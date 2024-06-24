@@ -211,6 +211,11 @@ class LocationAddFragment : Fragment(), OnMapReadyCallback {
         val bundle = Bundle()
         bundle.putInt("onRecording", onRecording)
 
+        val item = arguments?.getParcelable<ConsultationItem>("consultation_item")!!
+        val hasConsultation = arguments?.getInt("hasConsultation")!!
+        bundle.putInt("hasConsultation", hasConsultation)
+        bundle.putParcelable("consultation_item", item)
+
         //btnBeforeLocationAdd 클릭시 LocationAddFragment에서 HomelessListFragment로 이동
         binding.btnBeforeLocationAdd.setOnClickListener{
             val parentActivity = activity as DashboardActivity
