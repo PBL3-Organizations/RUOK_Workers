@@ -33,6 +33,7 @@ class ListAdapter(private val context: Context, private val items: Vector<ListCa
             DetailsFragment = DetailsFragment()
 
             var bundle = Bundle()
+            bundle.putInt("c_num", item.consultationNum)
 
             DetailsFragment.arguments = bundle
             (context as AppCompatActivity).supportFragmentManager.beginTransaction().replace(R.id.rootLayout, DetailsFragment).commit()
