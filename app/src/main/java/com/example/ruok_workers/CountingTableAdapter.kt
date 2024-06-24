@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.ruok_workers.databinding.CountingTableItemsBinding
 import java.util.Vector
 
-class CountingTableAdapter(private val context: Context, private val items:Vector<CountingTableItem>) : RecyclerView.Adapter<CountingTableAdapter.ViewHolder>() {
+class CountingTableAdapter(private val context: Context, val items:Vector<CountingTableItem>) : RecyclerView.Adapter<CountingTableAdapter.ViewHolder>() {
     lateinit var countingTableFragment: CountingTableFragment
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CountingTableAdapter.ViewHolder {

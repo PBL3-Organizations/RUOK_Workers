@@ -19,6 +19,8 @@ class CountingListFragment : Fragment() {
     lateinit var dbManager: DBManager
     lateinit var sqlitedb: SQLiteDatabase
 
+    var loginNum: Int = -1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -32,6 +34,9 @@ class CountingListFragment : Fragment() {
     ): View? {
         binding = FragmentCountingListBinding.inflate(inflater, container, false)
 
+        //기존 로그인 정보 가져오기
+        loginNum = arguments?.getInt("m_num")!!
+
         //데이터베이스 연동
         dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
         sqlitedb = dbManager.readableDatabase
@@ -41,6 +46,8 @@ class CountingListFragment : Fragment() {
         var course: String
         var sum: Int
 
+        list.clear()
+
         var query: String = ""
         query += "SELECT cl.cl_title, cl.cl_sum, cc.cc_name "
         query += "FROM counting_list cl JOIN counting_course cc "
@@ -49,9 +56,9 @@ class CountingListFragment : Fragment() {
         cursor = sqlitedb.rawQuery(query, arrayOf())
         while (cursor.moveToNext()){
 
-            title = cursor.getString(cursor.getColumnIndexOrThrow("cl.cl_title")).toString()
-            course = cursor.getString(cursor.getColumnIndexOrThrow("cc.cc_name")).toString()
-            sum = cursor.getInt(cursor.getColumnIndexOrThrow("cl.cl_sum"))
+            title = cursor.getString(cursor.getColumnIndexOrThrow("cl_title")).toString()
+            course = cursor.getString(cursor.getColumnIndexOrThrow("cc_name")).toString()
+            sum = cursor.getInt(cursor.getColumnIndexOrThrow("cl_sum"))
 
             var item = CountingListItem(title, course, sum)
             list.add(item)
