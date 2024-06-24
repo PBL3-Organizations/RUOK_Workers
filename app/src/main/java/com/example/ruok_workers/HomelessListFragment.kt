@@ -21,6 +21,13 @@ class HomelessListFragment : Fragment() {
     lateinit var sqlitedb: SQLiteDatabase
 
     var loginNum: Int = -1
+    lateinit var item: ConsultationItem
+
+    var list = ArrayList<FaviconItem>()
+    var name: String = ""
+    var birth: String = ""
+    var bookmark: Int = -1
+    var num: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,12 +49,6 @@ class HomelessListFragment : Fragment() {
 
         //데이터베이스 연동
         dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
-
-        var list = ArrayList<FaviconItem>()
-        var name: String
-        var birth: String
-        var bookmark: Int
-        var num: Int
 
         binding.searchButton2.setOnClickListener {
 
@@ -117,7 +118,7 @@ class HomelessListFragment : Fragment() {
         val bundle = Bundle()
         bundle.putInt("onRecording", onRecording)
 
-        val item = arguments?.getParcelable<ConsultationItem>("consultation_item")!!
+        item = arguments?.getParcelable<ConsultationItem>("consultation_item")!!
         val hasConsultation = arguments?.getInt("hasConsultation")!!
         bundle.putInt("hasConsultation", hasConsultation)
         bundle.putParcelable("consultation_item", item)
@@ -126,22 +127,26 @@ class HomelessListFragment : Fragment() {
         binding.btnBeforeHomelessList.setOnClickListener{
             val parentActivity = activity as DashboardActivity
             val photoAddFragment = PhotoAddFragment()
+            bundle.putInt("hasConsultation", hasConsultation)
+            bundle.putParcelable("consultation_item", item)
             photoAddFragment.arguments = bundle
             parentActivity.setFragment(photoAddFragment)
         }
 
         //btnNextHomelessList 클릭시 HomelessListFragment에서 LocationAddFragment로 이동
         binding.btnNextHomelessList.setOnClickListener{
+            item.h_num = num
             val parentActivity = activity as DashboardActivity
             val locationAddFragment = LocationAddFragment()
+            bundle.putInt("hasConsultation", hasConsultation)
+            bundle.putParcelable("consultation_item", item)
             locationAddFragment.arguments = bundle
             parentActivity.setFragment(locationAddFragment)
         }
 
-        //btnNoName 클릭시 HomelessListFragment에서 UnknownHomelessFragment로 이동
+        //btnNoName 클릭시 h_num을 0으로 설정
         binding.btnNoName.setOnClickListener{
-            val parentActivity = activity as DashboardActivity
-            parentActivity.setFragment(UnknownHomelessFragment())
+            item.h_num = 0
         }
 
         //btnNewHomeless 클릭시 HomelessListFragment에서 ProfileAddFragment로 이동
