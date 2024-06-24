@@ -57,5 +57,10 @@ class BriefingDuringFragment : Fragment() {
 
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, briefingsDuring)
         listView.adapter = adapter
+        //listView선택시 BriefingDetailFragment로 이동
+        listView.setOnItemClickListener { parent, view, position, id ->
+            val parentActivity = activity as DashboardActivity
+            parentActivity.setFragment(BriefingDetailFragment())
+        }
     }
 }
