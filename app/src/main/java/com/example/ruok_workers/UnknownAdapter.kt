@@ -28,6 +28,8 @@ class UnknownAdapter(private val context: Context, private val items: Vector<Unk
         holder.binding.tvMeetPhoto.setImageResource(item.meetPhoto)
         holder.binding.tvMeetLog.text = "만난 날짜 : " + item.meeetLog
         holder.binding.tvMeetPlace.text = "만난 장소 : " + item.meetPlace
+
+        //카드뷰 클릭시 이미지 다이얼그램 보이기
         holder.binding.root.setOnClickListener {
             val place = item.meetPlace
             val image = item.meetPhoto
