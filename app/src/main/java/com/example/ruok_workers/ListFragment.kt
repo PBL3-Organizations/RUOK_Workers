@@ -1,7 +1,9 @@
 package com.example.ruok_workers
 
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,8 +18,6 @@ import java.util.Vector
 class ListFragment : Fragment() {
     lateinit var binding: FragmentListBinding
     lateinit var adapter: ListAdapter
-
-    private lateinit var listRecyclerView: RecyclerView
 
     lateinit var dbManager: DBManager
     lateinit var sqlitedb: SQLiteDatabase
@@ -38,33 +38,26 @@ class ListFragment : Fragment() {
 
         //데이터베이스 연동
         dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+        sqlitedb = dbManager.readableDatabase
+        var cursor: Cursor
+        val sql = "SELECT c.c_num, c.c_time, c.c_unusual, l.l_addr, h.h_name FROM consultation c JOIN location l ON c.c_num = l.c_num JOIN homeless h ON c.h_num = h.h_num ORDER BY c.c_time DESC;"
+        cursor = sqlitedb.rawQuery(sql, arrayOf())
+        while(cursor.moveToNext()) {
+            // 리스트에 데이터 추가
+            var consultationNum: Int = cursor.getInt(cursor.getColumnIndexOrThrow("c.c_num"))
+            var homelessName:String = cursor.getString(cursor.getColumnIndexOrThrow("h.h_name"))
+            var homelessUnusual:String = cursor.getString(cursor.getColumnIndexOrThrow("c.c_unusual"))
+            var homelessPlace:String = cursor.getString(cursor.getColumnIndexOrThrow("l.l_addr"))
+            var homelessLog:String = cursor.getString(cursor.getColumnIndexOrThrow("c.c_time"))
+
+            //리사이클러뷰 아이템 추가
+            val item = ListCard(consultationNum, homelessName, homelessUnusual, homelessLog, homelessPlace)
+            list.add(item)
+        }
+
+        cursor.close()
+        sqlitedb.close()
         dbManager.close()
-
-        // 임시 데이터셋 추가
-        val sampleData = listOf(
-            ListCard("김알유","없음","20241011", "서울역 5번 출구"),
-            ListCard("박아무개","무릎 아픔","20240911", "서울역 5번 출구"),
-            ListCard("김모씨","치과치료 필요","20240312", "서울역 5번 출구"),
-            ListCard("정모씨","없음","20240701", "서울역 5번 출구"),
-            ListCard("한모씨","없음","20240401", "서울역 5번 출구")
-        )
-
-        // 리스트에 데이터 추가
-        list.addAll(sampleData)
-        var homelessName:String = ""
-        var homelessUnusual:String = ""
-        var homelessPlace:String=""
-        var homelessLog:String=""
-
-
-        //리사이클러뷰 아이템 추가
-        val item = ListCard(homelessName, homelessUnusual, homelessPlace, homelessLog)
-        list.add(item)
-        homelessName = ""
-        homelessUnusual = ""
-        homelessPlace = ""
-        homelessLog = ""
-
 
         val layoutManager = LinearLayoutManager(context)
         binding!!.listRecyclerView.layoutManager = layoutManager
