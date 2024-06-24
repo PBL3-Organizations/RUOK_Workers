@@ -2,7 +2,6 @@ package com.example.ruok_workers
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.ContentValues.TAG
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Address
@@ -18,7 +17,6 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
-import com.example.ruok_workers.databinding.FragmentDashboardBinding
 import com.example.ruok_workers.databinding.FragmentLocationAddBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -31,7 +29,6 @@ import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.util.FusedLocationSource
 import com.naver.maps.map.util.MarkerIcons
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.IOException
 import java.util.Locale
@@ -210,16 +207,25 @@ class LocationAddFragment : Fragment(), OnMapReadyCallback {
             binding.llPopLocationAdd.visibility = View.VISIBLE
         }
 
+        val onRecording = arguments?.getInt("onRecording", 0)!!
+        val bundle = Bundle()
+        bundle.putInt("onRecording", onRecording)
+
         //btnBeforeLocationAdd 클릭시 LocationAddFragment에서 HomelessListFragment로 이동
         binding.btnBeforeLocationAdd.setOnClickListener{
             val parentActivity = activity as DashboardActivity
-            parentActivity.setFragment(HomelessListFragment())
+            val homelessListFragment = HomelessListFragment()
+            homelessListFragment.arguments = bundle
+            parentActivity.setFragment(homelessListFragment)
         }
 
         //btnCompleteLocationAdd 클릭시 LocationAddFragment에서 LocationTrackingFragment로 이동
         binding.btnCompleteLocationAdd.setOnClickListener{
             val parentActivity = activity as DashboardActivity
-            parentActivity.setFragment(LocationTrackingFragment.newInstance(LocationTrackingFragment.State.OTHER))
+            val locationTrackingFragment = LocationTrackingFragment()
+            locationTrackingFragment.arguments = bundle
+            //parentActivity.setFragment(LocationTrackingFragment.newInstance(LocationTrackingFragment.State.OTHER))
+            parentActivity.setFragment(locationTrackingFragment)
             Toast.makeText(context, "상담내역 저장!", Toast.LENGTH_SHORT).show()
         }
 

@@ -127,7 +127,7 @@
             android:layout_margin="5dp"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:text="입력"
+            android:text="다음"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>

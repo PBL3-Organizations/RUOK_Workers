@@ -8,9 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.ruok_workers.databinding.FragmentDashboardBinding
 import com.example.ruok_workers.databinding.FragmentHomelessListBinding
-import java.util.Vector
 
 
 class HomelessListFragment : Fragment() {
@@ -78,16 +76,24 @@ class HomelessListFragment : Fragment() {
 
         dbManager.close()
 
+        val onRecording = arguments?.getInt("onRecording", 0)!!
+        val bundle = Bundle()
+        bundle.putInt("onRecording", onRecording)
+
         //btnBeforeHomelessList 클릭시 HomelessListFragment에서 PhotoAddFragment로 이동
         binding.btnBeforeHomelessList.setOnClickListener{
             val parentActivity = activity as DashboardActivity
-            parentActivity.setFragment(PhotoAddFragment())
+            val photoAddFragment = PhotoAddFragment()
+            photoAddFragment.arguments = bundle
+            parentActivity.setFragment(photoAddFragment)
         }
 
         //btnNextHomelessList 클릭시 HomelessListFragment에서 LocationAddFragment로 이동
         binding.btnNextHomelessList.setOnClickListener{
             val parentActivity = activity as DashboardActivity
-            parentActivity.setFragment(LocationAddFragment())
+            val locationAddFragment = LocationAddFragment()
+            locationAddFragment.arguments = bundle
+            parentActivity.setFragment(locationAddFragment)
         }
 
         //btnNoName 클릭시 HomelessListFragment에서 ProfileAddFragment로 이동
