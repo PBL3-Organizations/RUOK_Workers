@@ -1,15 +1,15 @@
+package com.example.ruok_workers
+
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import androidx.core.database.sqlite.transaction
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.ruok_workers.DBManager
-import com.example.ruok_workers.R
-import com.example.ruok_workers.SearchFragment
 
 class ProfileRevisionFragment : Fragment() {
 
@@ -19,8 +19,6 @@ class ProfileRevisionFragment : Fragment() {
 
     lateinit var dbManager: DBManager
     lateinit var sqlitedb: SQLiteDatabase
-
-    private var homelessId: Int = -1 // 노숙인 번호
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,35 +45,53 @@ class ProfileRevisionFragment : Fragment() {
         dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
         sqlitedb = dbManager.writableDatabase
 
-        // 노숙인 번호 가져오기
-        homelessId = arguments?.getInt("homelessId", -1) ?: -1
-
         // '수정하기' 버튼 클릭 시 이벤트 처리
         view.findViewById<Button>(R.id.profile_revieion_ok).setOnClickListener {
-            updateProfile()
+            updateProfile(name, birth, phoneNumber)
         }
 
         return view
     }
 
-    private fun updateProfile() {
+    private fun updateProfile(name: String, birth: String, phoneNumber: String) {
         // 수정된 데이터 가져오기
         val newName = etName.text.toString()
         val newBirth = etBirthdate.text.toString()
         val newPhoneNumber = etPhoneNumber.text.toString()
 
-        // 데이터베이스 업데이트 쿼리 실행
-        val updateQuery = "UPDATE homeless SET h_name=?, h_birth=?, h_phone=? WHERE h_num=?;"
-        sqlitedb.execSQL(updateQuery, arrayOf(newName, newBirth, newPhoneNumber, homelessId.toString()))
+        if (newName.isBlank() || newBirth.isBlank() || newPhoneNumber.isBlank()) {
+            Toast.makeText(context, "모든 필드를 입력하세요.", Toast.LENGTH_SHORT).show()
+            return
+        }
 
-        // 업데이트 완료 후 SearchFragment로 이동
-        // SearchFragment로 이동 시 업데이트가 반영된 후로 이동하도록 수정
-        sqlitedb.transaction {
-            // 트랜잭션 내부에서 이동 처리
+        try {
+            sqlitedb.beginTransaction()
+            try {
+                // 기존 데이터를 삭제합니다.
+                val deleteQuery = "DELETE FROM homeless WHERE h_name=? AND h_birth=? AND h_phone=?;"
+                sqlitedb.execSQL(deleteQuery, arrayOf(name, birth, phoneNumber))
+
+                // 새 데이터를 추가합니다.
+                val insertQuery =
+                    "INSERT INTO homeless (h_name, h_birth, h_phone, h_photo) VALUES (?, ?, ?, 'default.jpeg');"
+                sqlitedb.execSQL(insertQuery, arrayOf(newName, newBirth, newPhoneNumber))
+
+                sqlitedb.setTransactionSuccessful()
+            } finally {
+                sqlitedb.endTransaction()
+            }
+
+            // 업데이트 완료 후 SearchFragment로 이동
             val searchFragment = SearchFragment()
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.rootLayout, searchFragment)
                 .commit()
+
+            Toast.makeText(context, "프로필이 성공적으로 수정되었습니다.", Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Log.e("ProfileRevisionFragment", "Profile update failed", e)
+            Toast.makeText(context, "프로필 수정에 실패했습니다.", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -87,13 +103,12 @@ class ProfileRevisionFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(name: String, birth: String, phone: String, homelessId: Int) =
+        fun newInstance(name: String, birth: String, phone: String) =
             ProfileRevisionFragment().apply {
                 arguments = Bundle().apply {
                     putString("name", name)
                     putString("birth", birth)
                     putString("phone", phone)
-                    putInt("homelessId", homelessId)
                 }
             }
     }
