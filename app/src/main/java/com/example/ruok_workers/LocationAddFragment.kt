@@ -222,10 +222,16 @@ class LocationAddFragment : Fragment(), OnMapReadyCallback {
         //btnCompleteLocationAdd 클릭시 LocationAddFragment에서 LocationTrackingFragment로 이동
         binding.btnCompleteLocationAdd.setOnClickListener{
             val parentActivity = activity as DashboardActivity
-            val locationTrackingFragment = LocationTrackingFragment()
-            locationTrackingFragment.arguments = bundle
-            //parentActivity.setFragment(LocationTrackingFragment.newInstance(LocationTrackingFragment.State.OTHER))
-            parentActivity.setFragment(locationTrackingFragment)
+            if (onRecording == 1) {
+                val locationTrackingFragment = LocationTrackingFragment()
+                locationTrackingFragment.arguments = bundle
+                parentActivity.setFragment(locationTrackingFragment)
+            } else {
+                val listFragment = ListFragment()
+                listFragment.arguments = bundle
+                parentActivity.setFragment(listFragment)
+            }
+
             Toast.makeText(context, "상담내역 저장!", Toast.LENGTH_SHORT).show()
         }
 
