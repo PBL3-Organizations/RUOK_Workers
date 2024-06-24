@@ -13,7 +13,7 @@ data class ConsultationItem(
     var content: String, //상담내용
     var addr: String, //주소
     var latitude: Double, //위도
-    var logitude: Double, //경도
+    var longitude: Double, //경도
     var filename: Array<String>//사진파일명
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
@@ -40,7 +40,7 @@ data class ConsultationItem(
         parcel.writeString(content)
         parcel.writeString(addr)
         parcel.writeDouble(latitude)
-        parcel.writeDouble(logitude)
+        parcel.writeDouble(longitude)
         parcel.writeStringArray(filename)
     }
 

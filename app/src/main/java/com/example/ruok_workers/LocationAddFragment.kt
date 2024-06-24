@@ -52,6 +52,11 @@ class LocationAddFragment : Fragment(), OnMapReadyCallback {
     lateinit var dbManager: DBManager
     lateinit var sqlitedb: SQLiteDatabase
 
+    lateinit var item: ConsultationItem
+    var l_addr: String = ""
+    var l_lat: Double = 0.0
+    var l_lon: Double = 0.0
+
     //위치 정보 동의
     private val PERMISSIONS = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
@@ -184,6 +189,11 @@ class LocationAddFragment : Fragment(), OnMapReadyCallback {
                     val addressParts = address.split(" ")
                     val filteredAddress = addressParts.drop(1).joinToString(" ")
 
+                    //데이터 가져오기
+                    l_addr = filteredAddress
+                    l_lat = location.latitude
+                    l_lon = location.longitude
+
                     // TextView에 동적으로 값 설정
                     binding.tvAddressLocationAdd.text = filteredAddress
                     binding.tvAddressPopLocationAdd.text = filteredAddress
@@ -218,7 +228,11 @@ class LocationAddFragment : Fragment(), OnMapReadyCallback {
         val bundle = Bundle()
         bundle.putInt("onRecording", onRecording)
 
-        val item = arguments?.getParcelable<ConsultationItem>("consultation_item")!!
+        item = arguments?.getParcelable<ConsultationItem>("consultation_item")!!
+        item.addr = l_addr
+        item.latitude = l_lat
+        item.longitude = l_lon
+
         val hasConsultation = arguments?.getInt("hasConsultation")!!
         bundle.putInt("hasConsultation", hasConsultation)
         bundle.putParcelable("consultation_item", item)
@@ -258,6 +272,9 @@ class LocationAddFragment : Fragment(), OnMapReadyCallback {
                 sql = "INSERT INTO photo(p_filename, c_num) VALUES(?, ?);"
                 sqlitedb.execSQL(sql, arrayOf(item.filename.get(i), c_num.toString()))
             }
+
+            sql = "INSERT INTO location(c_num, l_addr, l_lat, l_lon)  VALUES(?, ?, ?, ?);"
+            sqlitedb.execSQL(sql, arrayOf(c_num.toString(), l_addr, l_lat, l_lon))
 
             cursor.close()
             sqlitedb.close()
