@@ -74,6 +74,18 @@ class DetailsFragment : Fragment() {
             AlertDialog.Builder(requireContext())
                 .setMessage("본 게시물을 삭제하시겠습니까?")
                 .setPositiveButton("삭제") { dialog, which ->
+                    //데이터베이스에서 해당 상담내역 삭제
+                    dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+                    sqlitedb = dbManager.writableDatabase
+                    var sql = "DELETE FROM consultation WHERE c_num = ?;"
+                    sqlitedb.execSQL(sql, arrayOf(c_num.toString()))
+                    sql = "DELETE FROM location WHERE c_num = ?;"
+                    sqlitedb.execSQL(sql, arrayOf(c_num.toString()))
+                    sql = "DELETE FROM photo WHERE c_num = ?;"
+                    sqlitedb.execSQL(sql, arrayOf(c_num.toString()))
+                    sqlitedb.close()
+                    dbManager.close()
+
                     val DashboardActivity = activity as DashboardActivity
                     DashboardActivity.setFragment(ListFragment())
                     Toast.makeText(requireContext(), "상담내역 삭제!", Toast.LENGTH_SHORT).show()
