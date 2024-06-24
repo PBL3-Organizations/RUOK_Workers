@@ -87,7 +87,7 @@ class UnknownHomelessFragment : Fragment() {
         }
 
         cursor.close()
-
+        //스피너 처리
         binding.spinnerUnknown.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
@@ -101,11 +101,12 @@ class UnknownHomelessFragment : Fragment() {
                 binding.serchviewUnknown.isIconified = true
             }
         }
-
+        //서치뷰로 필터링 구현
         binding.serchviewUnknown.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
                 when (binding.spinnerUnknown.selectedItemPosition){
-//                    0->{
+                    //쿼리 사용하여 필터링 구현
+//                    0->{ //만난날짜
 //                        var TimeQuery = unknownQuery + "AND c.c_time LIKE ?"
 //                        val cursor = sqlitedb.rawQuery(TimeQuery, arrayOf("$query(YYYY-mm-dd)%"))
 //                        if (cursor != null) {
@@ -123,7 +124,7 @@ class UnknownHomelessFragment : Fragment() {
 //                        }
 //                        cursor?.close()
 //                    }
-//                    1->{
+//                    1->{ //만난장소
 //
 //                        var PlaceQuery = unknownQuery + "AND l.l_addr LIKE ?"
 //                        val cursor = sqlitedb.rawQuery(PlaceQuery, arrayOf("%$query%"))
@@ -142,6 +143,7 @@ class UnknownHomelessFragment : Fragment() {
 //                        }
 //                        cursor?.close()
 //                    }
+                    //필터링 동작 확인을 위한 코드
                     0->{
                         Toast.makeText(activity,"0:검색결과가 없습니다.",Toast.LENGTH_SHORT).show()
                     }

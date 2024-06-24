@@ -13,7 +13,7 @@
         android:id="@+id/imageView"
         android:layout_width="289dp"
         android:layout_height="277dp"
-        android:src="@drawable/aegis_logo"
+        android:src="@drawable/app_logo"
         app:layout_constraintBottom_toTopOf="@+id/login_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
