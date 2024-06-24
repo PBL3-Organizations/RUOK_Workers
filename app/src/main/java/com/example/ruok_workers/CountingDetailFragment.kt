@@ -56,21 +56,67 @@ class CountingDetailFragment : Fragment() {
         var sum: Int
         val workersSet = mutableSetOf<String>()  // 중복 방지를 위한 Set 사용
 
+        // cc_num 가져오기
+        var ccQuery = "SELECT ca.cc_num FROM counting_area ca WHERE ca_name = ?"
+        var ccCursor: Cursor = sqlitedb.rawQuery(ccQuery, arrayOf(course))
+        var ccNum: Int? = null
+
+        if (ccCursor.moveToFirst()) {
+            ccNum = ccCursor.getInt(ccCursor.getColumnIndexOrThrow("cc_num"))
+        }
+        ccCursor.close()
+
+        // ca_num 가져오기
+        var caQuery = "SELECT ca.ca_num FROM counting_area ca WHERE ca_name = ?"
+        var caCursor: Cursor = sqlitedb.rawQuery(caQuery, arrayOf(course))
+        var caNum: Int? = null
+
+        if (caCursor.moveToFirst()) {
+            caNum = caCursor.getInt(caCursor.getColumnIndexOrThrow("ca_num"))
+        }
+        caCursor.close()
+
+        // cl_date 가져오기
+        var dateQuery = "SELECT cl.cl_date FROM counting_list cl WHERE cl_title = ?"
+        var dateCursor: Cursor = sqlitedb.rawQuery(dateQuery, arrayOf(title))
+        var clDate: String = ""
+
+        if (dateCursor.moveToFirst()) {
+            clDate = dateCursor.getString(dateCursor.getColumnIndexOrThrow("cl_date"))
+        }
+        dateCursor.close()
+
+        // cl_order 가져오기
+        var orderQuery = "SELECT cl.cl_order FROM counting_list cl WHERE cl_title = ?"
+        var orderCursor: Cursor = sqlitedb.rawQuery(orderQuery, arrayOf(title))
+        var clOrder: Int? = null
+
+        if (orderCursor.moveToFirst()) {
+            clOrder = orderCursor.getInt(orderCursor.getColumnIndexOrThrow("cl_order"))
+        }
+        orderCursor.close()
+
         var query: String = ""
         query += "SELECT ca.ca_name, cr.cr_sum, cr.cr_male, cr.cr_female, m.m_name "
         query += "FROM counting_record cr "
         query += "JOIN counting_area ca ON cr.ca_num = ca.ca_num "
         query += "JOIN member m ON cr.m_num = m.m_num "
+//        query+= "SELECT ca.ca_num, ca.ca_name, m.m_name, cr.cr_male, cr.cr_female, cr.cr_sum"
+//        query+= "FROM counting_record cr"
+//        query+= "JOIN member m ON cr.m_num = m.m_num"
+//        query+= "JOIN counting_area ca ON cr.ca_num = ca.ca_num"
+//        query+= "JOIN counting_course cc ON cc.cc_num = ca.cc_num"
+//        query+= "WHERE cr.cl_date =? AND cr.cl_order=? AND cc.cc_num=?;"
 
         var cursor: Cursor
-        cursor = sqlitedb.rawQuery(query, arrayOf())
+        cursor = sqlitedb.rawQuery(query, arrayOf(arrayOf(clDate, clOrder, ccNum).toString()))
 
         while (cursor.moveToNext()){
-            place = cursor.getString(cursor.getColumnIndexOrThrow("ca_name"))
-            worker = cursor.getString(cursor.getColumnIndexOrThrow("m_name"))
-            women = cursor.getInt(cursor.getColumnIndexOrThrow("cr_female"))
-            men = cursor.getInt(cursor.getColumnIndexOrThrow("cr_male"))
-            sum = cursor.getInt(cursor.getColumnIndexOrThrow("cr_sum"))
+            place = cursor.getString(cursor.getColumnIndexOrThrow("ca.ca_name"))
+            worker = cursor.getString(cursor.getColumnIndexOrThrow("m.m_name"))
+            women = cursor.getInt(cursor.getColumnIndexOrThrow("cr.cr_female"))
+            men = cursor.getInt(cursor.getColumnIndexOrThrow("cr.cr_male"))
+            sum = cursor.getInt(cursor.getColumnIndexOrThrow("cr.cr_sum"))
             workersSet.add(worker)  // Set에 worker 추가
 
             var item = CountingDetailItem(place, worker, women, men, sum)
@@ -111,20 +157,12 @@ class CountingDetailFragment : Fragment() {
                     dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
                     sqlitedb = dbManager.writableDatabase
 
-                    // cc_num 가져오기
-                    var selectQuery: String = "SELECT cc.cc_num FROM counting_course cc WHERE cc_name = " + course
-                    var ccCursor: Cursor = sqlitedb.rawQuery(selectQuery, arrayOf(course))
-                    var ccNum: Int? = null
-
-                    if (ccCursor.moveToFirst()) {
-                        ccNum = ccCursor.getInt(ccCursor.getColumnIndexOrThrow("cc_num"))
-                    }
-                    ccCursor.close()
-
                     // 삭제 쿼리 실행
-                    var deleteQuery: String = "DELETE counting_list WHERE cl_title = " + title + " AND cc_num = " + ccNum
+                    var deleteRecordQuery = "DELETE FROM counting_record WHERE cl_date = ? AND cl_order= ? AND ca_num= ?;"
+                    var deleteListQuery = "DELETE FROM counting_list WHERE cl_date = ? AND cl_order= ? AND cc_num= ?;"
 
-                    sqlitedb.execSQL(deleteQuery, arrayOf(title, ccNum))
+                    sqlitedb.execSQL(deleteRecordQuery, arrayOf(clDate, clOrder, caNum))
+                    sqlitedb.execSQL(deleteListQuery, arrayOf(clDate, clOrder, ccNum))
 
                     sqlitedb.close()
                     dbManager.close()

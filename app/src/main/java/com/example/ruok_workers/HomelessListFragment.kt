@@ -1,5 +1,6 @@
 package com.example.ruok_workers
 
+import android.annotation.SuppressLint
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
@@ -18,6 +19,8 @@ class HomelessListFragment : Fragment() {
     lateinit var dbManager: DBManager
     lateinit var sqlitedb: SQLiteDatabase
 
+    var loginNum: Int = -1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -25,6 +28,7 @@ class HomelessListFragment : Fragment() {
         }
     }
 
+    @SuppressLint("Range")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,46 +36,78 @@ class HomelessListFragment : Fragment() {
 
         binding = FragmentHomelessListBinding.inflate(inflater, container, false)
 
+        //기존 로그인 정보 가져오기
+        loginNum = arguments?.getInt("m_num")!!
+
         //데이터베이스 연동
         dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
 
         var list = ArrayList<FaviconItem>()
         var name: String
         var birth: String
+        var bookmark: Int
+        var num: Int
 
         binding.searchButton2.setOnClickListener {
 
             list.clear()
             val filter = binding.searchEditText2.text.toString().trim()
 
+            sqlitedb = dbManager.readableDatabase
+
             if (filter.isNotEmpty()) {
-                sqlitedb = dbManager.readableDatabase
-                var query = "SELECT * FROM homeless h WHERE h_name LIKE '%${filter}%';"
+                val cursor: Cursor
+                cursor = sqlitedb.rawQuery(
+                    "SELECT h.*, b.m_num IS NOT NULL AS is_bookmarked FROM homeless h LEFT JOIN bookmark b ON h.h_num = b.h_num AND b.m_num = ? WHERE h.h_name LIKE ? ORDER BY is_bookmarked DESC",
+                    arrayOf(loginNum.toString(), "%$filter%")
+                )
+                if (cursor != null && cursor.moveToFirst()) {
+                    do {
+                        name = cursor.getString(cursor.getColumnIndexOrThrow("h.h_name")).toString()
+                        birth = cursor.getString(cursor.getColumnIndexOrThrow("h.h_birth")).toString()
+                        num = cursor.getInt(cursor.getColumnIndex("h.h_num"))
+                        bookmark = if (cursor.getInt(cursor.getColumnIndex("is_bookmarked")) == 1) 1 else 0
 
-                var cursor: Cursor
-                cursor = sqlitedb.rawQuery(query, arrayOf())
-                while (cursor.moveToNext()){
+                        var photoFilename: String = cursor.getString(cursor.getColumnIndex("h_photo"))
+                        var resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
 
-                    name = cursor.getString(cursor.getColumnIndexOrThrow("h.h_name")).toString()
-                    birth = cursor.getString(cursor.getColumnIndexOrThrow("h.h_birth")).toString()
-
-                    var item = FaviconItem(name, birth)
-
-                    list.add(item)
+                        list.add(FaviconItem(name, birth, num, bookmark, resId))
+                    } while (cursor.moveToNext())
                 }
-                cursor.close()
+                cursor?.close()
 
-                binding!!.centerTextView2.visibility = View.VISIBLE
-                binding!!.recyclerView.visibility = View.VISIBLE
+            } else {
+                val cursor: Cursor
+                cursor = sqlitedb.rawQuery(
+                    "SELECT h.*, b.m_num IS NOT NULL AS is_bookmarked FROM homeless h LEFT JOIN bookmark b ON h.h_num = b.h_num AND b.m_num = ? ORDER BY is_bookmarked DESC",
+                    arrayOf(loginNum.toString())
+                )
+                if (cursor != null && cursor.moveToFirst()) {
+                    do {
+                        name = cursor.getString(cursor.getColumnIndexOrThrow("h.h_name")).toString()
+                        birth = cursor.getString(cursor.getColumnIndexOrThrow("h.h_birth")).toString()
+                        num = cursor.getInt(cursor.getColumnIndex("h.h_num"))
+                        bookmark = if (cursor.getInt(cursor.getColumnIndex("is_bookmarked")) == 1) 1 else 0
 
-                val layoutManager = LinearLayoutManager(context)
-                binding!!.recyclerView.layoutManager = layoutManager
+                        var photoFilename: String = cursor.getString(cursor.getColumnIndex("h.h_photo"))
+                        var resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
 
-                adapter = HomelessListAdapter(requireContext(), list)
-                binding!!.recyclerView.adapter = adapter
-
-                sqlitedb.close()
+                        list.add(FaviconItem(name, birth, num, bookmark, resId))
+                    } while (cursor.moveToNext())
+                }
+                cursor?.close()
             }
+
+            binding.centerTextView2.visibility = View.VISIBLE
+            binding.recyclerView.visibility = View.VISIBLE
+
+            binding.recyclerView.layoutManager = LinearLayoutManager(context)
+
+            adapter = HomelessListAdapter(requireContext(), list)
+
+            binding.recyclerView.adapter = adapter
+
+            sqlitedb.close()
         }
 
         dbManager.close()

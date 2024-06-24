@@ -2,12 +2,14 @@ package com.example.ruok_workers
 
 import ProfileDetailFragment
 import android.content.Context
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ruok_workers.databinding.FaviconEditItemsBinding
 
@@ -30,31 +32,44 @@ class FaviconAdapter(private val context: Context, val itemList: ArrayList<Favic
     }
 
     override fun onBindViewHolder(holder: FaviconAdapter.FaviconViewHolder, position: Int) {
-        holder.tvfeName.text = "이름: " + itemList[position].name
-        holder.tvfeBirth.text = "생년월일: " + itemList[position].birth.substring(0,4) + "." + itemList[position].birth.substring(4,6) + "." + itemList[position].birth.substring(6) + "."
 
-        //ibtnStar 토글을 위한 태그 기본값 설정
-        holder.ibtnStar.tag = "off"
+        val item = itemList[position]
+
+        holder.binding.tvfeName.text = "이름: " + item.name
+        holder.binding.tvfeBirth.text = "생년월일: " + item.birth.substring(0,4) + "." + item.birth.substring(4,6) + "." + item.birth.substring(6) + "."
+        holder.binding.ivProfileEdit.setImageResource(item.photo)
+
+        // 즐겨찾기 상태에 따라 별 아이콘 설정
+        if (item.bookmark == 1) {
+            holder.binding.ibtnStar.setImageResource(android.R.drawable.btn_star_big_on)
+            holder.binding.ibtnStar.tag = "on"
+        } else {
+            holder.binding.ibtnStar.setImageResource(android.R.drawable.btn_star_big_off)
+            holder.binding.ibtnStar.tag = "off"
+        }
 
         // ibtnStar 클릭 리스너 설정
-        holder.ibtnStar.setOnClickListener{
+        holder.binding.ibtnStar.setOnClickListener{
+
             // 현재 이미지 리소스를 가져옵니다
             val currentTag = it.tag as? String
             if (currentTag == "on") {
                 // 이미지가 켜져 있으면, 끄는 이미지로 변경
-                holder.ibtnStar.setImageResource(android.R.drawable.btn_star_big_off)
-                holder.ibtnStar.tag = "off"
+                holder.binding.ibtnStar.setImageResource(android.R.drawable.btn_star_big_off)
+                holder.binding.ibtnStar.tag = "off"
+
             } else {
                 // 이미지가 꺼져 있으면, 켜는 이미지로 변경
-                holder.ibtnStar.setImageResource(android.R.drawable.btn_star_big_on)
-                holder.ibtnStar.tag = "on"
+                holder.binding.ibtnStar.setImageResource(android.R.drawable.btn_star_big_on)
+                holder.binding.ibtnStar.tag = "on"
+
             }
         }
 
         // 카드뷰를 클릭하면 ProfileDetailFragment로 이동
-        holder.binding.root.setOnClickListener {
-            val name = itemList[position].name
-            val birth = itemList[position].birth
+        holder.binding.cvFaviconEdit.setOnClickListener {
+            val name = item.name
+            val birth = item.birth
 
             // ProfileDetailFragment의 인스턴스 생성
             val profileDetailFragment = ProfileDetailFragment()

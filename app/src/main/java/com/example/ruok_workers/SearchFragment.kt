@@ -1,7 +1,9 @@
 package com.example.ruok_workers
 
 import android.annotation.SuppressLint
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.nfc.Tag
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,19 +14,17 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.ruok_workers.databinding.FragmentSearchBinding
 
 class SearchFragment : Fragment() {
 
-    private lateinit var searchEditText: EditText
-    private lateinit var searchButton: Button
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var centerTextView: TextView
-    private lateinit var faviconAdapter: FaviconAdapter
+    lateinit var binding: FragmentSearchBinding
+    lateinit var faviconAdapter: FaviconAdapter
 
     lateinit var dbManager: DBManager
     lateinit var sqlitedb: SQLiteDatabase
 
-    private val itemList = ArrayList<FaviconItem>()
+    var loginNum: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,31 +32,92 @@ class SearchFragment : Fragment() {
         }
     }
 
+    @SuppressLint("Range")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_search, container, false)
 
-        searchEditText = view.findViewById(R.id.search_edit_text)
-        searchButton = view.findViewById(R.id.search_button)
-        recyclerView = view.findViewById(R.id.recycler_view)
-        centerTextView = view.findViewById(R.id.center_text_view)
+        binding = FragmentSearchBinding.inflate(inflater, container, false)
+
+        //기존 로그인 정보 가져오기
+        loginNum = arguments?.getInt("m_num")!!
 
         dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
-        sqlitedb = dbManager.readableDatabase
 
-        faviconAdapter = FaviconAdapter(requireContext(), itemList)
-        recyclerView.adapter = faviconAdapter
-        recyclerView.layoutManager = LinearLayoutManager(context)
+        var itemList = ArrayList<FaviconItem>()
+        var name: String
+        var birth: String
+        var bookmark: Int
+        var num: Int
 
-        searchButton.setOnClickListener {
-            performSearch()
+        binding.searchButton.setOnClickListener {
+
+            itemList.clear()
+            val filter = binding.searchEditText.text.toString().trim()
+
+            sqlitedb = dbManager.readableDatabase
+
+            if (filter.isNotEmpty()) {
+                val cursor: Cursor
+                cursor = sqlitedb.rawQuery(
+                    "SELECT h.*, b.m_num IS NOT NULL AS is_bookmarked FROM homeless h LEFT JOIN bookmark b ON h.h_num = b.h_num AND b.m_num = ? WHERE h.h_name LIKE ? ORDER BY is_bookmarked DESC",
+                    arrayOf(loginNum.toString(), "%$filter%")
+                )
+                if (cursor != null && cursor.moveToFirst()) {
+                    do {
+                        name = cursor.getString(cursor.getColumnIndexOrThrow("h.h_name")).toString()
+                        birth = cursor.getString(cursor.getColumnIndexOrThrow("h.h_birth")).toString()
+                        num = cursor.getInt(cursor.getColumnIndex("h.h_num"))
+                        bookmark = if (cursor.getInt(cursor.getColumnIndex("is_bookmarked")) == 1) 1 else 0
+
+                        var photoFilename: String = cursor.getString(cursor.getColumnIndex("h.h_photo"))
+                        var resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
+
+                        itemList.add(FaviconItem(name, birth, num, bookmark, resId))
+                    } while (cursor.moveToNext())
+                }
+                cursor?.close()
+
+            } else {
+                val cursor: Cursor
+                cursor = sqlitedb.rawQuery(
+                    "SELECT h.*, b.m_num IS NOT NULL AS is_bookmarked FROM homeless h LEFT JOIN bookmark b ON h.h_num = b.h_num AND b.m_num = ? ORDER BY is_bookmarked DESC",
+                    arrayOf(loginNum.toString())
+                )
+                if (cursor != null && cursor.moveToFirst()) {
+                    do {
+                        name = cursor.getString(cursor.getColumnIndexOrThrow("h.h_name")).toString()
+                        birth = cursor.getString(cursor.getColumnIndexOrThrow("h.h_birth")).toString()
+                        num = cursor.getInt(cursor.getColumnIndex("h.h_num"))
+                        bookmark = if (cursor.getInt(cursor.getColumnIndex("is_bookmarked")) == 1) 1 else 0
+
+                        var photoFilename: String = cursor.getString(cursor.getColumnIndex("h.h_photo"))
+                        var resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
+
+                        itemList.add(FaviconItem(name, birth, num, bookmark, resId))
+                    } while (cursor.moveToNext())
+                }
+                cursor?.close()
+            }
+
+            binding.centerTextView.text = if (itemList.isEmpty()) "검색 결과가 없습니다." else "검색 결과: ${itemList.size}개"
+            binding.centerTextView.visibility = View.VISIBLE
+            binding.recyclerView.visibility = View.VISIBLE
+
+            binding.recyclerView.layoutManager = LinearLayoutManager(context)
+
+            faviconAdapter = FaviconAdapter(requireContext(), itemList)
+
+            binding.recyclerView.adapter = faviconAdapter
+
+            sqlitedb.close()
         }
 
-        val addNewProfileButton: Button = view.findViewById(R.id.add_new_profile)
-        addNewProfileButton.setOnClickListener {
+
+        dbManager.close()
+
+        binding.addNewProfile.setOnClickListener {
             val profileAddFragment = ProfileAddFragment()
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
             transaction.replace(R.id.rootLayout, profileAddFragment)
@@ -64,49 +125,11 @@ class SearchFragment : Fragment() {
             transaction.commit()
         }
 
-        centerTextView.visibility = View.VISIBLE
-        recyclerView.visibility = View.VISIBLE
-
-        return view
-    }
-
-    @SuppressLint("Range", "NotifyDataSetChanged")
-    private fun performSearch() {
-        val query = searchEditText.text.toString().trim()
-        itemList.clear()
-
-        if (query.isNotEmpty()) {
-            val cursor = sqlitedb.rawQuery("SELECT * FROM homeless WHERE h_name LIKE ?", arrayOf("%$query%"))
-            if (cursor != null && cursor.moveToFirst()) {
-                do {
-                    val name = cursor.getString(cursor.getColumnIndex("h_name"))
-                    val birth = cursor.getString(cursor.getColumnIndex("h_birth"))
-                    itemList.add(FaviconItem(name, birth))
-                } while (cursor.moveToNext())
-            }
-            cursor?.close()
-        } else {
-            val cursor = sqlitedb.rawQuery("SELECT * FROM homeless", null)
-            if (cursor != null && cursor.moveToFirst()) {
-                do {
-                    val name = cursor.getString(cursor.getColumnIndex("h_name"))
-                    val birth = cursor.getString(cursor.getColumnIndex("h_birth"))
-                    itemList.add(FaviconItem(name, birth))
-                } while (cursor.moveToNext())
-            }
-            cursor?.close()
-        }
-
-        faviconAdapter.notifyDataSetChanged()
-        centerTextView.text = if (itemList.isEmpty()) "검색 결과가 없습니다." else "검색 결과: ${itemList.size}개"
-        centerTextView.visibility = View.VISIBLE
-        recyclerView.visibility = View.VISIBLE
+        return binding!!.root
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        sqlitedb.close()
-        dbManager.close()
     }
 
     companion object {
