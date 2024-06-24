@@ -35,6 +35,11 @@ class PhotoAddFragment : Fragment() {
         val bundle = Bundle()
         bundle.putInt("onRecording", onRecording)
 
+        val item = arguments?.getParcelable<ConsultationItem>("consultation_item")!!
+        val hasConsultation = arguments?.getInt("hasConsultation")!!
+        bundle.putInt("hasConsultation", hasConsultation)
+        bundle.putParcelable("consultation_item", item)
+
         //btnPhotoAddBack클릭시 PhotoAddFragment에서 QuestionnaireFragment로 이동
         binding.btnPhotoAddBack.setOnClickListener {
             val DashboardActivity = activity as DashboardActivity
