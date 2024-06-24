@@ -5,11 +5,8 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.hardware.camera2.CameraCharacteristics
-import android.hardware.camera2.CameraManager
 import android.net.Uri
 import android.os.Bundle
-import android.os.Process
 import android.provider.MediaStore
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -19,32 +16,38 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.android.car.ui.pluginsupport.PluginConfigProvider
 import com.example.ruok_workers.databinding.FragmentPhotoAddBinding
-import java.security.Provider
-import java.util.concurrent.Future
 
 
 class PhotoAddFragment : Fragment() {
     lateinit var binding : FragmentPhotoAddBinding
     //갤러리 launcher
     private var launcher = registerForActivityResult(ActivityResultContracts.GetContent()){
-        it -> setGallery(uri = it)
+            it -> setGallery(uri = it)
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentPhotoAddBinding.inflate(inflater, container, false)
+
+        val onRecording = arguments?.getInt("onRecording", 0)!!
+        val bundle = Bundle()
+        bundle.putInt("onRecording", onRecording)
+
         //btnPhotoAddBack클릭시 PhotoAddFragment에서 QuestionnaireFragment로 이동
         binding.btnPhotoAddBack.setOnClickListener {
             val DashboardActivity = activity as DashboardActivity
-            DashboardActivity.setFragment(QuestionnaireFragment())
+            val questionnaireFragment = QuestionnaireFragment()
+            questionnaireFragment.arguments = bundle
+            DashboardActivity.setFragment(questionnaireFragment)
         }
         //btnPhotoAddNext클릭시 PhotoAddFragment에서 HomelessListFragment로 이동
         binding.btnPhotoAddNext.setOnClickListener {
             val DashboardActivity = activity as DashboardActivity
-            DashboardActivity.setFragment(HomelessListFragment())
+            val homelessListFragment = HomelessListFragment()
+            homelessListFragment.arguments = bundle
+            DashboardActivity.setFragment(homelessListFragment)
         }
         //btnPhotoAddCamera클릭시 카메라열고 찍은 사진 ivPhotoAdd에 넣기
         binding.btnPhotoAddCamera.setOnClickListener{

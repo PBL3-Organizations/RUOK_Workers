@@ -205,6 +205,11 @@ class LocationTrackingFragment : Fragment(), OnMapReadyCallback {
 
         state?.let { updateButtonVisibility(it) }
 
+        val onRecording = arguments?.getInt("onRecording", 0)!!
+        if (onRecording == 1) {
+            updateButtonVisibility(State.OTHER)
+        }
+
         //활성화 버튼 교체
         binding.btnStartOutreach.setOnClickListener {
             updateButtonVisibility(State.STOP)
@@ -221,7 +226,11 @@ class LocationTrackingFragment : Fragment(), OnMapReadyCallback {
         //btnRecordOutreach 클릭시 LocationTrackingFragment에서 QuestionnaireFragment로 이동
         binding.btnRecordOutreach.setOnClickListener{
             val parentActivity = activity as DashboardActivity
-            parentActivity.setFragment(QuestionnaireFragment())
+            val bundle = Bundle()
+            bundle.putInt("onRecording", 1)
+            val questionnaireFragment = QuestionnaireFragment()
+            questionnaireFragment.arguments = bundle
+            parentActivity.setFragment(questionnaireFragment)
         }
 
         //btnEndOutreach 클릭시 LocationTrackingFragment에서 ListFragment로 이동
