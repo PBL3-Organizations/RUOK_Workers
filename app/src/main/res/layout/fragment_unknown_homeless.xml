@@ -20,6 +20,7 @@
             android:entries="@array/arrayUnknown"/>
 
         <SearchView
+            android:id="@+id/serchviewUnknown"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
