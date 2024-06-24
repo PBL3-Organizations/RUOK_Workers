@@ -29,18 +29,39 @@ class HomelessListAdapter (private val context: Context, val itemList: ArrayList
     }
 
     override fun onBindViewHolder(holder: HomelessListAdapter.FaviconViewHolder, position: Int) {
-        holder.tvfeName.text = "이름: " + itemList[position].name
-        holder.tvfeBirth.text = "생년월일: " + itemList[position].birth.substring(0,4) + "." + itemList[position].birth.substring(4,6) + "." + itemList[position].birth.substring(6) + "."
 
+        val item = itemList[position]
 
-//        // 카드뷰를 클릭하면 ProfileDetailFragment로 이동
-//        holder.binding.root.setOnClickListener {
-//
-//            var bundle = Bundle().apply {
-//                putString("name", itemList[position].name)
-//                putString("birth", itemList[position].birth)
-//            }
-//        }
+        holder.binding.ivProfileEdit.setImageResource(itemList[position].photo)
+        holder.binding.tvfeName.text = "이름: " + itemList[position].name
+        holder.binding.tvfeBirth.text = "생년월일: " + itemList[position].birth.substring(0,4) + "." + itemList[position].birth.substring(4,6) + "." + itemList[position].birth.substring(6) + "."
+
+        // 즐겨찾기 상태에 따라 별 아이콘 설정
+        if (item.bookmark == 1) {
+            holder.binding.ibtnStar.setImageResource(android.R.drawable.btn_star_big_on)
+            holder.binding.ibtnStar.tag = "on"
+        } else {
+            holder.binding.ibtnStar.setImageResource(android.R.drawable.btn_star_big_off)
+            holder.binding.ibtnStar.tag = "off"
+        }
+
+        // ibtnStar 클릭 리스너 설정
+        holder.binding.ibtnStar.setOnClickListener{
+
+            // 현재 이미지 리소스를 가져옵니다
+            val currentTag = it.tag as? String
+            if (currentTag == "on") {
+                // 이미지가 켜져 있으면, 끄는 이미지로 변경
+                holder.binding.ibtnStar.setImageResource(android.R.drawable.btn_star_big_off)
+                holder.binding.ibtnStar.tag = "off"
+
+            } else {
+                // 이미지가 꺼져 있으면, 켜는 이미지로 변경
+                holder.binding.ibtnStar.setImageResource(android.R.drawable.btn_star_big_on)
+                holder.binding.ibtnStar.tag = "on"
+
+            }
+        }
     }
 
     override fun getItemCount(): Int {

@@ -88,7 +88,6 @@
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:textAlignment="center"
-                    android:hint="0"
                     android:inputType="number" />
 
                 <EditText
@@ -99,7 +98,6 @@
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:textAlignment="center"
-                    android:hint="0"
                     android:inputType="number" />
             </TableRow>
         </TableLayout>
