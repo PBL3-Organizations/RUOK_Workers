@@ -34,6 +34,9 @@ class DashboardAdapter(private val context: Context, private val items: Vector<D
             profileDetailFragment = ProfileDetailFragment()
 
             var bundle = Bundle()
+            bundle.putInt("h_num", item.hNum)
+            bundle.putString("name", item.hName)
+            bundle.putString("birth", item.hBirth)
 
             profileDetailFragment.arguments = bundle
             (context as AppCompatActivity).supportFragmentManager.beginTransaction().replace(R.id.rootLayout, profileDetailFragment).commit()
