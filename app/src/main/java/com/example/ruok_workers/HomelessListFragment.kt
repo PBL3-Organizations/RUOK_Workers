@@ -116,6 +116,11 @@ class HomelessListFragment : Fragment() {
         val bundle = Bundle()
         bundle.putInt("onRecording", onRecording)
 
+        val item = arguments?.getParcelable<ConsultationItem>("consultation_item")!!
+        val hasConsultation = arguments?.getInt("hasConsultation")!!
+        bundle.putInt("hasConsultation", hasConsultation)
+        bundle.putParcelable("consultation_item", item)
+
         //btnBeforeHomelessList 클릭시 HomelessListFragment에서 PhotoAddFragment로 이동
         binding.btnBeforeHomelessList.setOnClickListener{
             val parentActivity = activity as DashboardActivity
