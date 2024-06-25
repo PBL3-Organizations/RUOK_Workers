@@ -31,8 +31,6 @@ class CountingTableFragment : Fragment() {
     lateinit var dbManager: DBManager
     lateinit var sqlitedb: SQLiteDatabase
 
-    var loginNum: Int = -1
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -46,13 +44,6 @@ class CountingTableFragment : Fragment() {
     ): View? {
         binding = FragmentCountingTableBinding.inflate(inflater, container, false)
 
-        //기존 로그인 정보 가져오기
-        loginNum = arguments?.getInt("m_num")!!
-
-        //데이터베이스 연동
-        dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
-        sqlitedb = dbManager.writableDatabase
-
         var list = Vector<CountingTableItem>()
         var place: String
         var women: Int = 0
@@ -61,6 +52,9 @@ class CountingTableFragment : Fragment() {
 
         var selectedCourse: String = arguments?.getString("course").toString()
         var selectedLocations = arguments?.getStringArrayList("locations") ?: arrayListOf()
+        //로그인 정보 가져오기
+        var loginNum: Int = -1
+        loginNum = arguments?.getInt("m_num")!!
 
         binding.tvShowCourse.text = "코스: $selectedCourse"
 
@@ -91,6 +85,7 @@ class CountingTableFragment : Fragment() {
 
             // 확인 버튼 설정
             builder.setPositiveButton("확인") { _, _ ->
+
                 // 입력된 숫자 가져오기
                 val countingOrder = input.text.toString().toInt()
                 val currentTime : Long = System.currentTimeMillis() // ms로 반환
@@ -103,38 +98,35 @@ class CountingTableFragment : Fragment() {
                 var total: Int = 0
 
                 try {
-                    // 데이터베이스 저장
-                    for (item in list) {
-                        val place = item.place
-                        val women = item.women
-                        val men = item.men
+
+                    //데이터베이스 연동
+                    dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+                    sqlitedb = dbManager.writableDatabase
+
+                    var itemList = adapter.items
+                    for (item in itemList) {
+                        var place = item.place
+                        var women = item.women
+                        var men = item.men
                         var sum = women + men
                         total += sum
-
-                        //카운팅 구역 번호 가져오기
-                        //val caNumQuery = "SELECT ca.ca_num FROM counting_area ca WHERE cc_num = " + ccNum
-                        val caNumQuery = "SELECT ca.ca_num FROM counting_area ca WHERE ca_name = " + place
-                        val caNumCursor: Cursor = sqlitedb.rawQuery(caNumQuery, arrayOf())
-                        var caNum = if (caNumCursor.moveToFirst()) caNumCursor.getInt(
-                            caNumCursor.getColumnIndexOrThrow("ca.ca_num")
-                        ) else -1
-                        caNumCursor.close()
+                        Log.d(
+                            "CountingTableFragment",
+                            "Item: $place, Women: $women, Men: $men, Sum: $sum"
+                        )
 
                         //카운팅 코스 번호 가져오기
-                        //val ccNumQuery = "SELECT cc.cc_num, cc.cc_name FROM counting_course cc JOIN welfare_facilities w ON cc.wf_num = w.wf_num JOIN member m ON m.wf_num = w.wf_num WHERE m.m_num = " + loginNum
-                        val ccNumQuery = "SELECT ca.cc_num FROM counting_area ca WHERE ca_name = " + place
+                        val ccNumQuery = "SELECT cc.cc_num FROM counting_course cc WHERE cc_name = '$selectedCourse'"
+                        //val ccNumQuery = "SELECT cc.cc_num, cc.cc_name FROM counting_course cc JOIN welfare_facilities w ON cc.wf_num = w.wf_num JOIN member m ON m.wf_num = w.wf_num WHERE m.m_num = '$loginNum'"
                         val ccNumCursor: Cursor = sqlitedb.rawQuery(ccNumQuery, arrayOf())
                         var ccNum = if (ccNumCursor.moveToFirst()) ccNumCursor.getInt(
-                            ccNumCursor.getColumnIndexOrThrow("ca.cc_num")
+                            ccNumCursor.getColumnIndexOrThrow("cc_num")
                         ) else -1
                         ccNumCursor.close()
 
                         // 카운팅 테이블 저장하기 전 기존 내역 확인
-                        val query =
-                            "SELECT cl_date FROM counting_list WHERE cl_date=? AND cl_order=? AND cc_num=?"
-                        val cursor: Cursor = sqlitedb.rawQuery(query,
-                            arrayOf(arrayOf(date, countingOrder, ccNum).toString())
-                        )
+                        val query = "SELECT cl_date FROM counting_list WHERE cl_date='$date' AND cl_order='$countingOrder' AND cc_num='$ccNum'"
+                        val cursor: Cursor = sqlitedb.rawQuery(query, arrayOf())
 
                         if (cursor.count > 0) {
                             // 기존에 저장내역이 있으면 수정
@@ -142,6 +134,7 @@ class CountingTableFragment : Fragment() {
                                 "UPDATE counting_list SET cl_sum=? WHERE cl_date=? AND cl_order=? AND cc_num=?",
                                 arrayOf(total, date, countingOrder, ccNum)
                             )
+
                         } else {
                             // 기존에 저장 내역이 없으면 새로운 카운팅 리스트 추가
                             sqlitedb.execSQL(
@@ -149,16 +142,34 @@ class CountingTableFragment : Fragment() {
                                 arrayOf(date, countingOrder, ccNum, title, total)
                             )
                         }
-
-                        // 카운팅 레코드 추가
-                        sqlitedb.execSQL(
-                            "INSERT INTO counting_record (cl_date, cl_order, ca_num, m_num, cr_male, cr_female, cr_sum) VALUES (?, ?, ?, ?, ?, ?, ?)",
-                            arrayOf(date, countingOrder, caNum, loginNum, men, women, sum)
-                        )
-
                         cursor.close()
 
+                        //카운팅 구역 번호 가져오기
+                        val caNumQuery = "SELECT ca_num, ca_name FROM counting_area WHERE ca_name = '$place'"
+                        val caNumCursor: Cursor = sqlitedb.rawQuery(caNumQuery, arrayOf())
+
+                        var caNum : Int ?= null
+                        while (caNumCursor.moveToNext()) {
+                            caNum = caNumCursor.getInt(caNumCursor.getColumnIndexOrThrow("ca_num"))
+
+                            // 카운팅 레코드 존재 여부 확인
+                            val recordQuery = "SELECT cr.cl_date FROM counting_record cr WHERE cl_date='$date' AND cl_order='$countingOrder' AND ca_num='$caNum'"
+                            val recordCursor: Cursor = sqlitedb.rawQuery(recordQuery, arrayOf())
+
+                            if (recordCursor.count == 0) {
+                                // 레코드가 존재하지 않으면 삽입
+                                sqlitedb.execSQL(
+                                    "INSERT INTO counting_record (cl_date, cl_order, ca_num, m_num, cr_male, cr_female, cr_sum) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                                    arrayOf(date, countingOrder, caNum, loginNum, men, women, sum)
+                                )
+                            }
+                            recordCursor.close()
+                            Log.d("CountingTableFragment", "Handled record: $date, $countingOrder, $caNum, $loginNum, $men, $women, $sum")
+
+                        }
+                        caNumCursor.close()
                     }
+
                 } catch (e: Exception) {
                     Log.e("CountingTableFragment", "Error saving counting data", e)
                     Toast.makeText(requireContext(), "에러 발생: ${e.message}", Toast.LENGTH_LONG).show()

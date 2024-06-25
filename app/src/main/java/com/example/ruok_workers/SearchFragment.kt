@@ -61,7 +61,7 @@ class SearchFragment : Fragment() {
             if (filter.isNotEmpty()) {
                 val cursor: Cursor
                 cursor = sqlitedb.rawQuery(
-                    "SELECT h.*, b.m_num IS NOT NULL AS is_bookmarked FROM homeless h LEFT JOIN bookmark b ON h.h_num = b.h_num AND b.m_num = ? WHERE h.h_name LIKE ? ORDER BY is_bookmarked DESC",
+                    "SELECT h.*, b.m_num IS NOT NULL AS is_bookmarked FROM homeless h LEFT JOIN bookmark b ON h.h_num = b.h_num AND b.m_num = ? WHERE h.h_name LIKE ? ORDER BY is_bookmarked DESC, h.h_name ASC",
                     arrayOf(loginNum.toString(), "%$filter%")
                 )
                 if (cursor != null && cursor.moveToFirst()) {
@@ -82,7 +82,7 @@ class SearchFragment : Fragment() {
             } else {
                 val cursor: Cursor
                 cursor = sqlitedb.rawQuery(
-                    "SELECT h.*, b.m_num IS NOT NULL AS is_bookmarked FROM homeless h LEFT JOIN bookmark b ON h.h_num = b.h_num AND b.m_num = ? ORDER BY is_bookmarked DESC",
+                    "SELECT h.*, b.m_num IS NOT NULL AS is_bookmarked FROM homeless h LEFT JOIN bookmark b ON h.h_num = b.h_num AND b.m_num = ? ORDER BY is_bookmarked DESC, h.h_name ASC",
                     arrayOf(loginNum.toString())
                 )
                 if (cursor != null && cursor.moveToFirst()) {
