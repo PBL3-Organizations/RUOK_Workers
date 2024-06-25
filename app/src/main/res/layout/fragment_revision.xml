@@ -75,11 +75,12 @@
         android:text="특이사항" />
 
     <EditText
+        android:id="@+id/edtUnusualRev"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:textSize="20sp" />
+        android:textSize="20sp"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -90,6 +91,7 @@
         android:text="조치사항" />
 
     <EditText
+        android:id="@+id/edtMeasureRev"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
@@ -105,6 +107,7 @@
         android:text="상담 내용" />
 
     <EditText
+        android:id="@+id/edtContentRev"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="10dp"
