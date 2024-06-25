@@ -28,8 +28,8 @@ class BriefingBeforeFragment : Fragment() {
     private lateinit var dbManager: DBManager
     private lateinit var sqlitedb: SQLiteDatabase
     private lateinit var listView: ListView
-    lateinit var binding: FragmentBriefingBeforeBinding
-    lateinit var adapter: BriefingBeforeAdapter
+    private lateinit var binding: FragmentBriefingBeforeBinding
+    private lateinit var adapter: BriefingBeforeAdapter
     private lateinit var BriefingDetailFragment:BriefingDetailFragment
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
