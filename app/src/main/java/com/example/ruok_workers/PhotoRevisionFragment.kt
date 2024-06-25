@@ -48,7 +48,7 @@ class PhotoRevisionFragment : Fragment() {
         //btnPhotoRevisionNext클릭시 PhotoRevisionFragment에서 HomelessListFragment로 이동
         binding.btnPhotoRevisionNext.setOnClickListener {
             val DashboardActivity = activity as DashboardActivity
-            DashboardActivity.setFragment(HomelessListFragment())
+            DashboardActivity.setFragment(HomelessRevisionFragment())
         }
         //btnPhotoRevisionCamera클릭시 카메라열고 찍은 사진 ivPhotoRevision에 넣기
         binding.btnPhotoRevisionCamera.setOnClickListener {
