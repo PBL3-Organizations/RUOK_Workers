@@ -22,15 +22,9 @@ import java.util.Vector
 
 class UnknownHomelessFragment : Fragment() {
     private lateinit var listRecyclerView: RecyclerView
-    private lateinit var meet_photo: String
-    private lateinit var meet_place: String
-    private lateinit var meeet_log: String
-    private val list = Vector<UnknownCard>()
-
+    private var list = Vector<UnknownCard>()
     lateinit var binding: FragmentUnknownHomelessBinding
     lateinit var adapter: UnknownAdapter
-    private val Tag = "UnknownHomelessFragment"
-
     lateinit var dbManager: DBManager
     lateinit var sqlitedb: SQLiteDatabase
 
@@ -49,131 +43,112 @@ class UnknownHomelessFragment : Fragment() {
         //데이터베이스 연동
         dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
         sqlitedb = dbManager.readableDatabase
-        Log.i("DB", "DB붙임")
-
-
 
         //이름을 알 수 없는 노숙인 목록 가져오기
-//        val unknownQuery = "SELECT c.c_time, l.l_addr, p.p_filename\n" +
-//                "FROM consultation c\n" +
-//                "JOIN location l ON c.c_num = l.c_num\n" +
-//                "JOIN photo p ON c.c_num = p.c_num\n"
-//
-//        var cursor: Cursor
-//        Log.i("DB", "Cursor 정의")
-//        cursor = sqlitedb.rawQuery(unknownQuery, arrayOf())
-//        while (cursor.moveToNext()) {
-//            Log.i("DB", "while")
-//            meet_photo = cursor.getString(cursor.getColumnIndexOrThrow("p.p_filename")).toString()
-//            meet_place = cursor.getString(cursor.getColumnIndexOrThrow("c.c_time")).toString()
-//            meeet_log = cursor.getString(cursor.getColumnIndexOrThrow("l.l_addr")).toString()
-//
-//            val item = UnknownCard(meet_place, meeet_log)
-//            list.add(item)
-//        }
-        var unknownQuery: String = ""
-        unknownQuery += "SELECT c.c_time, l.l_addr, p.p_filename "
-        unknownQuery += "FROM consultation c JOIN location l ON c.c_num = l.c_num "
-        unknownQuery += "JOIN photo p ON c.c_num = p.c_num WHERE c.h_num = '0' "
+        var unknownQuery= "SELECT c.c_time, l.l_addr, p.p_filename FROM consultation c JOIN location l ON c.c_num = l.c_num JOIN photo p ON c.c_num = p.c_num WHERE c.h_num = '0' ORDER BY c.c_time DESC"
         var cursor: Cursor
         cursor = sqlitedb.rawQuery(unknownQuery, arrayOf())
         while (cursor.moveToNext()){
-            meet_photo = cursor.getString(cursor.getColumnIndexOrThrow("p.p_filename")).toString()
-            meet_place = cursor.getString(cursor.getColumnIndexOrThrow("c.c_time")).toString()
-            meeet_log = cursor.getString(cursor.getColumnIndexOrThrow("l.l_addr")).toString()
-            var resId = resources.getIdentifier(meet_photo.substringBefore('.'), "drawable", requireContext().packageName)
+            var meet_photo: String = cursor.getString(cursor.getColumnIndexOrThrow("p.p_filename"))
+            var meet_place: String = cursor.getString(cursor.getColumnIndexOrThrow("c.c_time"))
+            var meeet_log: String = cursor.getString(cursor.getColumnIndexOrThrow("l.l_addr"))
+            var resId : Int = resources.getIdentifier(meet_photo.substringBefore('.'), "drawable", requireContext().packageName)
             val item = UnknownCard(resId,meet_place, meeet_log)
             list.add(item)
         }
-
         cursor.close()
+        sqlitedb.close()
+        dbManager.close()
+
+        var filter = 0
         //스피너 처리
         binding.spinnerUnknown.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
-
             override fun onItemSelected(
                 parent: AdapterView<*>?,
                 view: View?,
                 position: Int,
                 id: Long
             ) {
-                binding.serchviewUnknown.isIconified = true
+                filter = position
             }
         }
         //서치뷰로 필터링 구현
         binding.serchviewUnknown.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
-                when (binding.spinnerUnknown.selectedItemPosition){
-                    //쿼리 사용하여 필터링 구현
-//                    0->{ //만난날짜
-//                        var TimeQuery = unknownQuery + "AND c.c_time LIKE ?"
-//                        val cursor = sqlitedb.rawQuery(TimeQuery, arrayOf("$query(YYYY-mm-dd)%"))
-//                        if (cursor != null) {
-//                            do {
-//                                meet_photo = cursor.getString(cursor.getColumnIndexOrThrow("p.p_filename")).toString()
-//                                meet_place = cursor.getString(cursor.getColumnIndexOrThrow("c.c_time")).toString()
-//                                meeet_log = cursor.getString(cursor.getColumnIndexOrThrow("l.l_addr")).toString()
-//                                var resId = resources.getIdentifier(meet_photo.substringBefore('.'), "drawable", requireContext().packageName)
-//                                val item = UnknownCard(resId,meet_place, meeet_log)
-//                                list.add(item)
-//                            } while (cursor.moveToNext())
-//                        }
-//                        else{
-//                            Toast.makeText(activity,"검색결과가 없습니다.",Toast.LENGTH_SHORT).show()
-//                        }
-//                        cursor?.close()
-//                    }
-//                    1->{ //만난장소
-//
-//                        var PlaceQuery = unknownQuery + "AND l.l_addr LIKE ?"
-//                        val cursor = sqlitedb.rawQuery(PlaceQuery, arrayOf("%$query%"))
-//                        if (cursor != null) {
-//                            do {
-//                                meet_photo = cursor.getString(cursor.getColumnIndexOrThrow("p.p_filename")).toString()
-//                                meet_place = cursor.getString(cursor.getColumnIndexOrThrow("c.c_time")).toString()
-//                                meeet_log = cursor.getString(cursor.getColumnIndexOrThrow("l.l_addr")).toString()
-//                                var resId = resources.getIdentifier(meet_photo.substringBefore('.'), "drawable", requireContext().packageName)
-//                                val item = UnknownCard(resId,meet_place, meeet_log)
-//                                list.add(item)
-//                            } while (cursor.moveToNext())
-//                        }
-//                        else{
-//                            Toast.makeText(activity,"검색결과가 없습니다.",Toast.LENGTH_SHORT).show()
-//                        }
-//                        cursor?.close()
-//                    }
-                    //필터링 동작 확인을 위한 코드
-                    0->{
-                        Toast.makeText(activity,"0:검색결과가 없습니다.",Toast.LENGTH_SHORT).show()
+                when (filter) {
+                    0 -> { //필터링 없음
+                        dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+                        sqlitedb = dbManager.readableDatabase
+                        var cursor: Cursor
+                        unknownQuery = "SELECT c.c_time, l.l_addr, p.p_filename FROM consultation c JOIN location l ON c.c_num = l.c_num JOIN photo p ON c.c_num = p.c_num WHERE c.h_num = '0' ORDER BY c.c_time DESC;"
+                        cursor = sqlitedb.rawQuery(unknownQuery, arrayOf())
+                        list = addToList(cursor)
+                        cursor.close()
+                        sqlitedb.close()
+                        dbManager.close()
+                        setUnknwnAdapter(list)
                     }
-                    1->{
-                        Toast.makeText(activity,"1:검색결과가 없습니다.",Toast.LENGTH_SHORT).show()
+                    1 -> { //날짜 필터링
+                        dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+                        sqlitedb = dbManager.readableDatabase
+                        var cursor: Cursor
+                        unknownQuery = "SELECT c.c_time, l.l_addr, p.p_filename FROM consultation c JOIN location l ON c.c_num = l.c_num JOIN photo p ON c.c_num = p.c_num WHERE c.h_num = '0' AND c.c_time LIKE ?;"
+                        cursor = sqlitedb.rawQuery(unknownQuery, arrayOf("%$query%"))
+                        list = addToList(cursor)
+                        cursor.close()
+                        sqlitedb.close()
+                        dbManager.close()
+                        setUnknwnAdapter(list)
+                    }
+                    2 -> {//만난 장소 필터링
+                        dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+                        sqlitedb = dbManager.readableDatabase
+                        var cursor: Cursor
+                        unknownQuery = "SELECT c.c_time, l.l_addr, p.p_filename FROM consultation c JOIN location l ON c.c_num = l.c_num JOIN photo p ON c.c_num = p.c_num WHERE c.h_num = 0 AND l.l_addr LIKE ?;"
+                        cursor = sqlitedb.rawQuery(unknownQuery, arrayOf("%$query%"))
+                        list = addToList(cursor)
+                        cursor.close()
+                        sqlitedb.close()
+                        dbManager.close()
+                        setUnknwnAdapter(list)
                     }
 
                 }
-                return false
+                return true
             }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                return false
-            }
+            override fun onQueryTextChange(newText: String?): Boolean {return true}
         })
-        cursor.close()
 
-        val layoutManager = LinearLayoutManager(context)
+        var layoutManager = LinearLayoutManager(context)
         binding!!.UnknownRecyclerView.layoutManager = layoutManager
 
         adapter = UnknownAdapter(requireContext(),list)
         binding!!.UnknownRecyclerView.adapter = adapter
 
-
         return binding.root
     }
-    override fun onDestroy() {
-        super.onDestroy()
-        sqlitedb.close()
-        dbManager.close()
+    private fun addToList(cursor: Cursor): Vector<UnknownCard> {
+        val items = Vector<UnknownCard>()
+        while(cursor.moveToNext()) {
+            // 리스트에 데이터 추가
+            var meet_photo: String = cursor.getString(cursor.getColumnIndexOrThrow("p.p_filename"))
+            var meet_place: String = cursor.getString(cursor.getColumnIndexOrThrow("c.c_time"))
+            var meeet_log: String = cursor.getString(cursor.getColumnIndexOrThrow("l.l_addr"))
+            var resId : Int = resources.getIdentifier(meet_photo.substringBefore('.'), "drawable", requireContext().packageName)
+            val item = UnknownCard(resId,meet_place, meeet_log)
+            list.add(item)
+        }
+        return items
+    }
+
+    private fun setUnknwnAdapter(items: Vector<UnknownCard>) {
+        adapter = UnknownAdapter(requireContext(),items)
+        binding!!.UnknownRecyclerView.adapter = adapter
+
+        binding.serchviewUnknown.onActionViewExpanded()
     }
     companion object {
         @JvmStatic
