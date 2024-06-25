@@ -4,16 +4,16 @@ import android.os.Parcel
 import android.os.Parcelable
 
 data class ConsultationItem(
-    val m_num: Int, //회원번호
-    val h_num: Int,//노숙인번호
-    val c_time: String, //작성시간
-    val health: Int, //건강상태코드
-    val unusual: String, //특이사항
-    val measure: String, //조치사항
-    val content: String, //상담내용
-    val addr: String, //주소
-    val latitude: Double, //위도
-    val logitude: Double, //경도
+    var m_num: Int, //회원번호
+    var h_num: Int,//노숙인번호
+    var c_time: String, //작성시간
+    var health: Int, //건강상태코드
+    var unusual: String, //특이사항
+    var measure: String, //조치사항
+    var content: String, //상담내용
+    var addr: String, //주소
+    var latitude: Double, //위도
+    var longitude: Double, //경도
     var filename: Array<String>//사진파일명
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
@@ -40,7 +40,7 @@ data class ConsultationItem(
         parcel.writeString(content)
         parcel.writeString(addr)
         parcel.writeDouble(latitude)
-        parcel.writeDouble(logitude)
+        parcel.writeDouble(longitude)
         parcel.writeStringArray(filename)
     }
 

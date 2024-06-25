@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="arrayList">
+        <item>필터링</item>
         <item>날짜</item>
         <item>만난장소</item>
         <item>작성자</item>

@@ -19,7 +19,7 @@
             android:layout_marginBottom="5dp"
             android:entries="@array/arrayList"/>
 
-        <SearchView
+        <androidx.appcompat.widget.SearchView
             android:id="@+id/searchviewList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
