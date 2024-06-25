@@ -18,6 +18,7 @@ class RevisionFragment : Fragment() {
     lateinit var sqlitedb: SQLiteDatabase
 
     var author = -1
+    var homeless = -1
     var c_num = -1
     var health = 0
 
@@ -34,13 +35,14 @@ class RevisionFragment : Fragment() {
         dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
         sqlitedb = dbManager.readableDatabase
         var cursor: Cursor
-        val sql = "SELECT m_num, c_health, c_unusual, c_measure, c_content FROM consultation WHERE c_num = ?;"
+        val sql = "SELECT m_num, h_num, c_health, c_unusual, c_measure, c_content FROM consultation WHERE c_num = ?;"
         cursor = sqlitedb.rawQuery(sql, arrayOf(c_num.toString()))
         cursor.moveToNext()
         binding.edtUnusualRev.setText(cursor.getString(cursor.getColumnIndexOrThrow("c_unusual")))
         binding.edtMeasureRev.setText(cursor.getString(cursor.getColumnIndexOrThrow("c_measure")))
         binding.edtContentRev.setText(cursor.getString(cursor.getColumnIndexOrThrow("c_content")))
         author = cursor.getInt(cursor.getColumnIndexOrThrow("m_num"))
+        homeless = cursor.getInt(cursor.getColumnIndexOrThrow("h_num"))
         //건강상태 코드 적용
         health = cursor.getInt(cursor.getColumnIndexOrThrow("c_health"))
         when(health) {
@@ -69,12 +71,13 @@ class RevisionFragment : Fragment() {
         //btnRevision클릭시 RevisionFragment에서 PhotoRevisionFragment로 이동
         binding.btnRevisionNext.setOnClickListener {
             val m_num = author
+            val h_num = homeless
             val unusual = binding.edtUnusualRev.text.toString()
             val measure = binding.edtMeasureRev.text.toString()
             val content = binding.edtContentRev.text.toString()
 
             val bundle = Bundle()
-            val item = ConsultationItem(m_num, 0, "", health, unusual, measure, content, "", 0.0, 0.0, arrayOf(""))
+            val item = ConsultationItem(m_num, h_num, "", health, unusual, measure, content, "", 0.0, 0.0, arrayOf(""))
             bundle.putInt("hasConsultation", 1)
             bundle.putInt("c_num", c_num)
             bundle.putParcelable("consultation_item", item)
