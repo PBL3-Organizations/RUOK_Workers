@@ -1,5 +1,6 @@
 package com.example.ruok_workers
 
+import android.annotation.SuppressLint
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 
@@ -16,10 +18,11 @@ class ProfileRevisionFragment : Fragment() {
     private lateinit var etName: EditText
     private lateinit var etBirthdate: EditText
     private lateinit var etPhoneNumber: EditText
+    private lateinit var ivProfileRevision:ImageView
 
     lateinit var dbManager: DBManager
     lateinit var sqlitedb: SQLiteDatabase
-
+    @SuppressLint("Range", "MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,6 +33,7 @@ class ProfileRevisionFragment : Fragment() {
         etName = view.findViewById(R.id.profile_revision_Name)
         etBirthdate = view.findViewById(R.id.profile_revision_Birth)
         etPhoneNumber = view.findViewById(R.id.profile_revision_PhoneNumber)
+        ivProfileRevision = view.findViewById(R.id.imageView_profile_revison)
 
         // 기존 데이터 가져오기
         val name = arguments?.getString("name") ?: ""
@@ -44,6 +48,15 @@ class ProfileRevisionFragment : Fragment() {
         // 데이터베이스 초기화 및 열기
         dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
         sqlitedb = dbManager.writableDatabase
+
+        val cursor = sqlitedb.rawQuery("SELECT * FROM homeless WHERE h_name = ? AND h_birth = ?", arrayOf(name, birth))
+        while (cursor.moveToNext()) {
+            var photoFilename: String = cursor.getString(cursor.getColumnIndex("h_photo"))
+            var resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
+            // TextView에 데이터 표시
+            ivProfileRevision.setImageResource(resId)
+        }
+        cursor.close()
 
         // '수정하기' 버튼 클릭 시 이벤트 처리
         view.findViewById<Button>(R.id.profile_revieion_ok).setOnClickListener {

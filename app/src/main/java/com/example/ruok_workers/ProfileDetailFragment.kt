@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -21,13 +22,14 @@ class ProfileDetailFragment : Fragment() {
     private lateinit var tvPhoneNumber: TextView
     private lateinit var btnRemoveProfile: Button
     private lateinit var btnGoToList: Button
+    private lateinit var ivProfiledetail:ImageView
 
     private lateinit var dbManager: DBManager
     private lateinit var sqlitedb: SQLiteDatabase
 
     private var homelessId: Int = -1 // 노숙인 번호
 
-    @SuppressLint("Range")
+    @SuppressLint("Range", "MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,6 +42,7 @@ class ProfileDetailFragment : Fragment() {
         tvPhoneNumber = view.findViewById(R.id.tvPhoneNumber)
         btnRemoveProfile = view.findViewById(R.id.btn_removeProfile)
         btnGoToList = view.findViewById(R.id.btn_goTolist)
+        ivProfiledetail = view.findViewById(R.id.ivProfiledetail)
 
         // FaviconAdapter에서 전달받은 데이터
         val name = arguments?.getString("name") ?: ""
@@ -53,11 +56,14 @@ class ProfileDetailFragment : Fragment() {
         if (cursor.moveToFirst()) {
             homelessId = cursor.getInt(cursor.getColumnIndex("h_num"))
             val phoneNumber = cursor.getString(cursor.getColumnIndex("h_phone"))
+            var photoFilename: String = cursor.getString(cursor.getColumnIndex("h_photo"))
+            var resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
 
             // TextView에 데이터 표시
             tvName.text = name
             tvBirthdate.text = birth
             tvPhoneNumber.text = phoneNumber
+            ivProfiledetail.setImageResource(resId)
         }
         cursor.close()
 
