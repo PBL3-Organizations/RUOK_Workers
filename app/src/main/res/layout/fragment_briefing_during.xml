@@ -7,7 +7,7 @@
     tools:context=".BriefingDuringFragment">
 
     <!-- 저장된 글 목록을 보여주기 위한 ListView -->
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listView_briefing_during"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
