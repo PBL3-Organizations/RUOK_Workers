@@ -76,9 +76,12 @@ class RevisionFragment : Fragment() {
             val bundle = Bundle()
             val item = ConsultationItem(m_num, 0, "", health, unusual, measure, content, "", 0.0, 0.0, arrayOf(""))
             bundle.putInt("hasConsultation", 1)
+            bundle.putInt("c_num", c_num)
             bundle.putParcelable("consultation_item", item)
+            val photoRevisionFragment = PhotoRevisionFragment()
+            photoRevisionFragment.arguments = bundle
             val DashboardActivity = activity as DashboardActivity
-            DashboardActivity.setFragment(PhotoRevisionFragment())
+            DashboardActivity.setFragment(photoRevisionFragment)
         }
         //건강상태 버튼 클릭시 색변경
         binding.btnRevisionGood.setOnClickListener {
