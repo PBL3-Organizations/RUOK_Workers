@@ -11,7 +11,7 @@ import com.example.ruok_workers.LocationTrackingFragment.Companion.TAG
 import com.example.ruok_workers.databinding.CountingDetailItemsBinding
 import java.util.Vector
 
-class CountingDetailAdapter (private val context: Context, private val items: Vector<CountingDetailItem>) : RecyclerView.Adapter<CountingDetailAdapter.ViewHolder>() {
+class CountingDetailAdapter (private val context: Context, val items: Vector<CountingDetailItem>) : RecyclerView.Adapter<CountingDetailAdapter.ViewHolder>() {
     lateinit var countingDetailFragment: CountingDetailFragment
 
     val TAG = "CountingDetailFragment"

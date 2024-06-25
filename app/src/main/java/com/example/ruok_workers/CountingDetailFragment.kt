@@ -67,12 +67,12 @@ class CountingDetailFragment : Fragment() {
         var sum: Int = women + men
         val workersSet = mutableSetOf<String>()  // 중복 방지를 위한 Set 사용
 
-        var caNum: Int? = null
+        var caNum: Int = 0
 
         // cc_num 가져오기
         var ccQuery = "SELECT cc.cc_num FROM counting_course cc WHERE cc_name = ?"
         var ccCursor: Cursor = sqlitedb.rawQuery(ccQuery, arrayOf(course))
-        var ccNum: Int? = null
+        var ccNum: Int = 0
 
         if (ccCursor.moveToFirst()) {
             ccNum = ccCursor.getInt(ccCursor.getColumnIndexOrThrow("cc_num"))
@@ -145,10 +145,20 @@ class CountingDetailFragment : Fragment() {
         sqlitedb.close()
         dbManager.close()
 
+        val bundle = Bundle()
 
         binding.btnRevisionCountingDetail.setOnClickListener {
-            val parentActivity = activity as DashboardActivity
-            parentActivity.setFragment(CountingRevisionFragment())
+            val countingRevisionFragment = CountingRevisionFragment()
+            bundle.putString("CL_TITLE", title)
+            bundle.putString("CC_NAME", course)
+            bundle.putString("M_NAME", workers)
+            bundle.putInt("CC_NUM", ccNum!!)
+            bundle.putString("CL_DATE", clDate)
+            bundle.putInt("CL_ORDER", clOrder!!)
+            countingRevisionFragment.arguments = bundle
+            requireActivity().supportFragmentManager.beginTransaction().replace(R.id.rootLayout, countingRevisionFragment).commit()
+            //val parentActivity = activity as DashboardActivity
+            //parentActivity.setFragment(CountingRevisionFragment())
         }
 
         binding.btnListCountingDetail.setOnClickListener {
