@@ -95,10 +95,8 @@ class ProfileRevisionFragment : Fragment() {
             }
 
             // 업데이트 완료 후 SearchFragment로 이동
-            val searchFragment = SearchFragment()
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.rootLayout, searchFragment)
-                .commit()
+            val parentActivity = activity as DashboardActivity
+            parentActivity.setFragment(SearchFragment())
 
             Toast.makeText(context, "프로필이 성공적으로 수정되었습니다.", Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {

@@ -62,10 +62,12 @@ class ProfileAddFragment : Fragment() {
             sqlitedb.execSQL(query)
 
             // 저장 후에는 검색 화면(SearchFragment)으로 이동합니다.
-            val fragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.rootLayout, SearchFragment())
-            fragmentTransaction.addToBackStack(null)
-            fragmentTransaction.commit()
+//            val fragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
+//            fragmentTransaction.replace(R.id.rootLayout, SearchFragment())
+//            fragmentTransaction.addToBackStack(null)
+//            fragmentTransaction.commit()
+            val parentActivity = activity as DashboardActivity
+            parentActivity.setFragment(SearchFragment())
         }
 
         return view

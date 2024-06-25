@@ -10,7 +10,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.ruok_workers.BriefingDetailFragment
 import com.example.ruok_workers.DBManager
+import com.example.ruok_workers.DashboardActivity
 import com.example.ruok_workers.ProfileRevisionFragment
 import com.example.ruok_workers.R
 import com.example.ruok_workers.SearchFragment
@@ -149,10 +151,12 @@ class ProfileDetailFragment : Fragment() {
     }
 
     private fun loadSearchFragment() {
-        val searchFragment = SearchFragment()
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.rootLayout, searchFragment)
-            .commit()
+//        val searchFragment = SearchFragment()
+//        requireActivity().supportFragmentManager.beginTransaction()
+//            .replace(R.id.rootLayout, searchFragment)
+//            .commit()
+        val parentActivity = activity as DashboardActivity
+        parentActivity.setFragment(SearchFragment())
     }
 
     private fun showToast(message: String) {
