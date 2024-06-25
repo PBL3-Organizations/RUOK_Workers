@@ -53,8 +53,6 @@ class CountingDetailFragment : Fragment() {
         var course: String = arguments?.getString("CC_NAME").toString()
         var total: Int? = arguments?.getInt("CL_SUM")
 
-        Log.d(TAG, "Title: $title, Course: $course, Total: $total")
-
         binding.tvTitleCountingDetail.text = title
         binding.tvCourseCountingDetail.text = course
         binding.tvResultCountingDetail.text = "총 인원: " + total.toString() + "명"
@@ -67,16 +65,15 @@ class CountingDetailFragment : Fragment() {
         var sum: Int = women + men
         val workersSet = mutableSetOf<String>()  // 중복 방지를 위한 Set 사용
 
-        var caNum: Int? = null
+        var caNum: Int = 0
 
         // cc_num 가져오기
         var ccQuery = "SELECT cc.cc_num FROM counting_course cc WHERE cc_name = ?"
         var ccCursor: Cursor = sqlitedb.rawQuery(ccQuery, arrayOf(course))
-        var ccNum: Int? = null
+        var ccNum: Int = 0
 
         if (ccCursor.moveToFirst()) {
             ccNum = ccCursor.getInt(ccCursor.getColumnIndexOrThrow("cc_num"))
-            Log.d(TAG, "ccNum: $ccNum")
         }
         ccCursor.close()
 
@@ -87,7 +84,6 @@ class CountingDetailFragment : Fragment() {
 
         if (dateCursor.moveToFirst()) {
             clDate = dateCursor.getString(dateCursor.getColumnIndexOrThrow("cl_date"))
-            Log.d(TAG, "clDate: $clDate")
         }
         dateCursor.close()
 
@@ -98,7 +94,6 @@ class CountingDetailFragment : Fragment() {
 
         if (orderCursor.moveToFirst()) {
             clOrder = orderCursor.getInt(orderCursor.getColumnIndexOrThrow("cl_order"))
-            Log.d(TAG, "clOrder: $clOrder")
         }
         orderCursor.close()
 
@@ -109,8 +104,6 @@ class CountingDetailFragment : Fragment() {
         query += "JOIN counting_area ca ON cr.ca_num = ca.ca_num "
         query += "JOIN counting_course cc ON cc.cc_num = ca.cc_num "
         query += "WHERE cr.cl_date ='$clDate' AND cr.cl_order='$clOrder' AND cc.cc_num='$ccNum';"
-
-        Log.d(TAG, "Query: $query")
 
         var cursor: Cursor = sqlitedb.rawQuery(query, arrayOf())
 
@@ -124,7 +117,6 @@ class CountingDetailFragment : Fragment() {
 
             var item = CountingDetailItem(place, worker, women, men, sum)
             list.add(item)
-            Log.d(TAG, "Item added: $item")
         }
 
         cursor.close()
@@ -137,18 +129,24 @@ class CountingDetailFragment : Fragment() {
         val layoutManager = LinearLayoutManager(context)
         binding!!.rvCountingDetail.layoutManager = layoutManager
 
-        Log.d(TAG, "Setting adapter with list size: ${list.size}")
-
         adapter = CountingDetailAdapter(requireContext(), list)
         binding!!.rvCountingDetail.adapter = adapter
 
         sqlitedb.close()
         dbManager.close()
 
+        val bundle = Bundle()
 
         binding.btnRevisionCountingDetail.setOnClickListener {
-            val parentActivity = activity as DashboardActivity
-            parentActivity.setFragment(CountingRevisionFragment())
+            val countingRevisionFragment = CountingRevisionFragment()
+            bundle.putString("CL_TITLE", title)
+            bundle.putString("CC_NAME", course)
+            bundle.putString("M_NAME", workers)
+            bundle.putInt("CC_NUM", ccNum!!)
+            bundle.putString("CL_DATE", clDate)
+            bundle.putInt("CL_ORDER", clOrder!!)
+            countingRevisionFragment.arguments = bundle
+            requireActivity().supportFragmentManager.beginTransaction().replace(R.id.rootLayout, countingRevisionFragment).commit()
         }
 
         binding.btnListCountingDetail.setOnClickListener {

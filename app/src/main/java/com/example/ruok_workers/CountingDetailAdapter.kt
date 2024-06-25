@@ -11,7 +11,7 @@ import com.example.ruok_workers.LocationTrackingFragment.Companion.TAG
 import com.example.ruok_workers.databinding.CountingDetailItemsBinding
 import java.util.Vector
 
-class CountingDetailAdapter (private val context: Context, private val items: Vector<CountingDetailItem>) : RecyclerView.Adapter<CountingDetailAdapter.ViewHolder>() {
+class CountingDetailAdapter (private val context: Context, val items: Vector<CountingDetailItem>) : RecyclerView.Adapter<CountingDetailAdapter.ViewHolder>() {
     lateinit var countingDetailFragment: CountingDetailFragment
 
     val TAG = "CountingDetailFragment"
@@ -23,14 +23,11 @@ class CountingDetailAdapter (private val context: Context, private val items: Ve
     }
 
     override fun getItemCount(): Int {
-        Log.d(TAG, "getItemCount: ${items.size}")
         return items.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int){
         val item = items[position]
-
-        Log.d(TAG, "onBindViewHolder: Position $position, Item $item")
 
         holder.binding.tvPlaceCountingDetailItems.text = item.place
         holder.binding.tvWorkerCountingDetailItems.text = "담당: " + item.worker

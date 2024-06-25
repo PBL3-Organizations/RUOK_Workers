@@ -5,12 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ruok_workers.databinding.CountingRevisionItemsBinding
 import com.example.ruok_workers.databinding.CountingTableItemsBinding
 import java.util.Vector
 
-class CountingRevisionAdapter (private val context: Context, private val items: Vector<CountingRevisionItem>) : RecyclerView.Adapter<CountingRevisionAdapter.ViewHolder>() {
+class CountingRevisionAdapter (private val context: Context, val items: Vector<CountingRevisionItem>) : RecyclerView.Adapter<CountingRevisionAdapter.ViewHolder>() {
     lateinit var countingRevisionFragment: CountingRevisionFragment
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CountingRevisionAdapter.ViewHolder {
@@ -31,6 +32,15 @@ class CountingRevisionAdapter (private val context: Context, private val items: 
         holder.binding.etMenCountingRevisionItems.setText(item.men.toString())
         holder.binding.etWomenCountingRevisionItems.setText(item.women.toString())
 
+        holder.binding.etWomenCountingRevisionItems.addTextChangedListener{
+            val women = it.toString().toIntOrNull() ?: item.women
+            item.women = women
+        }
+
+        holder.binding.etMenCountingRevisionItems.addTextChangedListener{
+            val men = it.toString().toIntOrNull() ?: item.men
+            item.men = men
+        }
     }
 
     inner class ViewHolder(var binding: CountingRevisionItemsBinding) : RecyclerView.ViewHolder(binding.root)
