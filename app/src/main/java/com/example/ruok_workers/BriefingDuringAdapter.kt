@@ -28,6 +28,7 @@ class BriefingDuringAdapter (private val context: Context, private val items: Ve
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
+        holder.binding.tvBriefingDuringNum.text = item.DuringNum.toString()
         holder.binding.tvBriefingDuringTitle.text= item.DuringTitle
         holder.binding.tvBriefingDuringTime.text = "작성시간 : " + item.DuringTime
         //listView선택시 BriefingDetailFragment로 이동
@@ -35,8 +36,7 @@ class BriefingDuringAdapter (private val context: Context, private val items: Ve
             BriefingDetailFragment = BriefingDetailFragment()
 
             var bundle = Bundle()
-            bundle.putString("b_title",item.DuringTitle)
-            bundle.putString("b_time", item.DuringTime)
+            bundle.putInt("b_num",item.DuringNum)
 
             BriefingDetailFragment.arguments = bundle
             (context as AppCompatActivity).supportFragmentManager.beginTransaction().replace(R.id.rootLayout, BriefingDetailFragment).commit()
