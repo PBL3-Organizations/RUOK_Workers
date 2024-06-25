@@ -49,8 +49,6 @@ class CountingRevisionFragment : Fragment() {
         var clDate : String = arguments?.getString("CL_DATE").toString()
         var clOrder : String = arguments?.getInt("CL_ORDER").toString()
 
-        Log.d("CountingRevisionFragment", "Received title: $title, course: $course, workers: $workers, ccNum: $ccNum, clDate: $clDate, clOrder: $clOrder")
-
         binding.tvTitleCountingRevision.text = title
         binding.tvCourseCountingRevision.text = course
         binding.tvWorkerCountingRevision.text = "작성자: " + workers
@@ -136,7 +134,6 @@ class CountingRevisionFragment : Fragment() {
                 }
             } catch (e: Exception) {
                 Log.e("CountingRevisionFragment", "Error saving counting data", e)
-                Toast.makeText(requireContext(), "에러 발생: ${e.message}", Toast.LENGTH_LONG).show()
             } finally {
                 sqlitedb.close()
                 dbManager.close()

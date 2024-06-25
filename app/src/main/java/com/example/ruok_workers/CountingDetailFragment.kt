@@ -53,8 +53,6 @@ class CountingDetailFragment : Fragment() {
         var course: String = arguments?.getString("CC_NAME").toString()
         var total: Int? = arguments?.getInt("CL_SUM")
 
-        Log.d(TAG, "Title: $title, Course: $course, Total: $total")
-
         binding.tvTitleCountingDetail.text = title
         binding.tvCourseCountingDetail.text = course
         binding.tvResultCountingDetail.text = "총 인원: " + total.toString() + "명"
@@ -76,7 +74,6 @@ class CountingDetailFragment : Fragment() {
 
         if (ccCursor.moveToFirst()) {
             ccNum = ccCursor.getInt(ccCursor.getColumnIndexOrThrow("cc_num"))
-            Log.d(TAG, "ccNum: $ccNum")
         }
         ccCursor.close()
 
@@ -87,7 +84,6 @@ class CountingDetailFragment : Fragment() {
 
         if (dateCursor.moveToFirst()) {
             clDate = dateCursor.getString(dateCursor.getColumnIndexOrThrow("cl_date"))
-            Log.d(TAG, "clDate: $clDate")
         }
         dateCursor.close()
 
@@ -98,7 +94,6 @@ class CountingDetailFragment : Fragment() {
 
         if (orderCursor.moveToFirst()) {
             clOrder = orderCursor.getInt(orderCursor.getColumnIndexOrThrow("cl_order"))
-            Log.d(TAG, "clOrder: $clOrder")
         }
         orderCursor.close()
 
@@ -109,8 +104,6 @@ class CountingDetailFragment : Fragment() {
         query += "JOIN counting_area ca ON cr.ca_num = ca.ca_num "
         query += "JOIN counting_course cc ON cc.cc_num = ca.cc_num "
         query += "WHERE cr.cl_date ='$clDate' AND cr.cl_order='$clOrder' AND cc.cc_num='$ccNum';"
-
-        Log.d(TAG, "Query: $query")
 
         var cursor: Cursor = sqlitedb.rawQuery(query, arrayOf())
 
@@ -124,7 +117,6 @@ class CountingDetailFragment : Fragment() {
 
             var item = CountingDetailItem(place, worker, women, men, sum)
             list.add(item)
-            Log.d(TAG, "Item added: $item")
         }
 
         cursor.close()
@@ -136,8 +128,6 @@ class CountingDetailFragment : Fragment() {
 
         val layoutManager = LinearLayoutManager(context)
         binding!!.rvCountingDetail.layoutManager = layoutManager
-
-        Log.d(TAG, "Setting adapter with list size: ${list.size}")
 
         adapter = CountingDetailAdapter(requireContext(), list)
         binding!!.rvCountingDetail.adapter = adapter
@@ -157,8 +147,6 @@ class CountingDetailFragment : Fragment() {
             bundle.putInt("CL_ORDER", clOrder!!)
             countingRevisionFragment.arguments = bundle
             requireActivity().supportFragmentManager.beginTransaction().replace(R.id.rootLayout, countingRevisionFragment).commit()
-            //val parentActivity = activity as DashboardActivity
-            //parentActivity.setFragment(CountingRevisionFragment())
         }
 
         binding.btnListCountingDetail.setOnClickListener {

@@ -110,10 +110,6 @@ class CountingTableFragment : Fragment() {
                         var men = item.men
                         var sum = women + men
                         total += sum
-                        Log.d(
-                            "CountingTableFragment",
-                            "Item: $place, Women: $women, Men: $men, Sum: $sum"
-                        )
 
                         //카운팅 코스 번호 가져오기
                         val ccNumQuery = "SELECT cc.cc_num FROM counting_course cc WHERE cc_name = '$selectedCourse'"
@@ -164,7 +160,6 @@ class CountingTableFragment : Fragment() {
                                 )
                             }
                             recordCursor.close()
-                            Log.d("CountingTableFragment", "Handled record: $date, $countingOrder, $caNum, $loginNum, $men, $women, $sum")
 
                         }
                         caNumCursor.close()
@@ -172,7 +167,6 @@ class CountingTableFragment : Fragment() {
 
                 } catch (e: Exception) {
                     Log.e("CountingTableFragment", "Error saving counting data", e)
-                    Toast.makeText(requireContext(), "에러 발생: ${e.message}", Toast.LENGTH_LONG).show()
                 } finally {
                     sqlitedb.close()
                     dbManager.close()

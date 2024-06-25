@@ -23,14 +23,11 @@ class CountingDetailAdapter (private val context: Context, val items: Vector<Cou
     }
 
     override fun getItemCount(): Int {
-        Log.d(TAG, "getItemCount: ${items.size}")
         return items.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int){
         val item = items[position]
-
-        Log.d(TAG, "onBindViewHolder: Position $position, Item $item")
 
         holder.binding.tvPlaceCountingDetailItems.text = item.place
         holder.binding.tvWorkerCountingDetailItems.text = "담당: " + item.worker
