@@ -3,6 +3,8 @@ package com.example.ruok_workers
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.location.Address
 import android.location.Geocoder
@@ -31,6 +33,8 @@ import com.naver.maps.map.util.FusedLocationSource
 import com.naver.maps.map.util.MarkerIcons
 import kotlinx.coroutines.launch
 import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
 
@@ -44,6 +48,14 @@ class LocationAddFragment : Fragment(), OnMapReadyCallback {
     private val LOCATION_PERMISSION_REQUEST_CODE = 1000
     private var cameraMoved = false  // 카메라가 이동되었는지 여부를 나타내는 플래그
     private var isManualLocation = false // 위치 업데이트를 수동으로 설정하는 플래그
+
+    lateinit var dbManager: DBManager
+    lateinit var sqlitedb: SQLiteDatabase
+
+    lateinit var item: ConsultationItem
+    var l_addr: String = ""
+    var l_lat: Double = 0.0
+    var l_lon: Double = 0.0
 
     //위치 정보 동의
     private val PERMISSIONS = arrayOf(
@@ -177,6 +189,11 @@ class LocationAddFragment : Fragment(), OnMapReadyCallback {
                     val addressParts = address.split(" ")
                     val filteredAddress = addressParts.drop(1).joinToString(" ")
 
+                    //데이터 가져오기
+                    l_addr = filteredAddress
+                    l_lat = location.latitude
+                    l_lon = location.longitude
+
                     // TextView에 동적으로 값 설정
                     binding.tvAddressLocationAdd.text = filteredAddress
                     binding.tvAddressPopLocationAdd.text = filteredAddress
@@ -211,7 +228,11 @@ class LocationAddFragment : Fragment(), OnMapReadyCallback {
         val bundle = Bundle()
         bundle.putInt("onRecording", onRecording)
 
-        val item = arguments?.getParcelable<ConsultationItem>("consultation_item")!!
+        item = arguments?.getParcelable<ConsultationItem>("consultation_item")!!
+        item.addr = l_addr
+        item.latitude = l_lat
+        item.longitude = l_lon
+
         val hasConsultation = arguments?.getInt("hasConsultation")!!
         bundle.putInt("hasConsultation", hasConsultation)
         bundle.putParcelable("consultation_item", item)
@@ -227,6 +248,38 @@ class LocationAddFragment : Fragment(), OnMapReadyCallback {
         //btnCompleteLocationAdd 클릭시 LocationAddFragment에서 LocationTrackingFragment로 이동
         binding.btnCompleteLocationAdd.setOnClickListener{
             val parentActivity = activity as DashboardActivity
+
+            val currentTime = System.currentTimeMillis()
+            val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date(currentTime))
+            Log.i("경화", "시간: "+sdf)
+
+            dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+            sqlitedb = dbManager.writableDatabase
+            var cursor: Cursor
+            var sql = "BEGIN TRANSACTION;"
+            sqlitedb.execSQL(sql)
+            sql = "INSERT INTO consultation(m_num, h_num, c_time, c_health, c_unusual, c_measure, c_content) VALUES (?, ?, ?, ?, ?, ?, ?);"
+            sqlitedb.execSQL(sql, arrayOf(item.m_num.toString(), item.h_num.toString(), sdf, item.health.toString(), item.unusual, item.measure, item.content))
+            sql = "SELECT last_insert_rowid() as c_num;"
+            cursor = sqlitedb.rawQuery(sql, arrayOf())
+            sql = "COMMIT;"
+            sqlitedb.execSQL(sql)
+
+            cursor.moveToNext()
+            val c_num = cursor.getInt(cursor.getColumnIndexOrThrow("c_num"))
+
+            for (i in 0 until item.filename.size) {
+                sql = "INSERT INTO photo(p_filename, c_num) VALUES(?, ?);"
+                sqlitedb.execSQL(sql, arrayOf(item.filename.get(i), c_num.toString()))
+            }
+
+            sql = "INSERT INTO location(c_num, l_addr, l_lat, l_lon)  VALUES(?, ?, ?, ?);"
+            sqlitedb.execSQL(sql, arrayOf(c_num.toString(), l_addr, l_lat, l_lon))
+
+            cursor.close()
+            sqlitedb.close()
+            dbManager.close()
+
             if (onRecording == 1) {
                 val locationTrackingFragment = LocationTrackingFragment()
                 locationTrackingFragment.arguments = bundle
