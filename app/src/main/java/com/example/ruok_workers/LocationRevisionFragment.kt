@@ -4,6 +4,8 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.pm.PackageManager
+import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.location.Address
 import android.location.Geocoder
@@ -46,6 +48,14 @@ class LocationRevisionFragment : Fragment(), OnMapReadyCallback {
     private val LOCATION_PERMISSION_REQUEST_CODE = 1000
     private var cameraMoved = false  // 카메라가 이동되었는지 여부를 나타내는 플래그
     private var isManualLocation = false // 위치 업데이트를 수동으로 설정하는 플래그
+
+    lateinit var dbManager: DBManager
+    lateinit var sqlitedb: SQLiteDatabase
+
+    lateinit var item: ConsultationItem
+    var l_addr: String = ""
+    var l_lat: Double = 0.0
+    var l_lon: Double = 0.0
 
     //위치 정보 동의
     private val PERMISSIONS = arrayOf(
@@ -179,6 +189,11 @@ class LocationRevisionFragment : Fragment(), OnMapReadyCallback {
                     val addressParts = address.split(" ")
                     val filteredAddress = addressParts.drop(1).joinToString(" ")
 
+                    //데이터 가져오기
+                    item.addr = filteredAddress
+                    item.latitude = location.latitude
+                    item.longitude = location.longitude
+
                     // TextView에 동적으로 값 설정
                     binding.tvAddressLocationRevision.text = filteredAddress
                     binding.tvAddressPopLocationRevision.text = filteredAddress
@@ -203,6 +218,34 @@ class LocationRevisionFragment : Fragment(), OnMapReadyCallback {
     ): View? {
         binding = FragmentLocationRevisionBinding.inflate(inflater, container, false)
 
+        //전달받은 데이터
+        val hasConsultation = arguments?.getInt("hasConsultation", 0)!!
+        val c_num = arguments?.getInt("c_num", 0)!!
+        item = arguments?.getParcelable<ConsultationItem>("consultation_item")!!
+
+        //기존 데이터 가져오기
+        dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+        sqlitedb = dbManager.readableDatabase
+        var cursor: Cursor
+        val sql = "SELECT l_addr, l_lat, l_lon FROM location WHERE c_num = ?;"
+        cursor = sqlitedb.rawQuery(sql, arrayOf(c_num.toString()))
+        cursor.moveToNext()
+        l_addr = cursor.getString(cursor.getColumnIndexOrThrow("l_addr"))
+        l_lat = cursor.getDouble(cursor.getColumnIndexOrThrow("l_lat"))
+        l_lon = cursor.getDouble(cursor.getColumnIndexOrThrow("l_lon"))
+
+        item.addr = l_addr
+        item.latitude = l_lat
+        item.longitude = l_lon
+
+        cursor.close()
+        sqlitedb.close()
+        dbManager.close()
+
+        binding.tvAddressLocationRevision.text = l_addr
+        binding.tvAddressPopLocationRevision.text = l_addr
+        binding.llPopLocationRevision.visibility = View.VISIBLE
+
         //btnSetLocationRevision 클릭시 만난 위치 레이아웃 나타남
         binding.btnSetLocationRevision.setOnClickListener {
             binding.llPopLocationRevision.visibility = View.VISIBLE
@@ -211,13 +254,39 @@ class LocationRevisionFragment : Fragment(), OnMapReadyCallback {
         //btnBeforeLocationRevision 클릭시 LocationRevisionFragment에서 HomelessRevisionFragment로 이동
         binding.btnBeforeLocationRevision.setOnClickListener{
             val parentActivity = activity as DashboardActivity
-            parentActivity.setFragment(HomelessRevisionFragment())
+            val homelessRevisionFragment = HomelessRevisionFragment()
+            val bundle = Bundle()
+            bundle.putInt("hasConsultation", hasConsultation)
+            bundle.putInt("c_num", c_num)
+            bundle.putParcelable("consultation_item", item)
+            homelessRevisionFragment.arguments = bundle
+            parentActivity.setFragment(homelessRevisionFragment)
         }
 
         //btnCompleteLocationRevision 클릭시 LocationRevisionFragment에서 DetailFragment로 이동
         binding.btnCompleteLocationRevision.setOnClickListener{
+            //데이터베이스 연동: 데이터 수정
+            dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+            sqlitedb = dbManager.writableDatabase
+            var sql = "UPDATE consultation SET m_num=?, h_num=?, c_health=?, c_unusual=?, c_measure=?, c_content=? WHERE c_num = ?;"
+            sqlitedb.execSQL(sql, arrayOf(item.m_num.toString(), item.h_num.toString(), item.health.toString(), item.unusual, item.measure, item.content, c_num.toString()))
+            sql = "UPDATE location SET l_addr = ?, l_lat = ?, l_lon = ? WHERE c_num = ?;"
+            sqlitedb.execSQL(sql, arrayOf(item.addr, item.latitude, item.longitude, c_num.toString()))
+            sql = "DELETE FROM photo WHERE c_num=?;"
+            sqlitedb.execSQL(sql, arrayOf(c_num.toString()))
+            for (i in 0 until item.filename.size) {
+                sql = "INSERT INTO photo(p_filename, c_num) VALUES(?, ?);"
+                sqlitedb.execSQL(sql, arrayOf(item.filename.get(i), c_num.toString()))
+            }
+            sqlitedb.close()
+            dbManager.close()
+
             val parentActivity = activity as DashboardActivity
-            parentActivity.setFragment(DetailsFragment())
+            val detailsFragment = DetailsFragment()
+            val bundle = Bundle()
+            bundle.putInt("c_num", c_num)
+            detailsFragment.arguments = bundle
+            parentActivity.setFragment(detailsFragment)
             Toast.makeText(context, "상담내역 수정!", Toast.LENGTH_SHORT).show()
         }
 
