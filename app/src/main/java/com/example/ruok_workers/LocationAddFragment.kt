@@ -190,9 +190,9 @@ class LocationAddFragment : Fragment(), OnMapReadyCallback {
                     val filteredAddress = addressParts.drop(1).joinToString(" ")
 
                     //데이터 가져오기
-                    l_addr = filteredAddress
-                    l_lat = location.latitude
-                    l_lon = location.longitude
+                    item.addr = filteredAddress
+                    item.latitude = location.latitude
+                    item.longitude = location.longitude
 
                     // TextView에 동적으로 값 설정
                     binding.tvAddressLocationAdd.text = filteredAddress
@@ -229,9 +229,6 @@ class LocationAddFragment : Fragment(), OnMapReadyCallback {
         bundle.putInt("onRecording", onRecording)
 
         item = arguments?.getParcelable<ConsultationItem>("consultation_item")!!
-        item.addr = l_addr
-        item.latitude = l_lat
-        item.longitude = l_lon
 
         val hasConsultation = arguments?.getInt("hasConsultation")!!
         bundle.putInt("hasConsultation", hasConsultation)
@@ -251,7 +248,6 @@ class LocationAddFragment : Fragment(), OnMapReadyCallback {
 
             val currentTime = System.currentTimeMillis()
             val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date(currentTime))
-            Log.i("경화", "시간: "+sdf)
 
             dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
             sqlitedb = dbManager.writableDatabase
@@ -274,7 +270,7 @@ class LocationAddFragment : Fragment(), OnMapReadyCallback {
             }
 
             sql = "INSERT INTO location(c_num, l_addr, l_lat, l_lon)  VALUES(?, ?, ?, ?);"
-            sqlitedb.execSQL(sql, arrayOf(c_num.toString(), l_addr, l_lat, l_lon))
+            sqlitedb.execSQL(sql, arrayOf(c_num.toString(), item.addr, item.latitude, item.longitude))
 
             cursor.close()
             sqlitedb.close()
