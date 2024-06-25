@@ -62,7 +62,11 @@ class DetailsFragment : Fragment() {
         //btnGoRevision클릭시 DatailsFragment에서 RevisionFragment로 이동
         binding.btnGoRevision.setOnClickListener {
             val DashboardActivity = activity as DashboardActivity
-            DashboardActivity.setFragment(RevisionFragment())
+            val bundle = Bundle()
+            bundle.putInt("c_num", c_num)
+            val revisionFragment = RevisionFragment()
+            revisionFragment.arguments = bundle
+            DashboardActivity.setFragment(revisionFragment)
         }
         //btnGoList클릭시 DatailsFragment에서 ListFragment로 이동
         binding.btnGoList.setOnClickListener {
