@@ -1,6 +1,7 @@
 package com.example.ruok_workers
 
 import android.app.AlertDialog
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.util.Log
@@ -14,12 +15,10 @@ import androidx.navigation.fragment.findNavController
 import com.example.ruok_workers.databinding.FragmentBriefingDetailBinding
 
 class BriefingDetailFragment : Fragment() {
-    private var param1: String? = null
-    private var param2: String? = null
-
     lateinit var binding:FragmentBriefingDetailBinding
     lateinit var dbManager: DBManager
     lateinit var sqlitedb: SQLiteDatabase
+    var b_num = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,33 +36,35 @@ class BriefingDetailFragment : Fragment() {
         val buttonEdit = view.findViewById<Button>(R.id.button_edit)
         val buttonBack = view.findViewById<Button>(R.id.button_back)
         val buttonDelete = view.findViewById<Button>(R.id.button_delete)
+        lateinit var name:String
+        lateinit var title:String
+        lateinit var time:String
+        lateinit var content:String
 
         //데이터베이스 연동
         dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
-        dbManager.close()
+        sqlitedb = dbManager.readableDatabase
         Log.i("DB", "dbManager")
 
-        var b_title:String =arguments?.getString("b_title").toString()
-        var b_time:String =arguments?.getString("b_time").toString()
-        lateinit var name:String
-        lateinit var detail:String
-
-        Log.i("DB", "$b_time,$b_title")
-
-//        val cursor = sqlitedb.rawQuery("SELECT b.b_num, b.b_content, m.m_name FROM briefing b JOIN member m ON m.m_num = b.m_num WHERE b_title = ? AND b_time =? ", arrayOf(b_title,b_time))
+        b_num =arguments?.getInt("b_num",0)!!
+        Log.i("DB", "$b_num")
+//        var cursor:Cursor
+//        val sql = "SELECT b.b_num, b.b_title, b.b_content, m.m_name, b.b_time FROM briefing b JOIN member m ON m.m_num = b.m_num WHERE b.b_num = ?;"
+//        cursor = sqlitedb.rawQuery(sql, arrayOf(b_num.toString()))
 //        Log.i("DB", "cursor")
-//        while (cursor.moveToFirst()) {
-//            Log.i("DB", "while")
-//            name = cursor.getString(cursor.getColumnIndexOrThrow("m.m_name")).toString()
-//            detail = cursor.getString(cursor.getColumnIndexOrThrow("b.b_content")).toString()
-//
-//        }
+//        cursor.moveToNext()
+//        Log.i("DB", "while")
+//            binding.tvDetailAuthor.text = cursor.getString(cursor.getColumnIndexOrThrow("m.m_name"))
+//            Log.i("DB", "name")
+//            binding.tvDetailTitle.text = cursor.getString(cursor.getColumnIndexOrThrow("b.b_title"))
+//            Log.i("DB", "title")
+//            binding.tvDetailTimestamp.text = cursor.getString(cursor.getColumnIndexOrThrow("b.b_time"))
+//            Log.i("DB", "time")
+//            binding.tvBriefingDetails.text = cursor.getString(cursor.getColumnIndexOrThrow("b.b_content"))
+//            Log.i("DB", "content")
 //        cursor.close()
-//        //TextView에 데이터 표시
-//        binding.textViewAuthor.text = name
-//        binding.textViewTitle.text = b_title
-//        binding.textViewTimestamp.text = b_time
-//        binding.textViewBriefingDetails.text = detail
+//        sqlitedb.close()
+//        dbManager.close()
 
 
         buttonEdit.setOnClickListener {
@@ -95,17 +96,6 @@ class BriefingDetailFragment : Fragment() {
             }
             alertDialogBuilder.show()
         }
-
-        return view
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            CountingDetailFragment().apply {
-                arguments = Bundle().apply {
-
-                }
-            }
+        return binding!!.root
     }
 }

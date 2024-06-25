@@ -43,20 +43,19 @@ class BriefingBeforeFragment : Fragment() {
 
         //여기서 b_type 번호(0 - 후 / 1 - 전 / 2 - 중)
         val cursor: Cursor = sqlitedb.rawQuery("SELECT * FROM briefing WHERE b_type = 1 ORDER BY b_notice DESC, b_time DESC", null)
-        lateinit var title:String
-        lateinit var bTime:String
+
         while (cursor.moveToNext()) {
-            title = cursor.getString(cursor.getColumnIndexOrThrow("b_title"))
-            bTime = cursor.getString(cursor.getColumnIndexOrThrow("b_time"))
-            val isNotice = cursor.getInt(cursor.getColumnIndexOrThrow("b_notice"))
+            var bNum: Int = cursor.getInt(cursor.getColumnIndexOrThrow("b_num"))
+            var title:String = cursor.getString(cursor.getColumnIndexOrThrow("b_title"))
+            var bTime:String = cursor.getString(cursor.getColumnIndexOrThrow("b_time"))
+            val isNotice:Int = cursor.getInt(cursor.getColumnIndexOrThrow("b_notice"))
 
             val displayTitle = if (isNotice == 1) {
                 "\uD83D\uDD34 $title"  // Red circle emoji
             } else {
                 title
             }
-            briefingsBefore.add(BriefingBeforeCard(displayTitle,bTime))
-            Log.i("DB", "briefingsBefore.add")
+            briefingsBefore.add(BriefingBeforeCard(bNum,displayTitle,bTime))
 
         }
         cursor.close()
@@ -77,26 +76,6 @@ class BriefingBeforeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
     }
 
-    @SuppressLint("Range")
-    private fun displayBriefings() {
-
-
-//        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, briefingsBefore)
-//        listView.adapter = adapter
-//        List.setOnItemClickListener { parent, view, position, id ->
-//            Log.i("DB", "setOnItemClickListener")
-//            com.example.ruok_workers.BriefingDetailFragment = BriefingDetailFragment()
-//
-//            var bundle = Bundle()
-//            bundle.putString("b_title","$title")
-//            bundle.putString("b_time", bTime)
-//
-//            com.example.ruok_workers.BriefingDetailFragment.arguments = bundle
-//            (context as AppCompatActivity).supportFragmentManager.beginTransaction().replace(R.id.rootLayout,
-//                com.example.ruok_workers.BriefingDetailFragment
-//            ).commit()
-//        }
-    }
     companion object {
 
         @JvmStatic

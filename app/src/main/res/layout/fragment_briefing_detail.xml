@@ -7,7 +7,7 @@
 
     <!-- 작성자 -->
     <TextView
-        android:id="@+id/textView_author"
+        android:id="@+id/tvDetailAuthor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -17,10 +17,10 @@
 
     <!-- 게시글 제목 -->
     <TextView
-        android:id="@+id/textView_title"
+        android:id="@+id/tvDetailTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textView_author"
+        android:layout_below="@id/tvDetailAuthor"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:text="게시글 제목"
@@ -29,10 +29,10 @@
 
     <!-- 작성 시간 -->
     <TextView
-        android:id="@+id/textView_timestamp"
+        android:id="@+id/tvDetailTimestamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textView_title"
+        android:layout_below="@id/tvDetailTitle"
         android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
         android:text="작성 시간: "
@@ -40,10 +40,10 @@
 
     <!-- 작성 내용 상세 -->
     <TextView
-        android:id="@+id/textView_briefing_details"
+        android:id="@+id/tvBriefingDetails"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textView_timestamp"
+        android:layout_below="@id/tvDetailTimestamp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:text="작성 내용 상세"
@@ -51,10 +51,10 @@
 
     <!-- 작성 내용 상세 -->
     <EditText
-        android:id="@+id/editText_briefing_details"
+        android:id="@+id/etBriefingDetails"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:layout_below="@id/textView_timestamp"
+        android:layout_below="@id/tvDetailTimestamp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"

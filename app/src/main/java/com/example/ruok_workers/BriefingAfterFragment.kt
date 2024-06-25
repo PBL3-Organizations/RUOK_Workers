@@ -34,16 +34,17 @@ class BriefingAfterFragment : Fragment() {
         val cursor: Cursor = sqlitedb.rawQuery("SELECT * FROM briefing WHERE b_type = 0 ORDER BY b_notice DESC, b_time DESC", null)
 
         while (cursor.moveToNext()) {
-            val title = cursor.getString(cursor.getColumnIndexOrThrow("b_title"))
-            val bTime = cursor.getString(cursor.getColumnIndexOrThrow("b_time"))
-            val isNotice = cursor.getInt(cursor.getColumnIndexOrThrow("b_notice"))
+            var bNum: Int = cursor.getInt(cursor.getColumnIndexOrThrow("b_num"))
+            val title:String = cursor.getString(cursor.getColumnIndexOrThrow("b_title"))
+            val bTime:String = cursor.getString(cursor.getColumnIndexOrThrow("b_time"))
+            val isNotice:Int = cursor.getInt(cursor.getColumnIndexOrThrow("b_notice"))
 
             val displayTitle = if (isNotice == 1) {
                 "\uD83D\uDD34 $title"  // Red circle emoji
             } else {
                 title
             }
-            briefingsAfter.add(BriefingAfterCard(title,bTime))
+            briefingsAfter.add(BriefingAfterCard(bNum,title,bTime))
         }
 
         cursor.close()

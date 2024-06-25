@@ -26,6 +26,7 @@ class BriefingAfterAdapter (private val context: Context, private val items: Vec
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
+        holder.binding.tvBriefingAfterNum.text = item.AfterNum.toString()
         holder.binding.tvBriefingAfterTitle.text = item.AfterTitle
         holder.binding.tvBriefingAfterTime.text = "작성시간 : " + item.AfterTime
         //listView선택시 BriefingDetailFragment로 이동
@@ -33,8 +34,7 @@ class BriefingAfterAdapter (private val context: Context, private val items: Vec
             BriefingDetailFragment = BriefingDetailFragment()
 
             var bundle = Bundle()
-            bundle.putString("b_title",item.AfterTitle)
-            bundle.putString("b_time", item.AfterTime)
+            bundle.putInt("b_num",item.AfterNum)
 
             BriefingDetailFragment.arguments = bundle
             (context as AppCompatActivity).supportFragmentManager.beginTransaction().replace(R.id.rootLayout, BriefingDetailFragment).commit()
