@@ -85,6 +85,7 @@ class CountingAddFragment : Fragment() {
             val bundle = Bundle()
             bundle.putString("course", selectedCourse)
             bundle.putStringArrayList("locations", ArrayList(selectedLocations))
+            bundle.putInt("m_num", loginNum)
 
             val countingTableFragment = CountingTableFragment()
             countingTableFragment.arguments = bundle
