@@ -4,11 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/BriefingAfterFragment"
     tools:context=".BriefingAfterFragment">
 
 
     <!-- 저장된 글 목록을 보여주기 위한 ListView -->
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listView_briefing_after"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

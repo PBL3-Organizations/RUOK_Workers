@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/BriefingBoardFragment"
     tools:context=".BriefingBoardFragment">
 
     <!-- 아웃리치 상태를 선택할 수 있는 TabLayout -->
