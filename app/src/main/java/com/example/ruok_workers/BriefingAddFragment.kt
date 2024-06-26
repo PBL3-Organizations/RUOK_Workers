@@ -2,6 +2,7 @@ package com.example.ruok_workers
 
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,6 +52,8 @@ class BriefingAddFragment : Fragment() {
 
             sqlitedb.execSQL("INSERT INTO briefing (b_title, b_content, m_num, b_time, b_type, b_notice) " +
                     "VALUES ('$title', '$content', '$loginNum', '$currentDate', $tabPosition, $isNotice);")
+
+            Log.d("BriefingAddFragment", "Received add: $title, $content, $loginNum, $currentDate, $tabPosition, $isNotice")
 
             sqlitedb.close()
             dbManager.close()

@@ -31,6 +31,11 @@ class BriefingDetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        //기존 로그인 정보 가져오기
+        var loginNum: Int = -1
+        loginNum = arguments?.getInt("m_num")!!
+
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_briefing_detail, container, false)
         val buttonEdit = view.findViewById<Button>(R.id.button_edit)
@@ -87,7 +92,12 @@ class BriefingDetailFragment : Fragment() {
         }
 
         buttonBack.setOnClickListener {
+
+            val bundle = Bundle()
+            bundle.putInt("m_num", loginNum)
+
             val briefingBoardFragment = BriefingBoardFragment()
+            briefingBoardFragment.arguments = bundle
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.rootLayout, briefingBoardFragment)
                 .commit()
