@@ -73,7 +73,7 @@ class HomelessListFragment : Fragment() {
                         var photoFilename: String = cursor.getString(cursor.getColumnIndex("h_photo"))
                         var resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
 
-                        list.add(FaviconItem(name, birth, num, bookmark, resId))
+                        list.add(FaviconItem(name, birth, num, bookmark, resId, loginNum))
                     } while (cursor.moveToNext())
                 }
                 cursor?.close()
@@ -94,7 +94,7 @@ class HomelessListFragment : Fragment() {
                         var photoFilename: String = cursor.getString(cursor.getColumnIndex("h_photo"))
                         var resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
 
-                        list.add(FaviconItem(name, birth, num, bookmark, resId))
+                        list.add(FaviconItem(name, birth, num, bookmark, resId, loginNum))
                     } while (cursor.moveToNext())
                 }
                 cursor?.close()
