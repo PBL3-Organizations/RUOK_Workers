@@ -42,6 +42,7 @@ class PhotoRevisionFragment : Fragment() {
 
     lateinit var item: ConsultationItem
     var c_num = -1
+    var h_num = -1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,6 +54,7 @@ class PhotoRevisionFragment : Fragment() {
         item = arguments?.getParcelable<ConsultationItem>("consultation_item")!!
         val hasConsultation = arguments?.getInt("hasConsultation")!!
         c_num = arguments?.getInt("c_num", 0)!!
+        h_num = arguments?.getInt("h_num", 0)!!
 
         //데이터베이스 연동 및 기존 데이터 적용
         val photoList = Vector<String>()
@@ -93,6 +95,7 @@ class PhotoRevisionFragment : Fragment() {
             val bundle = Bundle()
             bundle.putInt("hasConsultation", hasConsultation)
             bundle.putInt("c_num", c_num)
+            bundle.putInt("h_num", h_num)
             bundle.putParcelable("consultation_item", item)
             revisionFragment.arguments = bundle
             DashboardActivity.setFragment(revisionFragment)
@@ -104,6 +107,7 @@ class PhotoRevisionFragment : Fragment() {
             val bundle = Bundle()
             bundle.putInt("hasConsultation", hasConsultation)
             bundle.putInt("c_num", c_num)
+            bundle.putInt("h_num", h_num)
             bundle.putParcelable("consultation_item", item)
             homelessRevisionFragment.arguments = bundle
             DashboardActivity.setFragment(homelessRevisionFragment)

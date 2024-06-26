@@ -285,6 +285,7 @@ class LocationRevisionFragment : Fragment(), OnMapReadyCallback {
             val detailsFragment = DetailsFragment()
             val bundle = Bundle()
             bundle.putInt("c_num", c_num)
+            bundle.putInt("h_num", item.h_num)
             detailsFragment.arguments = bundle
             parentActivity.setFragment(detailsFragment)
             Toast.makeText(context, "상담내역 수정!", Toast.LENGTH_SHORT).show()
