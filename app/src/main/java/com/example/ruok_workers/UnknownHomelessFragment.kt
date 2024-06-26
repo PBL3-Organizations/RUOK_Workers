@@ -49,9 +49,9 @@ class UnknownHomelessFragment : Fragment() {
         var cursor: Cursor
         cursor = sqlitedb.rawQuery(unknownQuery, arrayOf())
         while (cursor.moveToNext()){
-            var meet_photo: String = cursor.getString(cursor.getColumnIndexOrThrow("p.p_filename"))
-            var meet_place: String = cursor.getString(cursor.getColumnIndexOrThrow("c.c_time"))
-            var meeet_log: String = cursor.getString(cursor.getColumnIndexOrThrow("l.l_addr"))
+            var meet_photo: String = cursor.getString(cursor.getColumnIndexOrThrow("p_filename"))
+            var meet_place: String = cursor.getString(cursor.getColumnIndexOrThrow("c_time"))
+            var meeet_log: String = cursor.getString(cursor.getColumnIndexOrThrow("l_addr"))
             var resId : Int = resources.getIdentifier(meet_photo.substringBefore('.'), "drawable", requireContext().packageName)
             val item = UnknownCard(resId,meet_place, meeet_log)
             list.add(item)
@@ -63,8 +63,7 @@ class UnknownHomelessFragment : Fragment() {
         var filter = 0
         //스피너 처리
         binding.spinnerUnknown.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-            }
+
             override fun onItemSelected(
                 parent: AdapterView<*>?,
                 view: View?,
@@ -72,6 +71,8 @@ class UnknownHomelessFragment : Fragment() {
                 id: Long
             ) {
                 filter = position
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {
             }
         }
         //서치뷰로 필터링 구현
@@ -128,18 +129,20 @@ class UnknownHomelessFragment : Fragment() {
         adapter = UnknownAdapter(requireContext(),list)
         binding!!.UnknownRecyclerView.adapter = adapter
 
+        binding.serchviewUnknown.onActionViewExpanded()
+
         return binding.root
     }
     private fun addToList(cursor: Cursor): Vector<UnknownCard> {
         val items = Vector<UnknownCard>()
         while(cursor.moveToNext()) {
             // 리스트에 데이터 추가
-            var meet_photo: String = cursor.getString(cursor.getColumnIndexOrThrow("p.p_filename"))
-            var meet_place: String = cursor.getString(cursor.getColumnIndexOrThrow("c.c_time"))
-            var meeet_log: String = cursor.getString(cursor.getColumnIndexOrThrow("l.l_addr"))
+            var meet_photo: String = cursor.getString(cursor.getColumnIndexOrThrow("p_filename"))
+            var meet_place: String = cursor.getString(cursor.getColumnIndexOrThrow("c_time"))
+            var meeet_log: String = cursor.getString(cursor.getColumnIndexOrThrow("l_addr"))
             var resId : Int = resources.getIdentifier(meet_photo.substringBefore('.'), "drawable", requireContext().packageName)
             val item = UnknownCard(resId,meet_place, meeet_log)
-            list.add(item)
+            items.add(item)
         }
         return items
     }
