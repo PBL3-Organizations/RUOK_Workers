@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,8 +32,7 @@ class BriefingAfterFragment : Fragment() {
         sqlitedb = dbManager.readableDatabase
         val briefingsAfter = Vector<BriefingAfterCard>()
 
-        val cursor: Cursor = sqlitedb.rawQuery("SELECT * FROM briefing WHERE b_type = 0 ORDER BY b_notice DESC, b_time DESC", null)
-
+        val cursor: Cursor = sqlitedb.rawQuery("SELECT * FROM briefing WHERE b_type = 3 ORDER BY b_notice DESC, b_time DESC", null)
         while (cursor.moveToNext()) {
             var bNum: Int = cursor.getInt(cursor.getColumnIndexOrThrow("b_num"))
             val title:String = cursor.getString(cursor.getColumnIndexOrThrow("b_title"))

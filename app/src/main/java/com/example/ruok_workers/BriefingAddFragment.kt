@@ -36,7 +36,7 @@ class BriefingAddFragment : Fragment() {
         val titleEditText = view.findViewById<EditText>(R.id.editText_briefing_title)
         val contentEditText = view.findViewById<EditText>(R.id.editText_briefing_content)
 
-        val tabPosition = requireArguments().getInt("tabPosition", 0)
+        var tabPosition = requireArguments().getInt("tabPosition", 0)
 
         submitButton.setOnClickListener {
             val isSetAsNotice = setAsNoticeCheckbox.isChecked
@@ -49,6 +49,7 @@ class BriefingAddFragment : Fragment() {
             val currentDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
             val isNotice = if (isSetAsNotice) 1 else 0
 
+            if(tabPosition == 0) tabPosition = 3
             sqlitedb.execSQL("INSERT INTO briefing (b_title, b_content, m_num, b_time, b_type, b_notice) " +
                     "VALUES ('$title', '$content', '$loginNum', '$currentDate', $tabPosition, $isNotice);")
 
