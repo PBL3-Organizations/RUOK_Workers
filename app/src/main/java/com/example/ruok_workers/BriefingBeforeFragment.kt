@@ -31,18 +31,11 @@ class BriefingBeforeFragment : Fragment() {
     private lateinit var binding: FragmentBriefingBeforeBinding
     private lateinit var adapter: BriefingBeforeAdapter
     private lateinit var BriefingDetailFragment:BriefingDetailFragment
-
-    var loginNum : Int = -1
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentBriefingBeforeBinding.inflate(inflater,container,false)
-
-        //기존 로그인 정보 가져오기
-        loginNum = arguments?.getInt("m_num")!!
-
         dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
         sqlitedb = dbManager.readableDatabase
 //        displayBriefings()
@@ -62,7 +55,7 @@ class BriefingBeforeFragment : Fragment() {
             } else {
                 title
             }
-            briefingsBefore.add(BriefingBeforeCard(bNum,displayTitle,bTime, loginNum.toString()))
+            briefingsBefore.add(BriefingBeforeCard(bNum,displayTitle,bTime))
 
         }
         cursor.close()

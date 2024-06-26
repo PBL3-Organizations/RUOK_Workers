@@ -1,6 +1,6 @@
 package com.example.ruok_workers
 
-class BriefingDuringCard (DuringNum:Int, DuringTitle:String, DuringTime:String, loginNum:String) {
+class BriefingDuringCard (DuringNum:Int, DuringTitle:String, DuringTime:String) {
     var DuringNum:Int = DuringNum
         private set
     var DuringTitle:String = DuringTitle
@@ -8,6 +8,4 @@ class BriefingDuringCard (DuringNum:Int, DuringTitle:String, DuringTime:String, 
     var DuringTime:String = DuringTime
         private set
 
-    var loginNum:String = loginNum
-        private set
 }

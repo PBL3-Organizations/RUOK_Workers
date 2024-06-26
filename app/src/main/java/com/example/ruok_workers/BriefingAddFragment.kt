@@ -54,8 +54,6 @@ class BriefingAddFragment : Fragment() {
             sqlitedb.execSQL("INSERT INTO briefing (b_title, b_content, m_num, b_time, b_type, b_notice) " +
                     "VALUES ('$title', '$content', '$loginNum', '$currentDate', $tabPosition, $isNotice);")
 
-            Log.d("BriefingAddFragment", "Received add: $title, $content, $loginNum, $currentDate, $tabPosition, $isNotice")
-
             sqlitedb.close()
             dbManager.close()
 

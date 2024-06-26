@@ -21,21 +21,15 @@ class BriefingBoardFragment : Fragment() {
     private lateinit var newPostButton: Button
     private var lastSelectedTabPosition: Int = 0
 
-    var loginNum : Int = -1
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         return inflater.inflate(R.layout.fragment_briefing_board, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        //기존 로그인 정보 가져오기
-        loginNum = arguments?.getInt("m_num")!!
 
         tabLayout = view.findViewById(R.id.tab_layout)
         viewPager = view.findViewById(R.id.view_pager)
@@ -69,8 +63,6 @@ class BriefingBoardFragment : Fragment() {
             // BriefingAddFragment로 마지막으로 선택된 탭 위치를 전달하는 부분
             val args = Bundle()
             args.putInt("tabPosition", lastSelectedTabPosition)
-            args.putInt("m_num", loginNum)
-
             fragment.arguments = args
 
             parentActivity.setFragment(fragment)

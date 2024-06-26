@@ -28,10 +28,6 @@ class BriefingDuringFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentBriefingDuringBinding.inflate(inflater,container,false)
-
-        //기존 로그인 정보 가져오기
-        var loginNum = arguments?.getInt("m_num")!!
-
         dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
         sqlitedb = dbManager.readableDatabase
         val briefingsDuring = Vector<BriefingDuringCard>()
@@ -49,7 +45,7 @@ class BriefingDuringFragment : Fragment() {
             } else {
                 title
             }
-            briefingsDuring.add(BriefingDuringCard(bNum,title,bTime, loginNum.toString()))
+            briefingsDuring.add(BriefingDuringCard(bNum,title,bTime))
         }
         cursor.close()
         val layoutManager = LinearLayoutManager(context)
