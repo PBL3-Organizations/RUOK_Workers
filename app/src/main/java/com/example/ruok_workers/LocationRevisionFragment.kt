@@ -258,6 +258,7 @@ class LocationRevisionFragment : Fragment(), OnMapReadyCallback {
             val bundle = Bundle()
             bundle.putInt("hasConsultation", hasConsultation)
             bundle.putInt("c_num", c_num)
+            bundle.putInt("h_num", item.h_num)
             bundle.putParcelable("consultation_item", item)
             homelessRevisionFragment.arguments = bundle
             parentActivity.setFragment(homelessRevisionFragment)
