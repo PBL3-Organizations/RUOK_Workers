@@ -167,27 +167,7 @@ class UnknownHomelessFragment : Fragment() {
 
         return binding.root
     }
-//    private fun addToList(cursor: Cursor): Vector<UnknownCard> {
-//        val items = Vector<UnknownCard>()
-//        while(cursor.moveToNext()) {
-//            // 리스트에 데이터 추가
-//            var meet_photo: String = cursor.getString(cursor.getColumnIndexOrThrow("p.p_filename"))
-//            var meet_place: String = cursor.getString(cursor.getColumnIndexOrThrow("c.c_time"))
-//            var meeet_log: String = cursor.getString(cursor.getColumnIndexOrThrow("l.l_addr"))
-//            var resId : Int = resources.getIdentifier(meet_photo.substringBefore('.'), "drawable", requireContext().packageName)
-//            val item = UnknownCard(resId,meet_place, meeet_log)
-//            list.add(item)
-//            Log.i("DB","$resId,$meet_place, $meeet_log")
-//        }
-//        return items
-//    }
 
-    private fun setUnknwnAdapter(items: Vector<UnknownCard>) {
-        adapter = UnknownAdapter(requireContext(),items)
-        binding!!.UnknownRecyclerView.adapter = adapter
-
-        binding.serchviewUnknown.onActionViewExpanded()
-    }
     companion object {
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
