@@ -59,11 +59,20 @@ class BriefingDetailFragment : Fragment() {
         cursor.close()
         sqlitedb.close()
         dbManager.close()
-
+        var b_title:String = tvDetailTitle.text.toString()
+        var b_content:String = tvBriefingDetails.text.toString()
 
         buttonEdit.setOnClickListener {
-            val DashboardActivity = activity as DashboardActivity
-            DashboardActivity.setFragment(BriefingRevisionFragment())
+            val bundle = Bundle()
+            bundle.putInt("b_num", b_num)
+            bundle.putString("b_title",b_title)
+            bundle.putString("b_content",b_content)
+
+            val BriefingRevisionFragment = BriefingRevisionFragment()
+            BriefingRevisionFragment.arguments = bundle
+            requireActivity().supportFragmentManager.beginTransaction().replace(R.id.rootLayout, BriefingRevisionFragment).commit()
+//            val DashboardActivity = activity as DashboardActivity
+//            DashboardActivity.setFragment(BriefingRevisionFragment())
         }
 
 

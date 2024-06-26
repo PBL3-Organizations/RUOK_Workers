@@ -1,6 +1,7 @@
 package com.example.ruok_workers
 
 import BriefingBoardFragment
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -18,25 +19,29 @@ class BriefingRevisionFragment : Fragment() {
 
     lateinit var dbManager: DBManager
     lateinit var sqlitedb: SQLiteDatabase
-
+    var b_num = -1
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_briefing_revision, container, false)
+        val CheckBox = view.findViewById<TextView>(R.id.checkbox_set_as_notice)
 
         //데이터베이스 연동
         dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
         dbManager.close()
 
+        b_num =arguments?.getInt("b_num",0)!!
+        var b_title = arguments?.getString("b_title").toString()
+        var b_content = arguments?.getString("b_content").toString()
         // Accessing TextView for title and content
         val titleTextView = view.findViewById<TextView>(R.id.title_text)
         val contentTextView = view.findViewById<TextView>(R.id.content_text)
 
         // Setting initial text for title and content
-        titleTextView.text = initialTitle
-        contentTextView.text = initialContent
+        titleTextView.text = b_title
+        contentTextView.text = b_content
 
         // Accessing Button and setting click listener
         val editButton = view.findViewById<Button>(R.id.edit_button)
