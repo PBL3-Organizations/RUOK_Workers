@@ -12,6 +12,7 @@ import com.example.ruok_workers.databinding.FaviconEditItemsBinding
 
 class HomelessListAdapter (private val context: Context, val itemList: ArrayList<FaviconItem>) : RecyclerView.Adapter<HomelessListAdapter.FaviconViewHolder>(){
     lateinit var homelessListFragment: HomelessListFragment
+    var h_num = 0;
 
     inner class FaviconViewHolder(var binding: FaviconEditItemsBinding) : RecyclerView.ViewHolder(binding.root) {
         val tvfeName = itemView.findViewById<TextView>(R.id.tvfeName)
@@ -61,6 +62,10 @@ class HomelessListAdapter (private val context: Context, val itemList: ArrayList
                 holder.binding.ibtnStar.tag = "on"
 
             }
+        }
+
+        holder.binding.cvFaviconEdit.setOnClickListener {
+            h_num = item.num
         }
     }
 

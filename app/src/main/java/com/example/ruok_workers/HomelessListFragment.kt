@@ -135,7 +135,7 @@ class HomelessListFragment : Fragment() {
 
         //btnNextHomelessList 클릭시 HomelessListFragment에서 LocationAddFragment로 이동
         binding.btnNextHomelessList.setOnClickListener{
-            item.h_num = num
+            item.h_num = adapter.h_num
             val parentActivity = activity as DashboardActivity
             val locationAddFragment = LocationAddFragment()
             bundle.putInt("hasConsultation", hasConsultation)
