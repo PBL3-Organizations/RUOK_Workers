@@ -37,7 +37,7 @@ class BriefingAddFragment : Fragment() {
         val titleEditText = view.findViewById<EditText>(R.id.editText_briefing_title)
         val contentEditText = view.findViewById<EditText>(R.id.editText_briefing_content)
 
-        var tabPosition = requireArguments().getInt("tabPosition", 0)
+        var tabPosition = arguments?.getInt("tabPosition", 0)
 
         submitButton.setOnClickListener {
             val isSetAsNotice = setAsNoticeCheckbox.isChecked
