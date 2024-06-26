@@ -70,22 +70,21 @@ class PhotoRevisionFragment : Fragment() {
         sqlitedb.close()
         dbManager.close()
 
-        //기존 사진 ivPhotoRevision 넣기(마지막 사진 하나밖에 안 들어감): 사진이 내부저장소에 저장된 경우
-//        for (i in 0 until photoList.size) {
-//            val fileName: String = photoList.get(i)
-//            val filePath = requireContext().filesDir.absolutePath + "/" + fileName
-//
-//            val imgFile = File(filePath)
-//            if(imgFile.exists()) {
-//                val bitmap = BitmapFactory.decodeFile(imgFile.absolutePath)
-//                binding.ivPhotoRevision.setImageBitmap(bitmap)
-//            }
-//        }
-
-        ////기존 사진 ivPhotoRevision 넣기(마지막 사진 하나밖에 안 들어감): 사진이 drawable에 저장된 경우
+        //기존 사진 ivPhotoRevision 넣기(마지막 사진 하나밖에 안 들어감)
         for (i in 0 until photoList.size) {
-            var resId = resources.getIdentifier(photoList.get(i).substringBefore('.'), "drawable", requireContext().packageName)
-            binding.ivPhotoRevision.setImageResource(resId)
+            val fileName: String = photoList.get(i)
+            if (fileName.contains(".")) { //사진이 drawable에 저장된 경우
+                var resId = resources.getIdentifier(photoList.get(i).substringBefore('.'), "drawable", requireContext().packageName)
+                binding.ivPhotoRevision.setImageResource(resId)
+            } else { //사진이 내부저장소에 저장된 경우
+                val filePath = requireContext().filesDir.absolutePath + "/" + fileName
+
+                val imgFile = File(filePath)
+                if(imgFile.exists()) {
+                    val bitmap = BitmapFactory.decodeFile(imgFile.absolutePath)
+                    binding.ivPhotoRevision.setImageBitmap(bitmap)
+                }
+            }
         }
 
         //btnPhotoRevisionBack클릭시 PhotoRevisionFragment에서 RevisionFragment로 이동

@@ -9,16 +9,20 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ruok_workers.databinding.FragmentDetailsBinding
+import java.util.Vector
 
 class DetailsFragment : Fragment() {
     lateinit var binding: FragmentDetailsBinding
+    lateinit var adapter: ConsultationPhotoAdapter
 
     lateinit var dbManager: DBManager
     lateinit var sqlitedb: SQLiteDatabase
 
     var c_num = -1
     var h_num = -1
+    var photo_items = Vector<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,9 +72,22 @@ class DetailsFragment : Fragment() {
             binding.tvBirth.text = "생년월일: "+h_birth.substring(0,4)+"."+h_birth.substring(4,6)+"."+h_birth.substring(6)
         }
 
+        //사진 데이터 가져오기
+        sql = "SELECT p_filename FROM photo WHERE c_num = ?;"
+        cursor = sqlitedb.rawQuery(sql, arrayOf(c_num.toString()))
+        while(cursor.moveToNext()) {
+            photo_items.add(cursor.getString(cursor.getColumnIndexOrThrow("p_filename")))
+        }
+
         cursor.close()
         sqlitedb.close()
         dbManager.close()
+
+        //사진 데이터 렌더링
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding!!.rvConsultationPhotos.layoutManager = layoutManager
+        adapter = ConsultationPhotoAdapter(requireContext(), photo_items)
+        binding!!.rvConsultationPhotos.adapter = adapter
 
         //btnGoRevision클릭시 DatailsFragment에서 RevisionFragment로 이동
         binding.btnGoRevision.setOnClickListener {
