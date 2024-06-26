@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.ruok_workers.databinding.FragmentBriefingDetailBinding
 
@@ -103,7 +104,12 @@ class BriefingDetailFragment : Fragment() {
                 sqlitedb.delete("briefing", "b_num = ?", arrayOf(b_num.toString()))
                 sqlitedb.close()
                 dbManager.close()
-                requireActivity().onBackPressed()
+
+                //게시판 목록으로
+                val parentActivity = activity as DashboardActivity
+                parentActivity.setFragment(BriefingBoardFragment())
+
+                Toast.makeText(requireContext(), "게시글을 삭제했습니다", Toast.LENGTH_SHORT).show()
             }
             alertDialogBuilder.setNegativeButton("아니오") { dialog, _ ->
                 dialog.dismiss()
