@@ -20,6 +20,7 @@ class BriefingDetailFragment : Fragment() {
     lateinit var dbManager: DBManager
     lateinit var sqlitedb: SQLiteDatabase
     var b_num = -1
+    var tabPosition = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +42,9 @@ class BriefingDetailFragment : Fragment() {
         val tvDetailTitle = view.findViewById<TextView>(R.id.tvDetailTitle)
         val tvDetailTimestamp = view.findViewById<TextView>(R.id.tvDetailTimestamp)
         val tvBriefingDetails = view.findViewById<TextView>(R.id.etBriefingDetails)
+
+        //tabPosition 가져오기
+        tabPosition = arguments?.getInt("tabPosition", -1)!!
 
         // 데이터베이스 연동
         dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
@@ -89,6 +93,9 @@ class BriefingDetailFragment : Fragment() {
 
         buttonBack.setOnClickListener {
             val briefingBoardFragment = BriefingBoardFragment()
+            val bundle = Bundle()
+            bundle.putInt("tabPosition", tabPosition)
+            briefingBoardFragment.arguments = bundle
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.rootLayout, briefingBoardFragment)
                 .commit()

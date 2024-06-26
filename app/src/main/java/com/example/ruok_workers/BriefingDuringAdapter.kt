@@ -37,6 +37,7 @@ class BriefingDuringAdapter (private val context: Context, private val items: Ve
 
             var bundle = Bundle()
             bundle.putInt("b_num",item.DuringNum)
+            bundle.putInt("tabPosition", 2)
 
             BriefingDetailFragment.arguments = bundle
             (context as AppCompatActivity).supportFragmentManager.beginTransaction().replace(R.id.rootLayout, BriefingDetailFragment).commit()

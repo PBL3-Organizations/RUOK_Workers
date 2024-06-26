@@ -35,6 +35,7 @@ class BriefingBeforeAdapter (private val context: Context, private val items:Vec
 
             var bundle = Bundle()
             bundle.putInt("b_num",item.beforeNum)
+            bundle.putInt("tabPosition", 1)
 
             BriefingDetailFragment.arguments = bundle
             (context as AppCompatActivity).supportFragmentManager.beginTransaction().replace(R.id.rootLayout, BriefingDetailFragment).commit()
