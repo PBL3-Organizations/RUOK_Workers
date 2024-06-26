@@ -45,7 +45,7 @@ class BriefingDuringFragment : Fragment() {
             } else {
                 title
             }
-            briefingsDuring.add(BriefingDuringCard(bNum,title,bTime))
+            briefingsDuring.add(BriefingDuringCard(bNum,displayTitle,bTime))
         }
         cursor.close()
         val layoutManager = LinearLayoutManager(context)
