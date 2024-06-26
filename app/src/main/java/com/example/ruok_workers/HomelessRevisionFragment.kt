@@ -76,7 +76,7 @@ class HomelessRevisionFragment : Fragment() {
             dbManager.close()
 
             list.clear()
-            list.add(FaviconItem(name, birth, num, bookmark, resId))
+            list.add(FaviconItem(name, birth, num, bookmark, resId, loginNum))
         }
 
         binding.centerTextView2.visibility = View.VISIBLE
@@ -111,7 +111,7 @@ class HomelessRevisionFragment : Fragment() {
                         var photoFilename: String = cursor.getString(cursor.getColumnIndexOrThrow("h_photo"))
                         var resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
 
-                        list.add(FaviconItem(name, birth, num, bookmark, resId))
+                        list.add(FaviconItem(name, birth, num, bookmark, resId, loginNum))
                     } while (cursor.moveToNext())
                 }
                 cursor?.close()
@@ -132,7 +132,7 @@ class HomelessRevisionFragment : Fragment() {
                         var photoFilename: String = cursor.getString(cursor.getColumnIndexOrThrow("h.h_photo"))
                         var resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
 
-                        list.add(FaviconItem(name, birth, num, bookmark, resId))
+                        list.add(FaviconItem(name, birth, num, bookmark, resId, loginNum))
                     } while (cursor.moveToNext())
                 }
                 cursor?.close()
