@@ -1,5 +1,6 @@
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +8,7 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.ruok_workers.BriefingAddFragment
+import com.example.ruok_workers.DashboardActivity
 import com.example.ruok_workers.R
 import com.example.ruok_workers.ViewPagerAdapter
 import com.google.android.material.tabs.TabLayout
@@ -55,6 +57,7 @@ class BriefingBoardFragment : Fragment() {
         }.attach()
 
         newPostButton.setOnClickListener {
+            val parentActivity = activity as DashboardActivity
             val fragment = BriefingAddFragment()
 
             // BriefingAddFragment로 마지막으로 선택된 탭 위치를 전달하는 부분
@@ -62,10 +65,7 @@ class BriefingBoardFragment : Fragment() {
             args.putInt("tabPosition", lastSelectedTabPosition)
             fragment.arguments = args
 
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.rootLayout, fragment)
-                .addToBackStack(null)
-                .commit()
+            parentActivity.setFragment(fragment)
         }
 
         // 탭 선택이 변경될 때마다 마지막으로 선택된 탭 위치를 업데이트하는 리스너
