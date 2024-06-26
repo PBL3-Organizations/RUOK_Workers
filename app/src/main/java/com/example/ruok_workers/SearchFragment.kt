@@ -66,12 +66,12 @@ class SearchFragment : Fragment() {
                 )
                 if (cursor != null && cursor.moveToFirst()) {
                     do {
-                        name = cursor.getString(cursor.getColumnIndexOrThrow("h.h_name")).toString()
-                        birth = cursor.getString(cursor.getColumnIndexOrThrow("h.h_birth")).toString()
-                        num = cursor.getInt(cursor.getColumnIndex("h.h_num"))
+                        name = cursor.getString(cursor.getColumnIndexOrThrow("h_name")).toString()
+                        birth = cursor.getString(cursor.getColumnIndexOrThrow("h_birth")).toString()
+                        num = cursor.getInt(cursor.getColumnIndex("h_num"))
                         bookmark = if (cursor.getInt(cursor.getColumnIndex("is_bookmarked")) == 1) 1 else 0
 
-                        var photoFilename: String = cursor.getString(cursor.getColumnIndex("h.h_photo"))
+                        var photoFilename: String = cursor.getString(cursor.getColumnIndex("h_photo"))
                         var resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
 
                         itemList.add(FaviconItem(name, birth, num, bookmark, resId))
@@ -87,12 +87,12 @@ class SearchFragment : Fragment() {
                 )
                 if (cursor != null && cursor.moveToFirst()) {
                     do {
-                        name = cursor.getString(cursor.getColumnIndexOrThrow("h.h_name")).toString()
-                        birth = cursor.getString(cursor.getColumnIndexOrThrow("h.h_birth")).toString()
-                        num = cursor.getInt(cursor.getColumnIndex("h.h_num"))
+                        name = cursor.getString(cursor.getColumnIndexOrThrow("h_name")).toString()
+                        birth = cursor.getString(cursor.getColumnIndexOrThrow("h_birth")).toString()
+                        num = cursor.getInt(cursor.getColumnIndex("h_num"))
                         bookmark = if (cursor.getInt(cursor.getColumnIndex("is_bookmarked")) == 1) 1 else 0
 
-                        var photoFilename: String = cursor.getString(cursor.getColumnIndex("h.h_photo"))
+                        var photoFilename: String = cursor.getString(cursor.getColumnIndex("h_photo"))
                         var resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
 
                         itemList.add(FaviconItem(name, birth, num, bookmark, resId))
