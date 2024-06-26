@@ -66,6 +66,7 @@ class LocationRevisionFragment : Fragment(), OnMapReadyCallback {
     private val requestMultiplePermissions =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
             if (permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true) {
+                locationSource = FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
                 initMapView()
             }
         }
