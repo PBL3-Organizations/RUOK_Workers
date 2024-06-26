@@ -41,22 +41,5 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
-
-        dbManager = DBManager(this, "RUOKsample", null, 1)
-
-        //데이터 조회 테스트
-        sqlitedb = dbManager.readableDatabase
-        var cursor: Cursor
-        cursor = sqlitedb.rawQuery("SELECT * FROM welfare_facilities;", null)
-        if(cursor.moveToNext()) {
-            val wf_num = cursor.getInt(cursor.getColumnIndex("wf_num")).toString() + "\n"
-            val wf_name = cursor.getString(cursor.getColumnIndex("wf_name")).toString() + "\n"
-            val wf_addr = cursor.getString(cursor.getColumnIndex("wf_addr")).toString()
-            var selected_data = wf_num + wf_name + wf_addr
-            Toast.makeText(this, selected_data, Toast.LENGTH_SHORT).show()
-        }
-        cursor.close()
-        sqlitedb.close()
-        dbManager.close()
     }
 }

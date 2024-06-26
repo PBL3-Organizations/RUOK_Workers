@@ -51,31 +51,34 @@ class HomelessRevisionFragment : Fragment() {
         item = arguments?.getParcelable<ConsultationItem>("consultation_item")!!
         val hasConsultation = arguments?.getInt("hasConsultation")!!
         c_num = arguments?.getInt("c_num", 0)!!
-        bundle.putInt("hasConsultation", hasConsultation)
-        bundle.putInt("c_num", c_num)
-        bundle.putParcelable("consultation_item", item)
+        num = arguments?.getInt("h_num", 0)!!
 
-        //기존 데이터 가져와서 적용
-        dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
-        sqlitedb = dbManager.readableDatabase
-        var cursor: Cursor
-        val sql = "SELECT h.*, b.m_num IS NOT NULL AS is_bookmarked FROM homeless h LEFT JOIN bookmark b ON h.h_num = b.h_num AND b.m_num = ? WHERE h.h_num = ?;"
-        cursor = sqlitedb.rawQuery(sql, arrayOf(loginNum.toString(), item.h_num.toString()))
-        cursor.moveToNext()
-        name = cursor.getString(cursor.getColumnIndexOrThrow("h.h_name")).toString()
-        birth = cursor.getString(cursor.getColumnIndexOrThrow("h.h_birth")).toString()
-        num = cursor.getInt(cursor.getColumnIndexOrThrow("h.h_num"))
-        bookmark = if (cursor.getInt(cursor.getColumnIndexOrThrow("is_bookmarked")) == 1) 1 else 0
+        if (num == 0) {
+            list.clear()
+        } else {
+            //기존 데이터 가져와서 적용
+            dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+            sqlitedb = dbManager.readableDatabase
+            var cursor: Cursor
+            val sql = "SELECT h.*, b.m_num IS NOT NULL AS is_bookmarked FROM homeless h LEFT JOIN bookmark b ON h.h_num = b.h_num AND b.m_num = ? WHERE h.h_num = ?;"
+            cursor = sqlitedb.rawQuery(sql, arrayOf(loginNum.toString(), item.h_num.toString()))
+            cursor.moveToNext()
+            name = cursor.getString(cursor.getColumnIndexOrThrow("h.h_name")).toString()
+            birth = cursor.getString(cursor.getColumnIndexOrThrow("h.h_birth")).toString()
+            num = cursor.getInt(cursor.getColumnIndexOrThrow("h.h_num"))
+            bookmark = if (cursor.getInt(cursor.getColumnIndexOrThrow("is_bookmarked")) == 1) 1 else 0
 
-        var photoFilename: String = cursor.getString(cursor.getColumnIndexOrThrow("h_photo"))
-        var resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
+            var photoFilename: String = cursor.getString(cursor.getColumnIndexOrThrow("h_photo"))
+            var resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
 
-        cursor.close()
-        sqlitedb.close()
-        dbManager.close()
+            cursor.close()
+            sqlitedb.close()
+            dbManager.close()
 
-        list.clear()
-        list.add(FaviconItem(name, birth, num, bookmark, resId))
+            list.clear()
+            list.add(FaviconItem(name, birth, num, bookmark, resId))
+        }
+
         binding.centerTextView2.visibility = View.VISIBLE
         binding.recyclerView.visibility = View.VISIBLE
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
@@ -153,6 +156,10 @@ class HomelessRevisionFragment : Fragment() {
         binding.btnBeforeHomelessList.setOnClickListener{
             val parentActivity = activity as DashboardActivity
             val photoRevisionFragment = PhotoRevisionFragment()
+            bundle.putInt("hasConsultation", hasConsultation)
+            bundle.putInt("c_num", c_num)
+            bundle.putInt("h_num", num)
+            bundle.putParcelable("consultation_item", item)
             photoRevisionFragment.arguments = bundle
             parentActivity.setFragment(photoRevisionFragment)
         }
@@ -162,13 +169,17 @@ class HomelessRevisionFragment : Fragment() {
             item.h_num = num
             val parentActivity = activity as DashboardActivity
             val locationRevisionFragment = LocationRevisionFragment()
+            bundle.putInt("hasConsultation", hasConsultation)
+            bundle.putInt("c_num", c_num)
+            bundle.putInt("h_num", num)
+            bundle.putParcelable("consultation_item", item)
             locationRevisionFragment.arguments = bundle
             parentActivity.setFragment(locationRevisionFragment)
         }
 
         //btnNoName 클릭시 h_num을 0으로 설정
         binding.btnNoName.setOnClickListener{
-            item.h_num = 0
+            num = 0
         }
 
         //btnNewHomeless 클릭시 HomelessRevisionFragment에서 ProfileAddFragment로 이동
