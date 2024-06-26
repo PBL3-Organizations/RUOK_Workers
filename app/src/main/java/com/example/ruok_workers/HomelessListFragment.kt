@@ -120,8 +120,6 @@ class HomelessListFragment : Fragment() {
 
         item = arguments?.getParcelable<ConsultationItem>("consultation_item")!!
         val hasConsultation = arguments?.getInt("hasConsultation")!!
-        bundle.putInt("hasConsultation", hasConsultation)
-        bundle.putParcelable("consultation_item", item)
 
         //btnBeforeHomelessList 클릭시 HomelessListFragment에서 PhotoAddFragment로 이동
         binding.btnBeforeHomelessList.setOnClickListener{
@@ -146,7 +144,7 @@ class HomelessListFragment : Fragment() {
 
         //btnNoName 클릭시 h_num을 0으로 설정
         binding.btnNoName.setOnClickListener{
-            item.h_num = 0
+            num = 0
         }
 
         //btnNewHomeless 클릭시 HomelessListFragment에서 ProfileAddFragment로 이동
