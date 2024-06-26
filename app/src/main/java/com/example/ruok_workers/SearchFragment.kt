@@ -74,7 +74,7 @@ class SearchFragment : Fragment() {
                         var photoFilename: String = cursor.getString(cursor.getColumnIndex("h_photo"))
                         var resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
 
-                        itemList.add(FaviconItem(name, birth, num, bookmark, resId))
+                        itemList.add(FaviconItem(name, birth, num, bookmark, resId, loginNum))
                     } while (cursor.moveToNext())
                 }
                 cursor?.close()
@@ -95,7 +95,7 @@ class SearchFragment : Fragment() {
                         var photoFilename: String = cursor.getString(cursor.getColumnIndex("h_photo"))
                         var resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
 
-                        itemList.add(FaviconItem(name, birth, num, bookmark, resId))
+                        itemList.add(FaviconItem(name, birth, num, bookmark, resId, loginNum))
                     } while (cursor.moveToNext())
                 }
                 cursor?.close()
