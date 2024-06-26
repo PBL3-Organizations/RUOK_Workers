@@ -18,6 +18,7 @@ class DetailsFragment : Fragment() {
     lateinit var sqlitedb: SQLiteDatabase
 
     var c_num = -1
+    var h_num = -1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,17 +26,22 @@ class DetailsFragment : Fragment() {
     ): View? {
         binding = FragmentDetailsBinding.inflate(inflater, container, false)
 
-        //상담내역 번호 가져오기
+        //상담내역 번호, 노숙인 이름 가져오기
         c_num = arguments?.getInt("c_num", 0)!!
+        h_num = arguments?.getInt("h_num", -1)!!
 
         //데이터베이스 연동
         dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
         sqlitedb = dbManager.readableDatabase
         var cursor: Cursor
-        val sql = "SELECT c.c_num, m.m_name, h.h_name, h.h_birth, c.c_time, c.c_health, c.c_unusual, c.c_measure, c.c_content, l.l_addr FROM consultation c JOIN member m ON c.m_num = m.m_num JOIN homeless h ON c.h_num = h.h_num JOIN location l ON c.c_num = l.c_num WHERE c.c_num = ?;"
+        var sql = ""
+        if (h_num == 0) {
+            sql = "SELECT c.c_num, m.m_name, '미상' AS h_name, '미상' AS h_birth, c.c_time, c.c_health, c.c_unusual, c.c_measure, c.c_content, l.l_addr FROM consultation c JOIN member m ON c.m_num = m.m_num JOIN location l ON c.c_num = l.c_num WHERE c.c_num = ?;"
+        } else {
+            sql = "SELECT c.c_num, m.m_name, h.h_name, h.h_birth, c.c_time, c.c_health, c.c_unusual, c.c_measure, c.c_content, l.l_addr FROM consultation c JOIN member m ON c.m_num = m.m_num JOIN homeless h ON c.h_num = h.h_num JOIN location l ON c.c_num = l.c_num WHERE c.c_num = ?;"
+        }
         cursor = sqlitedb.rawQuery(sql, arrayOf(c_num.toString()))
         cursor.moveToNext()
-        binding.tvName.text = "이름: "+cursor.getString(cursor.getColumnIndexOrThrow("h.h_name"))
         binding.tvAddr.text = "만난 장소: "+cursor.getString(cursor.getColumnIndexOrThrow("l.l_addr"))
         binding.tvUnusual.text = "특이사항: "+cursor.getString(cursor.getColumnIndexOrThrow("c.c_unusual"))
         binding.tvContent.text = "상담 내용: "+cursor.getString(cursor.getColumnIndexOrThrow("c.c_content"))
@@ -51,9 +57,16 @@ class DetailsFragment : Fragment() {
         //작성시간 데이터 가공
         val c_time = cursor.getString(cursor.getColumnIndexOrThrow("c.c_time"))
         binding.tvTime.text = "입력시간: "+c_time.substring(0,16)
-        //생년월일 데이터 가공
-        val h_birth = cursor.getString(cursor.getColumnIndexOrThrow("h.h_birth"))
-        binding.tvBirth.text = "생년월일: "+h_birth.substring(0,4)+"."+h_birth.substring(4,6)+"."+h_birth.substring(6)
+
+        if (h_num == 0) {
+            binding.tvName.text = "이름: 미상"
+            binding.tvBirth.text = "이름: 미상"
+        } else {
+            binding.tvName.text = "이름: "+cursor.getString(cursor.getColumnIndexOrThrow("h.h_name"))
+            //생년월일 데이터 가공
+            val h_birth = cursor.getString(cursor.getColumnIndexOrThrow("h.h_birth"))
+            binding.tvBirth.text = "생년월일: "+h_birth.substring(0,4)+"."+h_birth.substring(4,6)+"."+h_birth.substring(6)
+        }
 
         cursor.close()
         sqlitedb.close()
@@ -64,6 +77,7 @@ class DetailsFragment : Fragment() {
             val DashboardActivity = activity as DashboardActivity
             val bundle = Bundle()
             bundle.putInt("c_num", c_num)
+            bundle.putInt("h_num", h_num)
             val revisionFragment = RevisionFragment()
             revisionFragment.arguments = bundle
             DashboardActivity.setFragment(revisionFragment)

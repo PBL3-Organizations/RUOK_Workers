@@ -21,6 +21,7 @@ class RevisionFragment : Fragment() {
     var homeless = -1
     var c_num = -1
     var health = 0
+    var homeless_num = -1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,8 +29,9 @@ class RevisionFragment : Fragment() {
     ): View? {
         binding = FragmentRevisionBinding.inflate(inflater, container, false)
 
-        //상담내역 번호 가져오기
+        //상담내역 번호, 노숙인번호 가져오기
         c_num = arguments?.getInt("c_num", 0)!!
+        homeless_num = arguments?.getInt("h_num", 0)!!
 
         //데이터베이스 연동 및 기존 데이터 적용
         dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
@@ -77,9 +79,10 @@ class RevisionFragment : Fragment() {
             val content = binding.edtContentRev.text.toString()
 
             val bundle = Bundle()
-            val item = ConsultationItem(m_num, h_num, "", health, unusual, measure, content, "", 0.0, 0.0, arrayOf(""))
+            val item = ConsultationItem(m_num, h_num, "", health, unusual, measure, content, "", 0.0, 0.0, arrayOf())
             bundle.putInt("hasConsultation", 1)
             bundle.putInt("c_num", c_num)
+            bundle.putInt("h_num", homeless_num)
             bundle.putParcelable("consultation_item", item)
             val photoRevisionFragment = PhotoRevisionFragment()
             photoRevisionFragment.arguments = bundle

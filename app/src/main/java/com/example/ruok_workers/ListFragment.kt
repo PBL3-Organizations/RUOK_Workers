@@ -37,18 +37,19 @@ class ListFragment : Fragment() {
         dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
         sqlitedb = dbManager.readableDatabase
         var cursor: Cursor
-        var sql = "SELECT c.c_num, c.c_time, c.c_unusual, l.l_addr, h.h_name FROM consultation c JOIN location l ON c.c_num = l.c_num JOIN homeless h ON c.h_num = h.h_num ORDER BY c.c_time DESC;"
+        var sql = "SELECT c.c_num, c.c_time, c.c_unusual, l.l_addr, h.h_name, h.h_num FROM consultation c JOIN location l ON c.c_num = l.c_num JOIN homeless h ON c.h_num = h.h_num UNION SELECT c.c_num, c.c_time, c.c_unusual, l.l_addr, '미상' AS h_name, 0 AS h_num FROM consultation c JOIN location l ON c.c_num = l.c_num WHERE c.h_num = 0 ORDER BY c.c_time DESC;"
         cursor = sqlitedb.rawQuery(sql, arrayOf())
         while(cursor.moveToNext()) {
             // 리스트에 데이터 추가
             var consultationNum: Int = cursor.getInt(cursor.getColumnIndexOrThrow("c.c_num"))
+            var homelessNum: Int = cursor.getInt(cursor.getColumnIndexOrThrow("h_num"))
             var homelessName:String = cursor.getString(cursor.getColumnIndexOrThrow("h.h_name"))
             var homelessUnusual:String = cursor.getString(cursor.getColumnIndexOrThrow("c.c_unusual"))
             var homelessPlace:String = cursor.getString(cursor.getColumnIndexOrThrow("l.l_addr"))
             var homelessLog:String = cursor.getString(cursor.getColumnIndexOrThrow("c.c_time"))
 
             //리사이클러뷰 아이템 추가
-            val item = ListCard(consultationNum, homelessName, homelessUnusual, homelessLog, homelessPlace)
+            val item = ListCard(consultationNum, homelessNum, homelessName, homelessUnusual, homelessLog, homelessPlace)
             list.add(item)
         }
         cursor.close()
@@ -174,7 +175,7 @@ class ListFragment : Fragment() {
             var homelessLog:String = cursor.getString(cursor.getColumnIndexOrThrow("c.c_time"))
 
             //리사이클러뷰 아이템 추가
-            val item = ListCard(consultationNum, homelessName, homelessUnusual, homelessLog, homelessPlace)
+            val item = ListCard(consultationNum, -1, homelessName, homelessUnusual, homelessLog, homelessPlace)
             items.add(item)
         }
         return items
