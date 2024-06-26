@@ -57,6 +57,8 @@ class LocationRevisionFragment : Fragment(), OnMapReadyCallback {
     var l_lat: Double = 0.0
     var l_lon: Double = 0.0
 
+    private var currentMarker: Marker? = null
+
     //위치 정보 동의
     private val PERMISSIONS = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
@@ -66,6 +68,7 @@ class LocationRevisionFragment : Fragment(), OnMapReadyCallback {
     private val requestMultiplePermissions =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
             if (permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true) {
+                locationSource = FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
                 initMapView()
             }
         }
@@ -152,27 +155,26 @@ class LocationRevisionFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun updateMarkerLocation(location: Location): Marker {
-        val marker = Marker()
-        marker.setMap(null)
+        // 기존 마커가 있으면 제거
+        currentMarker?.map = null
 
-        Marker().apply{
-            marker.position = LatLng(location.latitude, location.longitude) //마커 위치
-//          marker.zIndex = 10 //마커 우선순위
-            marker.map = naverMap //마커 표시
-            marker.isIconPerspectiveEnabled = true //원근감 표시
-            marker.width = Marker.SIZE_AUTO
-            marker.height = Marker.SIZE_AUTO
-            marker.icon = MarkerIcons.BLACK
-            marker.iconTintColor = Color.RED
+        currentMarker = Marker().apply {
+            position = LatLng(location.latitude, location.longitude) //마커 위치
+            map = naverMap //마커 표시
+            isIconPerspectiveEnabled = true //원근감 표시
+            width = Marker.SIZE_AUTO
+            height = Marker.SIZE_AUTO
+            icon = MarkerIcons.BLACK
+            iconTintColor = Color.RED
         }
 
         if (!cameraMoved) {  // 카메라가 아직 이동되지 않은 경우에만 이동
-            val cameraUpdate = CameraUpdate.scrollTo(marker.position)
+            val cameraUpdate = CameraUpdate.scrollTo(currentMarker!!.position)
             naverMap.moveCamera(cameraUpdate)
             cameraMoved = true  // 플래그를 true로 설정하여 이후에는 카메라를 이동하지 않음
         }
 
-        return marker
+        return currentMarker as Marker
     }
 
     @Suppress("DEPRECATION")

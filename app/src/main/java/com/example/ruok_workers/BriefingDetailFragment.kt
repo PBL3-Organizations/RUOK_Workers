@@ -50,6 +50,7 @@ class BriefingDetailFragment : Fragment() {
             Log.e("BriefingDetailFragment", "Invalid b_num")
             return view
         }
+        Log.d("BriefingDetailFragment", "Received b_num: $b_num")
 
         val sql = """
             SELECT b.b_num, b.b_title AS title, b.b_content AS content, m.m_name AS author, b.b_time AS timestamp 
@@ -66,6 +67,7 @@ class BriefingDetailFragment : Fragment() {
             tvBriefingDetails.text = cursor.getString(cursor.getColumnIndexOrThrow("content"))
         } else {
             Log.e("BriefingDetailFragment", "No data returned from query")
+
         }
         cursor.close()
         sqlitedb.close()
