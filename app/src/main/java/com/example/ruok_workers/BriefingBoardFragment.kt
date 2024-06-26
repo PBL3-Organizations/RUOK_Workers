@@ -43,7 +43,7 @@ class BriefingBoardFragment : Fragment() {
                     tab.text = "아웃리치 전"
                     tab.contentDescription = "아웃리치 전 탭"
                 }
-                3 -> {
+                0 -> {
                     tab.text = "아웃리치 후"
                     tab.contentDescription = "아웃리치 후 탭"
                 }
