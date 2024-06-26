@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import androidx.navigation.fragment.findNavController
 import com.example.ruok_workers.databinding.FragmentBriefingDetailBinding
@@ -36,43 +37,33 @@ class BriefingDetailFragment : Fragment() {
         val buttonEdit = view.findViewById<Button>(R.id.button_edit)
         val buttonBack = view.findViewById<Button>(R.id.button_back)
         val buttonDelete = view.findViewById<Button>(R.id.button_delete)
-        lateinit var name:String
-        lateinit var title:String
-        lateinit var time:String
-        lateinit var content:String
+        val tvDetailAuthor = view.findViewById<TextView>(R.id.tvDetailAuthor)
+        val tvDetailTitle = view.findViewById<TextView>(R.id.tvDetailTitle)
+        val tvDetailTimestamp = view.findViewById<TextView>(R.id.tvDetailTimestamp)
+        val tvBriefingDetails = view.findViewById<TextView>(R.id.etBriefingDetails)
+
 
         //데이터베이스 연동
         dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
         sqlitedb = dbManager.readableDatabase
-        Log.i("DB", "dbManager")
 
         b_num =arguments?.getInt("b_num",0)!!
-        Log.i("DB", "$b_num")
-//        var cursor:Cursor
-//        val sql = "SELECT b.b_num, b.b_title, b.b_content, m.m_name, b.b_time FROM briefing b JOIN member m ON m.m_num = b.m_num WHERE b.b_num = ?;"
-//        cursor = sqlitedb.rawQuery(sql, arrayOf(b_num.toString()))
-//        Log.i("DB", "cursor")
-//        cursor.moveToNext()
-//        Log.i("DB", "while")
-//            binding.tvDetailAuthor.text = cursor.getString(cursor.getColumnIndexOrThrow("m.m_name"))
-//            Log.i("DB", "name")
-//            binding.tvDetailTitle.text = cursor.getString(cursor.getColumnIndexOrThrow("b.b_title"))
-//            Log.i("DB", "title")
-//            binding.tvDetailTimestamp.text = cursor.getString(cursor.getColumnIndexOrThrow("b.b_time"))
-//            Log.i("DB", "time")
-//            binding.tvBriefingDetails.text = cursor.getString(cursor.getColumnIndexOrThrow("b.b_content"))
-//            Log.i("DB", "content")
-//        cursor.close()
-//        sqlitedb.close()
-//        dbManager.close()
+        var cursor:Cursor
+        val sql = "SELECT b.b_num, b.b_title, b.b_content, m.m_name, b.b_time FROM briefing b JOIN member m ON m.m_num = b.m_num WHERE b.b_num = ?;"
+        cursor = sqlitedb.rawQuery(sql, arrayOf(b_num.toString()))
+        cursor.moveToNext()
+            tvDetailAuthor.text = cursor.getString(cursor.getColumnIndexOrThrow("m.m_name"))
+            tvDetailTitle.text = cursor.getString(cursor.getColumnIndexOrThrow("b.b_title"))
+            tvDetailTimestamp.text = cursor.getString(cursor.getColumnIndexOrThrow("b.b_time"))
+            tvBriefingDetails.text = cursor.getString(cursor.getColumnIndexOrThrow("b.b_content"))
+        cursor.close()
+        sqlitedb.close()
+        dbManager.close()
 
 
         buttonEdit.setOnClickListener {
-            val fragment = BriefingRevisionFragment()
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.rootLayout, fragment)
-                .addToBackStack(null)
-                .commit()
+            val DashboardActivity = activity as DashboardActivity
+            DashboardActivity.setFragment(BriefingRevisionFragment())
         }
 
 
@@ -96,6 +87,6 @@ class BriefingDetailFragment : Fragment() {
             }
             alertDialogBuilder.show()
         }
-        return binding!!.root
+        return view
     }
 }
