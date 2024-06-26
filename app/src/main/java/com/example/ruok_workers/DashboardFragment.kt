@@ -70,10 +70,10 @@ class DashboardFragment : Fragment() {
 
         val list = Vector<Dashboard>()
         while(cursor.moveToNext()) {
-            var hNum: Int = cursor.getInt(cursor.getColumnIndex("h.h_num"))
-            var photoFilename: String = cursor.getString(cursor.getColumnIndex("h.h_photo"))
-            var hName:String = cursor.getString(cursor.getColumnIndex("h.h_name"))
-            var hBirth:String = cursor.getString(cursor.getColumnIndex("h.h_birth"))
+            var hNum: Int = cursor.getInt(cursor.getColumnIndex("h_num"))
+            var photoFilename: String = cursor.getString(cursor.getColumnIndex("h_photo"))
+            var hName:String = cursor.getString(cursor.getColumnIndex("h_name"))
+            var hBirth:String = cursor.getString(cursor.getColumnIndex("h_birth"))
 
             var resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
             val item = Dashboard(hNum, resId, hName, hBirth)
