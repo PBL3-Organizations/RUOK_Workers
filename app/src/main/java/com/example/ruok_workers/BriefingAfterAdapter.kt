@@ -35,6 +35,7 @@ class BriefingAfterAdapter (private val context: Context, private val items: Vec
 
             var bundle = Bundle()
             bundle.putInt("b_num",item.AfterNum)
+            bundle.putInt("m_num", item.loginNum.toInt())
 
             BriefingDetailFragment.arguments = bundle
             (context as AppCompatActivity).supportFragmentManager.beginTransaction().replace(R.id.rootLayout, BriefingDetailFragment).commit()

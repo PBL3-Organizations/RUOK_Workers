@@ -19,21 +19,21 @@ class BriefingBoardFragment : Fragment() {
     private lateinit var newPostButton: Button
     private var lastSelectedTabPosition: Int = 0
 
-    var loginNum: Int = -1
+    var loginNum : Int = -1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        //기존 로그인 정보 가져오기
-        loginNum = arguments?.getInt("m_num")!!
-
         return inflater.inflate(R.layout.fragment_briefing_board, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //기존 로그인 정보 가져오기
+        loginNum = arguments?.getInt("m_num")!!
 
         tabLayout = view.findViewById(R.id.tab_layout)
         viewPager = view.findViewById(R.id.view_pager)

@@ -19,6 +19,7 @@ class BriefingDetailFragment : Fragment() {
     lateinit var dbManager: DBManager
     lateinit var sqlitedb: SQLiteDatabase
     var b_num = -1
+    var loginNum : Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +34,6 @@ class BriefingDetailFragment : Fragment() {
     ): View? {
 
         //기존 로그인 정보 가져오기
-        var loginNum: Int = -1
         loginNum = arguments?.getInt("m_num")!!
 
         // Inflate the layout for this fragment

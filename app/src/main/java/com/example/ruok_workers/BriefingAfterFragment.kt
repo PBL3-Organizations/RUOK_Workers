@@ -23,11 +23,17 @@ class BriefingAfterFragment : Fragment() {
     private lateinit var binding: FragmentBriefingAfterBinding
     private lateinit var adapter: BriefingAfterAdapter
 
+    var loginNum : Int = -1
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentBriefingAfterBinding.inflate(inflater,container,false)
+
+        //기존 로그인 정보 가져오기
+        loginNum = arguments?.getInt("m_num")!!
+
         dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
         sqlitedb = dbManager.readableDatabase
         val briefingsAfter = Vector<BriefingAfterCard>()
@@ -44,7 +50,7 @@ class BriefingAfterFragment : Fragment() {
             } else {
                 title
             }
-            briefingsAfter.add(BriefingAfterCard(bNum,title,bTime))
+            briefingsAfter.add(BriefingAfterCard(bNum,title,bTime, loginNum.toString()))
         }
 
         cursor.close()
