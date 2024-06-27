@@ -38,6 +38,9 @@ class BriefingBoardFragment : Fragment() {
         val adapter = ViewPagerAdapter(this)
         viewPager.adapter = adapter
 
+        val tabPosition = arguments?.getInt("tabPosition", 0)!!
+        viewPager.setCurrentItem(tabPosition, false)
+
         // 탭과 뷰페이저를 연결하는 부분
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             when (position) {

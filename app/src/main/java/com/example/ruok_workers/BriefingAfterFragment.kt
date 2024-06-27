@@ -44,7 +44,7 @@ class BriefingAfterFragment : Fragment() {
             } else {
                 title
             }
-            briefingsAfter.add(BriefingAfterCard(bNum,title,bTime))
+            briefingsAfter.add(BriefingAfterCard(bNum,displayTitle,bTime))
         }
 
         cursor.close()
