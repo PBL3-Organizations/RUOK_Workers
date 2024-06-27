@@ -7,4 +7,5 @@ class BriefingDuringCard (DuringNum:Int, DuringTitle:String, DuringTime:String) 
         private set
     var DuringTime:String = DuringTime
         private set
+
 }

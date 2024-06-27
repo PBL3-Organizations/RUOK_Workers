@@ -78,11 +78,14 @@ class PhotoRevisionFragment : Fragment() {
                 binding.ivPhotoRevision.setImageResource(resId)
             } else { //사진이 내부저장소에 저장된 경우
                 val filePath = requireContext().filesDir.absolutePath + "/" + fileName
+                Log.d("UnknownHomelessFragment","filepath222: $filePath")
 
                 val imgFile = File(filePath)
+                Log.d("UnknownHomelessFragment","imgfile222: $imgFile")
                 if(imgFile.exists()) {
                     val bitmap = BitmapFactory.decodeFile(imgFile.absolutePath)
                     binding.ivPhotoRevision.setImageBitmap(bitmap)
+                    Log.d("UnknownHomelessFragment","resid222: $bitmap")
                 }
             }
         }
