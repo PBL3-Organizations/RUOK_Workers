@@ -170,7 +170,6 @@ class UnknownHomelessFragment : Fragment() {
 
         return binding.root
     }
-<<<<<<< HEAD
     private fun addToList(cursor: Cursor): Vector<UnknownCard> {
         val items = Vector<UnknownCard>()
         while(cursor.moveToNext()) {
@@ -184,8 +183,6 @@ class UnknownHomelessFragment : Fragment() {
         }
         return items
     }
-=======
->>>>>>> 62c18d14b522f9618d0305d068d7768e802af6e7
 
     companion object {
         @JvmStatic
