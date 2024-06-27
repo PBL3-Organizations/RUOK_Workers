@@ -78,6 +78,7 @@ class UnknownHomelessFragment : Fragment() {
         //서치뷰로 필터링 구현
         binding.serchviewUnknown.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
+                list.clear()
                 when (filter) {
                     0 -> { //필터링 없음
                         dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
@@ -85,11 +86,23 @@ class UnknownHomelessFragment : Fragment() {
                         var cursor: Cursor
                         unknownQuery = "SELECT c.c_time, l.l_addr, p.p_filename FROM consultation c JOIN location l ON c.c_num = l.c_num JOIN photo p ON c.c_num = p.c_num WHERE c.h_num = '0' ORDER BY c.c_time DESC;"
                         cursor = sqlitedb.rawQuery(unknownQuery, arrayOf())
-                        list = addToList(cursor)
+                        while(cursor.moveToNext()) {
+                            // 리스트에 데이터 추가
+                            var meet_photo: String = cursor.getString(cursor.getColumnIndexOrThrow("p.p_filename"))
+                            var meet_place: String = cursor.getString(cursor.getColumnIndexOrThrow("c.c_time"))
+                            var meeet_log: String = cursor.getString(cursor.getColumnIndexOrThrow("l.l_addr"))
+                            var resId : Int = resources.getIdentifier(meet_photo.substringBefore('.'), "drawable", requireContext().packageName)
+                            val item = UnknownCard(resId,meet_place, meeet_log)
+                            list.add(item)
+                            Log.i("DB","$resId,$meet_place, $meeet_log")
+                        }
                         cursor.close()
                         sqlitedb.close()
                         dbManager.close()
-                        setUnknwnAdapter(list)
+                        adapter = UnknownAdapter(requireContext(),list)
+                        binding!!.UnknownRecyclerView.adapter = adapter
+
+                        binding.serchviewUnknown.onActionViewExpanded()
                     }
                     1 -> { //날짜 필터링
                         dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
@@ -97,11 +110,23 @@ class UnknownHomelessFragment : Fragment() {
                         var cursor: Cursor
                         unknownQuery = "SELECT c.c_time, l.l_addr, p.p_filename FROM consultation c JOIN location l ON c.c_num = l.c_num JOIN photo p ON c.c_num = p.c_num WHERE c.h_num = '0' AND c.c_time LIKE ?;"
                         cursor = sqlitedb.rawQuery(unknownQuery, arrayOf("%$query%"))
-                        list = addToList(cursor)
+                        while(cursor.moveToNext()) {
+                            // 리스트에 데이터 추가
+                            var meet_photo: String = cursor.getString(cursor.getColumnIndexOrThrow("p.p_filename"))
+                            var meet_place: String = cursor.getString(cursor.getColumnIndexOrThrow("c.c_time"))
+                            var meeet_log: String = cursor.getString(cursor.getColumnIndexOrThrow("l.l_addr"))
+                            var resId : Int = resources.getIdentifier(meet_photo.substringBefore('.'), "drawable", requireContext().packageName)
+                            val item = UnknownCard(resId,meet_place, meeet_log)
+                            list.add(item)
+                            Log.i("DB","$resId,$meet_place, $meeet_log")
+                        }
                         cursor.close()
                         sqlitedb.close()
                         dbManager.close()
-                        setUnknwnAdapter(list)
+                        adapter = UnknownAdapter(requireContext(),list)
+                        binding!!.UnknownRecyclerView.adapter = adapter
+
+                        binding.serchviewUnknown.onActionViewExpanded()
                     }
                     2 -> {//만난 장소 필터링
                         dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
@@ -109,11 +134,23 @@ class UnknownHomelessFragment : Fragment() {
                         var cursor: Cursor
                         unknownQuery = "SELECT c.c_time, l.l_addr, p.p_filename FROM consultation c JOIN location l ON c.c_num = l.c_num JOIN photo p ON c.c_num = p.c_num WHERE c.h_num = 0 AND l.l_addr LIKE ?;"
                         cursor = sqlitedb.rawQuery(unknownQuery, arrayOf("%$query%"))
-                        list = addToList(cursor)
+                        while(cursor.moveToNext()) {
+                            // 리스트에 데이터 추가
+                            var meet_photo: String = cursor.getString(cursor.getColumnIndexOrThrow("p.p_filename"))
+                            var meet_place: String = cursor.getString(cursor.getColumnIndexOrThrow("c.c_time"))
+                            var meeet_log: String = cursor.getString(cursor.getColumnIndexOrThrow("l.l_addr"))
+                            var resId : Int = resources.getIdentifier(meet_photo.substringBefore('.'), "drawable", requireContext().packageName)
+                            val item = UnknownCard(resId,meet_place, meeet_log)
+                            list.add(item)
+                            Log.i("DB","$resId,$meet_place, $meeet_log")
+                        }
                         cursor.close()
                         sqlitedb.close()
                         dbManager.close()
-                        setUnknwnAdapter(list)
+                        adapter = UnknownAdapter(requireContext(),list)
+                        binding!!.UnknownRecyclerView.adapter = adapter
+
+                        binding.serchviewUnknown.onActionViewExpanded()
                     }
 
                 }
@@ -133,6 +170,7 @@ class UnknownHomelessFragment : Fragment() {
 
         return binding.root
     }
+<<<<<<< HEAD
     private fun addToList(cursor: Cursor): Vector<UnknownCard> {
         val items = Vector<UnknownCard>()
         while(cursor.moveToNext()) {
@@ -146,13 +184,9 @@ class UnknownHomelessFragment : Fragment() {
         }
         return items
     }
+=======
+>>>>>>> 62c18d14b522f9618d0305d068d7768e802af6e7
 
-    private fun setUnknwnAdapter(items: Vector<UnknownCard>) {
-        adapter = UnknownAdapter(requireContext(),items)
-        binding!!.UnknownRecyclerView.adapter = adapter
-
-        binding.serchviewUnknown.onActionViewExpanded()
-    }
     companion object {
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
