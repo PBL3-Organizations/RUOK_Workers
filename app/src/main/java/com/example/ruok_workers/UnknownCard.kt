@@ -2,7 +2,7 @@ package com.example.ruok_workers
 
 import android.graphics.Bitmap
 
-class UnknownCard(meetPhotoResId: Int?, meetPhotoBitmap: Bitmap?, meetLog:String, meetPlace:String) {
+class UnknownCard(meetPhotoResId: Int?, meetPhotoBitmap: Bitmap?, meetPlace:String, meetLog:String) {
     var meetPhotoResId: Int? = meetPhotoResId
         private set
     var meetPhotoBitmap: Bitmap? = meetPhotoBitmap
