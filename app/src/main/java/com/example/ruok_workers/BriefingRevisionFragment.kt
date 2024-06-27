@@ -19,6 +19,7 @@ class BriefingRevisionFragment : Fragment() {
     lateinit var dbManager: DBManager
     lateinit var sqlitedb: SQLiteDatabase
 
+    var tabPosition = -1
     var b_num = -1
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,6 +30,8 @@ class BriefingRevisionFragment : Fragment() {
         val CheckBox = view.findViewById<TextView>(R.id.checkbox_set_as_notice)
 
         b_num =arguments?.getInt("b_num",0)!!
+        //tabPosition 가져오기
+        tabPosition = arguments?.getInt("tabPosition", -1)!!
         var b_title = arguments?.getString("b_title").toString()
         var b_content = arguments?.getString("b_content").toString()
         // Accessing TextView for title and content
@@ -61,11 +64,14 @@ class BriefingRevisionFragment : Fragment() {
             Toast.makeText(activity, "수정 완료", Toast.LENGTH_SHORT).show()
 
             // 수정 후에 다시 브리핑 보드로 돌아가기
-            val fragment = BriefingBoardFragment()
-            val transaction = parentFragmentManager.beginTransaction()
-            transaction.replace(R.id.rootLayout, fragment)
-            transaction.addToBackStack(null) // Add to back stack so user can navigate back
-            transaction.commit()
+            val briefingBoardFragment = BriefingBoardFragment()
+            val bundle = Bundle()
+            bundle.putInt("tabPosition", tabPosition)
+            briefingBoardFragment.arguments = bundle
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.rootLayout, briefingBoardFragment)
+                .commit()
+
         }
 
         return view
