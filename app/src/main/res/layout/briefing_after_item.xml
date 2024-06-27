@@ -2,10 +2,8 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cvBriefingAfterItem"
-    android:elevation="5dp"
-    android:backgroundTint="#00FFFFFF"
+    android:background="@drawable/button_stroke_line"
     android:layout_marginBottom="5dp">
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,14 +20,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="제목: "
-        android:textSize="20dp"
+        android:textSize="18dp"
         android:layout_margin="10dp"/>
     <TextView
         android:id="@+id/tvBriefingAfterTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="작성 시간: "
-        android:textSize="16dp"
+        android:textSize="14dp"
         android:layout_margin="10dp"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
