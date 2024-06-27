@@ -5,6 +5,8 @@ import android.app.DownloadManager.Query
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.nfc.Tag
 import android.os.Bundle
 import android.util.Log
@@ -18,6 +20,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ruok_workers.databinding.FragmentUnknownHomelessBinding
+import java.io.File
 import java.util.Vector
 
 class UnknownHomelessFragment : Fragment() {
@@ -52,9 +55,45 @@ class UnknownHomelessFragment : Fragment() {
             var meet_photo: String = cursor.getString(cursor.getColumnIndexOrThrow("p_filename"))
             var meet_place: String = cursor.getString(cursor.getColumnIndexOrThrow("c_time"))
             var meeet_log: String = cursor.getString(cursor.getColumnIndexOrThrow("l_addr"))
-            var resId : Int = resources.getIdentifier(meet_photo.substringBefore('.'), "drawable", requireContext().packageName)
-            val item = UnknownCard(resId,meet_place, meeet_log)
-            list.add(item)
+
+            // 사진이 drawable에 저장된 경우 (Int형)
+            var resId: Int = resources.getIdentifier(meet_photo.substringBefore('.'), "drawable", requireContext().packageName)
+
+            if (resId != 0) {
+                list.add(UnknownCard(resId, null, meeet_log, meet_place))
+            } else {
+                // 사진이 내부 저장소에 저장된 경우 (Bitmap)
+                val filePath = requireContext().filesDir.absolutePath + "/" + meet_photo
+                val imgFile = File(filePath)
+                if (imgFile.exists()) {
+                    val bitmap = BitmapFactory.decodeFile(imgFile.absolutePath)
+                    list.add(UnknownCard(null, bitmap, meeet_log, meet_place))
+                }
+            }
+
+//            //사진이 drawable에 저장된 경우 (Int형)
+//            var resId : Int = resources.getIdentifier(meet_photo.substringBefore('.'), "drawable", requireContext().packageName)
+//            Log.d("UnknownHomelessFragment","resid: $resId")
+//
+//            //사진이 내부저장소에 저장된 경우 (resId가 0인 bitmap, Int형 아님)
+//            if (resId == 0) {
+//                val filePath = requireContext().filesDir.absolutePath + "/" + meet_photo
+//                Log.d("UnknownHomelessFragment","filepath: $filePath")
+//                val imgFile = File(filePath)
+//                Log.d("UnknownHomelessFragment","imgfile: $imgFile")
+//                if(imgFile.exists()) {
+//                    var resId = BitmapFactory.decodeFile(imgFile.absolutePath)
+//                    Log.d("UnknownHomelessFragment","resid: $resId")
+//
+//                    val item = UnknownCard(resId.toString(), meet_place, meeet_log)
+//                    list.add(item)
+//                    Log.d("UnknownHomelessFragment","bitmap: $resId")
+//                }
+//            } else {
+//                val item = UnknownCard(resId.toString(), meet_place, meeet_log)
+//                list.add(item)
+//                Log.d("UnknownHomelessFragment","bitmap: $resId")
+//            }
         }
         cursor.close()
         sqlitedb.close()
@@ -140,9 +179,37 @@ class UnknownHomelessFragment : Fragment() {
             var meet_photo: String = cursor.getString(cursor.getColumnIndexOrThrow("p_filename"))
             var meet_place: String = cursor.getString(cursor.getColumnIndexOrThrow("c_time"))
             var meeet_log: String = cursor.getString(cursor.getColumnIndexOrThrow("l_addr"))
-            var resId : Int = resources.getIdentifier(meet_photo.substringBefore('.'), "drawable", requireContext().packageName)
-            val item = UnknownCard(resId,meet_place, meeet_log)
-            items.add(item)
+
+            var resId: Int = resources.getIdentifier(meet_photo.substringBefore('.'), "drawable", requireContext().packageName)
+
+            if (resId != 0) {
+                list.add(UnknownCard(resId, null, meeet_log, meet_place))
+            } else {
+                val filePath = requireContext().filesDir.absolutePath + "/" + meet_photo
+                val imgFile = File(filePath)
+                if (imgFile.exists()) {
+                    val bitmap = BitmapFactory.decodeFile(imgFile.absolutePath)
+                    list.add(UnknownCard(null, bitmap, meeet_log, meet_place))
+                }
+            }
+
+//            var resId = resources.getIdentifier(meet_photo.substringBefore('.'), "drawable", requireContext().packageName)
+//            if (resId == 0) {
+//                val filePath = requireContext().filesDir.absolutePath + "/" + meet_photo
+//                Log.d("UnknownHomelessFragment","filepath: $filePath")
+//                val imgFile = File(filePath)
+//                Log.d("UnknownHomelessFragment","imgfile: $imgFile")
+//                if(imgFile.exists()) {
+//                    var resId = BitmapFactory.decodeFile(imgFile.absolutePath)
+//                    val item = UnknownCard(resId.toString(), meet_place, meeet_log)
+//                    list.add(item)
+//                    Log.d("UnknownHomelessFragment","resid: $resId")
+//                }
+//            } else {
+//                val item = UnknownCard(resId.toString(), meet_place, meeet_log)
+//                list.add(item)
+//                Log.d("UnknownHomelessFragment","bitmap: $resId")
+//            }
         }
         return items
     }

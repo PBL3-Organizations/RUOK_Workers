@@ -1,30 +1,24 @@
 package com.example.ruok_workers
 
-import android.media.Image
+import android.graphics.Bitmap
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.DialogFragment
 import com.example.ruok_workers.databinding.FragmentUnknownDialogBinding
 
-class UnknownDialog (image: Int,place:String, time:String):
+class UnknownDialog(
+    private val image: Int? = null,
+    private val image2: Bitmap? = null,
+    private val place: String,
+    private val time: String
+):
     DialogFragment() {
     // 뷰 바인딩 정의
     private var _binding: FragmentUnknownDialogBinding? = null
     private val binding get() = _binding!!
-
-    private var image: Int? = null
-    private var place: String? = null
-    private var time: String? = null
-
-    init {
-        this.image = image
-        this.place = place
-        this.time = time
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,7 +28,19 @@ class UnknownDialog (image: Int,place:String, time:String):
         _binding = FragmentUnknownDialogBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        image?.let { binding.ivDialog.setImageResource(it) }
+//        try {
+//            image?.let { binding.ivDialog.setImageResource(it) }
+//            Log.d("UnknownHomelessFragment","resid: $image")
+//        } catch (e: Exception) {
+//            image2?.let { binding.ivDialog.setImageBitmap(it) }
+//        }
+
+        if (image != null) {
+            binding.ivDialog.setImageResource(image)
+        } else if (image2 != null) {
+            binding.ivDialog.setImageBitmap(image2)
+        }
+
         binding.tvDialogPlace.text = "만난 장소 : "+place
         binding.tvDialogTime.text = "만난 날짜 : "+ time
 
@@ -50,3 +56,4 @@ class UnknownDialog (image: Int,place:String, time:String):
         _binding = null
     }
 }
+
