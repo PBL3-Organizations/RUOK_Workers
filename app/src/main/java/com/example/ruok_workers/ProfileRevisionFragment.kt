@@ -22,6 +22,7 @@ class ProfileRevisionFragment : Fragment() {
 
     lateinit var dbManager: DBManager
     lateinit var sqlitedb: SQLiteDatabase
+    var resId = -1
     @SuppressLint("Range", "MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,7 +53,7 @@ class ProfileRevisionFragment : Fragment() {
         val cursor = sqlitedb.rawQuery("SELECT * FROM homeless WHERE h_name = ? AND h_birth = ?", arrayOf(name, birth))
         while (cursor.moveToNext()) {
             var photoFilename: String = cursor.getString(cursor.getColumnIndex("h_photo"))
-            var resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
+            resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
             // TextView에 데이터 표시
             ivProfileRevision.setImageResource(resId)
         }
@@ -86,8 +87,8 @@ class ProfileRevisionFragment : Fragment() {
 
                 // 새 데이터를 추가합니다.
                 val insertQuery =
-                    "INSERT INTO homeless (h_name, h_birth, h_phone, h_photo) VALUES (?, ?, ?, 'default.jpeg');"
-                sqlitedb.execSQL(insertQuery, arrayOf(newName, newBirth, newPhoneNumber))
+                    "INSERT INTO homeless (h_name, h_birth, h_phone, h_photo) VALUES (?, ?, ?, ?);"
+                sqlitedb.execSQL(insertQuery, arrayOf(newName, newBirth, newPhoneNumber, resId.toString()))
 
                 sqlitedb.setTransactionSuccessful()
             } finally {
