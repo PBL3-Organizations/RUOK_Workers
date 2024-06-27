@@ -21,13 +21,14 @@ class BriefingRevisionFragment : Fragment() {
 
     var tabPosition = -1
     var b_num = -1
+    var new_notice = -1
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_briefing_revision, container, false)
-        val CheckBox = view.findViewById<TextView>(R.id.checkbox_set_as_notice)
+        val CheckBox = view.findViewById<CheckBox>(R.id.checkbox_set_as_notice)
 
         b_num =arguments?.getInt("b_num",0)!!
         //tabPosition 가져오기
@@ -41,14 +42,23 @@ class BriefingRevisionFragment : Fragment() {
         // Setting initial text for title and content
         titleTextView.text = b_title
         contentTextView.text = b_content
-
+       //데이터베이스 연동
+        dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+        sqlitedb = dbManager.readableDatabase
+        val cursor: Cursor = sqlitedb.rawQuery("SELECT * FROM briefing WHERE b_num = ?", arrayOf(b_num.toString()))
+        while (cursor.moveToNext()){
+            new_notice = cursor.getInt(cursor.getColumnIndexOrThrow("b_notice")).toInt()
+            if (new_notice == 1){CheckBox.isChecked = true}
+        }
+        cursor.close()
+        sqlitedb.close()
+        dbManager.close()
         // Accessing Button and setting click listener
         val editButton = view.findViewById<Button>(R.id.edit_button)
         editButton.setOnClickListener {
             val new_title = view.findViewById<EditText>(R.id.title_text).text
             val new_content = view.findViewById<EditText>(R.id.content_text).text
-            var new_notice = 0
-            if (view.findViewById<CheckBox>(R.id.checkbox_set_as_notice).isChecked) {
+            if (CheckBox.isChecked) {
                 new_notice = 1
             }
 
