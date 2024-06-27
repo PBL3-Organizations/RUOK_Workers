@@ -60,40 +60,18 @@ class UnknownHomelessFragment : Fragment() {
             var resId: Int = resources.getIdentifier(meet_photo.substringBefore('.'), "drawable", requireContext().packageName)
 
             if (resId != 0) {
-                list.add(UnknownCard(resId, null, meeet_log, meet_place))
+                val item = UnknownCard(resId, null, meeet_log, meet_place)
+                list.add(item)
             } else {
                 // 사진이 내부 저장소에 저장된 경우 (Bitmap)
                 val filePath = requireContext().filesDir.absolutePath + "/" + meet_photo
                 val imgFile = File(filePath)
                 if (imgFile.exists()) {
                     val bitmap = BitmapFactory.decodeFile(imgFile.absolutePath)
-                    list.add(UnknownCard(null, bitmap, meeet_log, meet_place))
+                    val item = UnknownCard(null, bitmap, meeet_log, meet_place)
+                    list.add(item)
                 }
             }
-
-//            //사진이 drawable에 저장된 경우 (Int형)
-//            var resId : Int = resources.getIdentifier(meet_photo.substringBefore('.'), "drawable", requireContext().packageName)
-//            Log.d("UnknownHomelessFragment","resid: $resId")
-//
-//            //사진이 내부저장소에 저장된 경우 (resId가 0인 bitmap, Int형 아님)
-//            if (resId == 0) {
-//                val filePath = requireContext().filesDir.absolutePath + "/" + meet_photo
-//                Log.d("UnknownHomelessFragment","filepath: $filePath")
-//                val imgFile = File(filePath)
-//                Log.d("UnknownHomelessFragment","imgfile: $imgFile")
-//                if(imgFile.exists()) {
-//                    var resId = BitmapFactory.decodeFile(imgFile.absolutePath)
-//                    Log.d("UnknownHomelessFragment","resid: $resId")
-//
-//                    val item = UnknownCard(resId.toString(), meet_place, meeet_log)
-//                    list.add(item)
-//                    Log.d("UnknownHomelessFragment","bitmap: $resId")
-//                }
-//            } else {
-//                val item = UnknownCard(resId.toString(), meet_place, meeet_log)
-//                list.add(item)
-//                Log.d("UnknownHomelessFragment","bitmap: $resId")
-//            }
         }
         cursor.close()
         sqlitedb.close()
@@ -183,33 +161,17 @@ class UnknownHomelessFragment : Fragment() {
             var resId: Int = resources.getIdentifier(meet_photo.substringBefore('.'), "drawable", requireContext().packageName)
 
             if (resId != 0) {
-                list.add(UnknownCard(resId, null, meeet_log, meet_place))
+                val item = UnknownCard(resId, null, meeet_log, meet_place)
+                items.add(item)
             } else {
                 val filePath = requireContext().filesDir.absolutePath + "/" + meet_photo
                 val imgFile = File(filePath)
                 if (imgFile.exists()) {
                     val bitmap = BitmapFactory.decodeFile(imgFile.absolutePath)
-                    list.add(UnknownCard(null, bitmap, meeet_log, meet_place))
+                    val item = UnknownCard(null, bitmap, meeet_log, meet_place)
+                    items.add(item)
                 }
             }
-
-//            var resId = resources.getIdentifier(meet_photo.substringBefore('.'), "drawable", requireContext().packageName)
-//            if (resId == 0) {
-//                val filePath = requireContext().filesDir.absolutePath + "/" + meet_photo
-//                Log.d("UnknownHomelessFragment","filepath: $filePath")
-//                val imgFile = File(filePath)
-//                Log.d("UnknownHomelessFragment","imgfile: $imgFile")
-//                if(imgFile.exists()) {
-//                    var resId = BitmapFactory.decodeFile(imgFile.absolutePath)
-//                    val item = UnknownCard(resId.toString(), meet_place, meeet_log)
-//                    list.add(item)
-//                    Log.d("UnknownHomelessFragment","resid: $resId")
-//                }
-//            } else {
-//                val item = UnknownCard(resId.toString(), meet_place, meeet_log)
-//                list.add(item)
-//                Log.d("UnknownHomelessFragment","bitmap: $resId")
-//            }
         }
         return items
     }
