@@ -36,224 +36,233 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 
-    <LinearLayout
-        android:layout_width="409dp"
-        android:layout_height="509dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="1dp"
-        android:orientation="vertical"
-        android:padding="10dp"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/btnCountingAdd"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvSelectCourse">
 
-        <RadioGroup
-            android:id="@+id/radioGroup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="409dp"
+            android:layout_height="509dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="1dp"
+            android:orientation="vertical"
+            android:padding="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/btnCountingAdd"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvSelectCourse">
 
-            <RadioButton
-                android:id="@+id/radioButton1"
+            <RadioGroup
+                android:id="@+id/radioGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="서울역광장코스"
-                android:textStyle="bold" />
+                android:orientation="vertical">
 
-            <CheckBox
-                android:id="@+id/checkBox11"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="서울역광장일대"
-                android:visibility="gone" />
+                <RadioButton
+                    android:id="@+id/radioButton1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="서울역광장코스"
+                    android:textStyle="bold" />
 
-            <CheckBox
-                android:id="@+id/checkBox12"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="서울역중앙지하도"
-                android:visibility="gone" />
+                <CheckBox
+                    android:id="@+id/checkBox11"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="서울역광장일대"
+                    android:visibility="gone" />
 
-            <CheckBox
-                android:id="@+id/checkBox13"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="두텁바위공원"
-                android:visibility="gone" />
+                <CheckBox
+                    android:id="@+id/checkBox12"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="서울역중앙지하도"
+                    android:visibility="gone" />
 
-            <CheckBox
-                android:id="@+id/checkBox14"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="남대문교회앞 육교"
-                android:visibility="gone" />
+                <CheckBox
+                    android:id="@+id/checkBox13"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="두텁바위공원"
+                    android:visibility="gone" />
 
-            <CheckBox
-                android:id="@+id/checkBox15"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="연세세브란빌딩"
-                android:visibility="gone" />
+                <CheckBox
+                    android:id="@+id/checkBox14"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="남대문교회앞 육교"
+                    android:visibility="gone" />
 
-            <RadioButton
-                android:id="@+id/radioButton2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="서울역서부코스"
-                android:textStyle="bold" />
+                <CheckBox
+                    android:id="@+id/checkBox15"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="연세세브란빌딩"
+                    android:visibility="gone" />
 
-            <CheckBox
-                android:id="@+id/checkBox21"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="서울역광장"
-                android:visibility="gone" />
+                <RadioButton
+                    android:id="@+id/radioButton2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="서울역서부코스"
+                    android:textStyle="bold" />
 
-            <CheckBox
-                android:id="@+id/checkBox22"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="서울역대합실"
-                android:visibility="gone" />
+                <CheckBox
+                    android:id="@+id/checkBox21"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="서울역광장"
+                    android:visibility="gone" />
 
-            <CheckBox
-                android:id="@+id/checkBox23"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="서울역서부일대"
-                android:visibility="gone" />
+                <CheckBox
+                    android:id="@+id/checkBox22"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="서울역대합실"
+                    android:visibility="gone" />
 
-            <CheckBox
-                android:id="@+id/checkBox24"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="청파어린이공원"
-                android:visibility="gone" />
+                <CheckBox
+                    android:id="@+id/checkBox23"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="서울역서부일대"
+                    android:visibility="gone" />
 
-            <CheckBox
-                android:id="@+id/checkBox25"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="서울역고가공원"
-                android:visibility="gone" />
+                <CheckBox
+                    android:id="@+id/checkBox24"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="청파어린이공원"
+                    android:visibility="gone" />
 
-            <CheckBox
-                android:id="@+id/checkBox26"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="서울역우체국앞지하보도"
-                android:visibility="gone" />
+                <CheckBox
+                    android:id="@+id/checkBox25"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="서울역고가공원"
+                    android:visibility="gone" />
 
-            <RadioButton
-                android:id="@+id/radioButton3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="서울역외곽코스"
-                android:textStyle="bold" />
+                <CheckBox
+                    android:id="@+id/checkBox26"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="서울역우체국앞지하보도"
+                    android:visibility="gone" />
 
-            <CheckBox
-                android:id="@+id/checkBox31"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="서소문역사공원"
-                android:visibility="gone" />
+                <RadioButton
+                    android:id="@+id/radioButton3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="서울역외곽코스"
+                    android:textStyle="bold" />
 
-            <CheckBox
-                android:id="@+id/checkBox32"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="대한상공회의소"
-                android:visibility="gone" />
+                <CheckBox
+                    android:id="@+id/checkBox31"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="서소문역사공원"
+                    android:visibility="gone" />
 
-            <CheckBox
-                android:id="@+id/checkBox33"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="남대문지하보도"
-                android:visibility="gone" />
+                <CheckBox
+                    android:id="@+id/checkBox32"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="대한상공회의소"
+                    android:visibility="gone" />
 
-            <CheckBox
-                android:id="@+id/checkBox34"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="남산입구지하보도"
-                android:visibility="gone" />
+                <CheckBox
+                    android:id="@+id/checkBox33"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="남대문지하보도"
+                    android:visibility="gone" />
 
-            <CheckBox
-                android:id="@+id/checkBox35"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="숭례문광장"
-                android:visibility="gone" />
+                <CheckBox
+                    android:id="@+id/checkBox34"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="남산입구지하보도"
+                    android:visibility="gone" />
 
-            <CheckBox
-                android:id="@+id/checkBox36"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="농협LG빌딩"
-                android:visibility="gone" />
+                <CheckBox
+                    android:id="@+id/checkBox35"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="숭례문광장"
+                    android:visibility="gone" />
 
-            <CheckBox
-                android:id="@+id/checkBox37"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="한국은행"
-                android:visibility="gone" />
+                <CheckBox
+                    android:id="@+id/checkBox36"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="농협LG빌딩"
+                    android:visibility="gone" />
 
-            <CheckBox
-                android:id="@+id/checkBox38"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="회현역"
-                android:visibility="gone" />
+                <CheckBox
+                    android:id="@+id/checkBox37"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="한국은행"
+                    android:visibility="gone" />
 
-            <RadioButton
-                android:id="@+id/radioButton4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="산재지역코스"
-                android:textStyle="bold" />
+                <CheckBox
+                    android:id="@+id/checkBox38"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="회현역"
+                    android:visibility="gone" />
 
-            <CheckBox
-                android:id="@+id/checkBox41"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="삼각지역"
-                android:visibility="gone" />
+                <RadioButton
+                    android:id="@+id/radioButton4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="산재지역코스"
+                    android:textStyle="bold" />
 
-            <CheckBox
-                android:id="@+id/checkBox42"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="신용산역"
-                android:visibility="gone" />
+                <CheckBox
+                    android:id="@+id/checkBox41"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="삼각지역"
+                    android:visibility="gone" />
 
-            <CheckBox
-                android:id="@+id/checkBox43"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="용산역대합실"
-                android:visibility="gone" />
+                <CheckBox
+                    android:id="@+id/checkBox42"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="신용산역"
+                    android:visibility="gone" />
 
-            <CheckBox
-                android:id="@+id/checkBox44"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="용산역텐트촌"
-                android:visibility="gone" />
+                <CheckBox
+                    android:id="@+id/checkBox43"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="용산역대합실"
+                    android:visibility="gone" />
 
-            <CheckBox
-                android:id="@+id/checkBox45"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="이태원역일대"
-                android:visibility="gone" />
+                <CheckBox
+                    android:id="@+id/checkBox44"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="용산역텐트촌"
+                    android:visibility="gone" />
 
-        </RadioGroup>
-    </LinearLayout>
+                <CheckBox
+                    android:id="@+id/checkBox45"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="이태원역일대"
+                    android:visibility="gone" />
+
+            </RadioGroup>
+        </LinearLayout>
+    </ScrollView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
