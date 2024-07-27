@@ -14,8 +14,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_horizontal"
-        android:background = "#F27406"
-        android:padding="10dp" >
+        android:padding="10dp"
+        android:background="@drawable/stroke_line">
 
         <LinearLayout
             android:layout_width="match_parent"
