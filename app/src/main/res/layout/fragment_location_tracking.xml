@@ -1,14 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LocationTrackingFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/map"
+        android:name="com.naver.maps.map.MapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_gravity="top"
+        android:layout_marginBottom="140dp" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ConstraintLocationTracking"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:paddingLeft="30dp"
+        android:paddingTop="10dp"
+        android:paddingRight="30dp"
+        android:paddingBottom="10dp">
+
+        <Button
+            android:id="@+id/btnStartOutreach"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:text="시작"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            app:cornerRadius="55dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <Button
+            android:id="@+id/btnStopOutreach"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:text="■"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            app:cornerRadius="55dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/btnContinueOutreach"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:backgroundTint="#FFD500"
+            android:text="재개"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            app:cornerRadius="55dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/btnRecordOutreach"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:backgroundTint="#FFAA00"
+            android:text="기록"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            app:cornerRadius="55dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/btnEndOutreach"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:text="종료"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            app:cornerRadius="55dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            android:visibility="gone"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

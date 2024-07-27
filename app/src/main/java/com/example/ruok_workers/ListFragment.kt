@@ -1,31 +1,29 @@
 package com.example.ruok_workers
 
+import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.ruok_workers.databinding.FragmentListBinding
+import java.util.Vector
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ListFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ListFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    lateinit var binding: FragmentListBinding
+    lateinit var adapter: ListAdapter
+
+    lateinit var dbManager: DBManager
+    lateinit var sqlitedb: SQLiteDatabase
+
+    var list = Vector<ListCard>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
         }
     }
 
@@ -33,27 +31,160 @@ class ListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_list, container, false)
+        binding = FragmentListBinding.inflate(inflater, container,false)
+
+        //데이터베이스 연동
+        dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+        sqlitedb = dbManager.readableDatabase
+        var cursor: Cursor
+        var sql = "SELECT c.c_num, c.c_time, c.c_unusual, l.l_addr, h.h_name, h.h_num FROM consultation c JOIN location l ON c.c_num = l.c_num JOIN homeless h ON c.h_num = h.h_num UNION SELECT c.c_num, c.c_time, c.c_unusual, l.l_addr, '미상' AS h_name, 0 AS h_num FROM consultation c JOIN location l ON c.c_num = l.c_num WHERE c.h_num = 0 ORDER BY c.c_time DESC;"
+        cursor = sqlitedb.rawQuery(sql, arrayOf())
+        while(cursor.moveToNext()) {
+            // 리스트에 데이터 추가
+            var consultationNum: Int = cursor.getInt(cursor.getColumnIndexOrThrow("c.c_num"))
+            var homelessNum: Int = cursor.getInt(cursor.getColumnIndexOrThrow("h_num"))
+            var homelessName:String = cursor.getString(cursor.getColumnIndexOrThrow("h.h_name"))
+            var homelessUnusual:String = cursor.getString(cursor.getColumnIndexOrThrow("c.c_unusual"))
+            var homelessPlace:String = cursor.getString(cursor.getColumnIndexOrThrow("l.l_addr"))
+            var homelessLog:String = cursor.getString(cursor.getColumnIndexOrThrow("c.c_time"))
+
+            //리사이클러뷰 아이템 추가
+            val item = ListCard(consultationNum, homelessNum, homelessName, homelessUnusual, homelessLog, homelessPlace)
+            list.add(item)
+        }
+        cursor.close()
+        sqlitedb.close()
+        dbManager.close()
+
+        var filter = 0
+        //스피너 처리
+        binding.spinnerList.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                filter = position
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
+        //서치뷰로 필터링 구현
+        binding.searchviewList.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                when (filter) {
+                    0 -> { //필터링 없음
+                        dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+                        sqlitedb = dbManager.readableDatabase
+                        var cursor: Cursor
+                        sql = "SELECT c.c_num, c.c_time, c.c_unusual, l.l_addr, h.h_name FROM consultation c JOIN location l ON c.c_num = l.c_num JOIN homeless h ON c.h_num = h.h_num ORDER BY c.c_time DESC;"
+                        cursor = sqlitedb.rawQuery(sql, arrayOf())
+                        list = addToList(cursor)
+                        cursor.close()
+                        sqlitedb.close()
+                        dbManager.close()
+                        setListAdapter(list)
+                    }
+                    1 -> { //날짜 필터링
+                        dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+                        sqlitedb = dbManager.readableDatabase
+                        var cursor: Cursor
+                        sql = "SELECT c.c_num, c.c_time, c.c_unusual, l.l_addr, h.h_name FROM consultation c JOIN location l ON c.c_num = l.c_num JOIN homeless h ON c.h_num = h.h_num WHERE c.c_time LIKE ? ORDER BY c.c_time DESC;"
+                        cursor = sqlitedb.rawQuery(sql, arrayOf("%$query%"))
+                        list = addToList(cursor)
+                        cursor.close()
+                        sqlitedb.close()
+                        dbManager.close()
+                        setListAdapter(list)
+                    }
+                    2 -> {//만난 장소 필터링
+                        dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+                        sqlitedb = dbManager.readableDatabase
+                        var cursor: Cursor
+                        sql = "SELECT c.c_num, c.c_time, c.c_unusual, l.l_addr, h.h_name FROM consultation c JOIN location l ON c.c_num = l.c_num JOIN homeless h ON c.h_num = h.h_num WHERE l.l_addr LIKE ? ORDER BY c.c_time DESC;"
+                        cursor = sqlitedb.rawQuery(sql, arrayOf("%$query%"))
+                        list = addToList(cursor)
+                        cursor.close()
+                        sqlitedb.close()
+                        dbManager.close()
+                        setListAdapter(list)
+                    }
+                    3 -> {//작성자 필터링
+                        dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+                        sqlitedb = dbManager.readableDatabase
+                        var cursor: Cursor
+                        sql = "SELECT c.c_num, c.c_time, c.c_unusual, l.l_addr, h.h_name FROM consultation c JOIN location l ON c.c_num = l.c_num JOIN homeless h ON c.h_num = h.h_num JOIN member m ON c.m_num = m.m_num WHERE m.m_name LIKE ? ORDER BY c.c_time DESC;"
+                        cursor = sqlitedb.rawQuery(sql, arrayOf("%$query%"))
+                        list = addToList(cursor)
+                        cursor.close()
+                        sqlitedb.close()
+                        dbManager.close()
+                        setListAdapter(list)
+                    }
+                    4 -> {//작성기관 필터링
+                        dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+                        sqlitedb = dbManager.readableDatabase
+                        var cursor: Cursor
+                        sql = "SELECT c.c_num, c.c_time, c.c_unusual, l.l_addr, h.h_name FROM consultation c JOIN location l ON c.c_num = l.c_num JOIN homeless h ON c.h_num = h.h_num JOIN member m ON c.m_num = m.m_num JOIN welfare_facilities w ON m.wf_num = w.wf_num WHERE w.wf_name LIKE ? ORDER BY c.c_time DESC;"
+                        cursor = sqlitedb.rawQuery(sql, arrayOf("%$query%"))
+                        list = addToList(cursor)
+                        cursor.close()
+                        sqlitedb.close()
+                        dbManager.close()
+                        setListAdapter(list)
+                    }
+                    5 -> {//내담자 필터링
+                        dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+                        sqlitedb = dbManager.readableDatabase
+                        var cursor: Cursor
+                        sql = "SELECT c.c_num, c.c_time, c.c_unusual, l.l_addr, h.h_name FROM consultation c JOIN location l ON c.c_num = l.c_num JOIN homeless h ON c.h_num = h.h_num WHERE h.h_name LIKE ? ORDER BY c.c_time DESC;"
+                        cursor = sqlitedb.rawQuery(sql, arrayOf("%$query%"))
+                        list = addToList(cursor)
+                        cursor.close()
+                        sqlitedb.close()
+                        dbManager.close()
+                        setListAdapter(list)
+                    }
+                }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {return true}
+        })
+
+        var layoutManager = LinearLayoutManager(context)
+        binding!!.listRecyclerView.layoutManager = layoutManager
+
+        adapter = ListAdapter(requireContext(),list)
+        binding!!.listRecyclerView.adapter = adapter
+
+        binding.searchviewList.onActionViewExpanded()
+
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ListFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ListFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    private fun addToList(cursor: Cursor): Vector<ListCard> {
+        val items = Vector<ListCard>()
+        while(cursor.moveToNext()) {
+            // 리스트에 데이터 추가
+            var consultationNum: Int = cursor.getInt(cursor.getColumnIndexOrThrow("c.c_num"))
+            var homelessName:String = cursor.getString(cursor.getColumnIndexOrThrow("h.h_name"))
+            var homelessUnusual:String = cursor.getString(cursor.getColumnIndexOrThrow("c.c_unusual"))
+            var homelessPlace:String = cursor.getString(cursor.getColumnIndexOrThrow("l.l_addr"))
+            var homelessLog:String = cursor.getString(cursor.getColumnIndexOrThrow("c.c_time"))
+
+            //리사이클러뷰 아이템 추가
+            val item = ListCard(consultationNum, -1, homelessName, homelessUnusual, homelessLog, homelessPlace)
+            items.add(item)
+        }
+        return items
+    }
+
+    private fun setListAdapter(items: Vector<ListCard>) {
+        adapter = ListAdapter(requireContext(),items)
+        binding!!.listRecyclerView.adapter = adapter
+
+        binding.searchviewList.onActionViewExpanded()
     }
 }

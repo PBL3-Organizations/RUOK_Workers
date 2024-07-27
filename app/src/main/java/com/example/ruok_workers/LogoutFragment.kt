@@ -1,58 +1,79 @@
 package com.example.ruok_workers
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
+import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.ruok_workers.databinding.FragmentLogoutBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [LogoutFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class LogoutFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    private lateinit var binding: FragmentLogoutBinding
+
+    lateinit var dbManager: DBManager
+    lateinit var sqlitedb: SQLiteDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            // Handle fragment arguments if any
         }
     }
 
+    @SuppressLint("Range")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_logout, container, false)
+    ): View {
+        binding = FragmentLogoutBinding.inflate(inflater, container, false)
+
+        //데이터베이스 연동: 로그인한 회원 이름 불러오기
+        dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+        sqlitedb = dbManager.readableDatabase
+        var cursor: Cursor
+        val sql = "SELECT m_name FROM member WHERE m_num = " + arguments?.getInt("m_num").toString()
+        cursor = sqlitedb.rawQuery(sql, null)
+        cursor.moveToNext()
+        val userName = cursor.getString(cursor.getColumnIndex("m_name"))
+
+        // Set the text with the user ID
+        binding.tvName.text = "$userName\n님 로그아웃\n하시겠습니까?"
+
+        // btnYes 클릭시 LogoutFragment에서 MainActivity로 이동
+        binding.btnYes.setOnClickListener {
+            //자동 로그인 이력 지우기
+            val auto = this.activity?.getSharedPreferences("autoLogin", Context.MODE_PRIVATE)
+            val autoLoginEdit = auto?.edit()
+            autoLoginEdit?.putInt("saved_loginNum", -1)
+            autoLoginEdit?.commit()
+
+            val intent = Intent(requireContext(), MainActivity::class.java)
+            startActivity(intent)
+            activity?.finish() // Finish current activity to prevent going back
+        }
+
+        // btnNo 클릭시 LogoutFragment에서 DashboardFragment로 이동
+        binding.btnNo.setOnClickListener {
+            val parentActivity = activity as DashboardActivity
+            parentActivity.setFragment(DashboardFragment())
+        }
+
+        return binding.root
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment LogoutFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             LogoutFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    // Add any required arguments here
                 }
             }
     }

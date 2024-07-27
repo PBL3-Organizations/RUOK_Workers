@@ -1,59 +1,165 @@
-package com.example.ruok_workers
-
+import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.ruok_workers.BriefingDetailFragment
+import com.example.ruok_workers.DBManager
+import com.example.ruok_workers.DashboardActivity
+import com.example.ruok_workers.ProfileRevisionFragment
+import com.example.ruok_workers.R
+import com.example.ruok_workers.SearchFragment
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ProfileDetailFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ProfileDetailFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var tvName: TextView
+    private lateinit var tvBirthdate: TextView
+    private lateinit var tvPhoneNumber: TextView
+    private lateinit var btnRemoveProfile: Button
+    private lateinit var btnGoToList: Button
+    private lateinit var ivProfiledetail:ImageView
 
+    private lateinit var dbManager: DBManager
+    private lateinit var sqlitedb: SQLiteDatabase
+
+    private var homelessId: Int = -1 // 노숙인 번호
+
+    @SuppressLint("Range", "MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile_detail, container, false)
+        val view = inflater.inflate(R.layout.fragment_profile_detail, container, false)
+
+        // 뷰 초기화
+        tvName = view.findViewById(R.id.tvName)
+        tvBirthdate = view.findViewById(R.id.tvBirthdate)
+        tvPhoneNumber = view.findViewById(R.id.tvPhoneNumber)
+        btnRemoveProfile = view.findViewById(R.id.btn_removeProfile)
+        btnGoToList = view.findViewById(R.id.btn_goTolist)
+        ivProfiledetail = view.findViewById(R.id.ivProfiledetail)
+
+        // FaviconAdapter에서 전달받은 데이터
+        val name = arguments?.getString("name") ?: ""
+        val birth = arguments?.getString("birth") ?: ""
+
+        // 데이터베이스 초기화 및 쿼리 실행
+        dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
+        sqlitedb = dbManager.readableDatabase
+
+        val cursor = sqlitedb.rawQuery("SELECT * FROM homeless WHERE h_name = ? AND h_birth = ?", arrayOf(name, birth))
+        if (cursor.moveToFirst()) {
+            homelessId = cursor.getInt(cursor.getColumnIndex("h_num"))
+            val phoneNumber = cursor.getString(cursor.getColumnIndex("h_phone"))
+            var photoFilename: String = cursor.getString(cursor.getColumnIndex("h_photo"))
+            var resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
+
+            // TextView에 데이터 표시
+            tvName.text = name
+            tvBirthdate.text = birth
+            tvPhoneNumber.text = phoneNumber
+            ivProfiledetail.setImageResource(resId)
+        }
+        cursor.close()
+
+        // '프로필 수정' 버튼 클릭 이벤트 처리
+        view.findViewById<Button>(R.id.btn_EditProfile).setOnClickListener {
+            val phoneNumber = tvPhoneNumber.text.toString()
+            navigateToProfileRevisionFragment(name, birth, phoneNumber)
+        }
+
+        // btnGoToList 버튼 클릭 리스너 설정
+        btnGoToList.setOnClickListener {
+            loadSearchFragment()
+        }
+
+        // 프로필 삭제 버튼 클릭 리스너 설정
+        btnRemoveProfile.setOnClickListener {
+            showRemoveProfileDialog()
+        }
+
+        return view
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ProfileDetailFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ProfileDetailFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onDestroy() {
+        super.onDestroy()
+        sqlitedb.close()
+        dbManager.close()
+    }
+
+    private fun navigateToProfileRevisionFragment(name: String, birth: String, phone: String) {
+        // ProfileRevisionFragment로 이동
+        val fragment = ProfileRevisionFragment()
+        val args = Bundle()
+        args.putString("name", name)
+        args.putString("birth", birth)
+        args.putString("phone", phone)
+        fragment.arguments = args
+
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.rootLayout, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    private fun showRemoveProfileDialog() {
+        // AlertDialog를 사용하여 사용자에게 프로필 삭제 여부를 묻는 대화 상자를 표시
+        AlertDialog.Builder(requireContext())
+            .setTitle("프로필 삭제")
+            .setMessage("본 프로필을 삭제하시겠습니까?")
+            .setPositiveButton("삭제") { dialog, _ ->
+                // "삭제" 버튼을 클릭하면 프로필 삭제 처리를 수행
+                deleteProfile()
+                dialog.dismiss()
             }
+            .setNegativeButton("취소") { dialog, _ ->
+                // "취소" 버튼을 클릭하면 대화 상자를 닫기
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun deleteProfile() {
+        // 데이터베이스에서 노숙인 및 즐겨찾기 삭제
+        sqlitedb.beginTransaction()
+        try {
+            // 노숙인 삭제
+            sqlitedb.delete("homeless", "h_num = ?", arrayOf(homelessId.toString()))
+
+            // 즐겨찾기 삭제
+            sqlitedb.delete("bookmark", "h_num = ?", arrayOf(homelessId.toString()))
+
+            sqlitedb.setTransactionSuccessful()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            sqlitedb.endTransaction()
+        }
+
+        // 삭제 후 처리
+        showToast("프로필이 삭제되었습니다.")
+
+        // SearchFragment로 이동
+        loadSearchFragment()
+    }
+
+    private fun loadSearchFragment() {
+//        val searchFragment = SearchFragment()
+//        requireActivity().supportFragmentManager.beginTransaction()
+//            .replace(R.id.rootLayout, searchFragment)
+//            .commit()
+        val parentActivity = activity as DashboardActivity
+        parentActivity.setFragment(SearchFragment())
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 }

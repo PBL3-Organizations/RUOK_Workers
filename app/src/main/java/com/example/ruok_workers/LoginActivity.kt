@@ -1,14 +1,26 @@
 package com.example.ruok_workers
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.widget.Button
+import android.widget.CheckBox
+import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 class LoginActivity : AppCompatActivity() {
+
+    lateinit var dbManager: DBManager
+    lateinit var sqlitedb: SQLiteDatabase
+
+    @SuppressLint("Range")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -20,11 +32,53 @@ class LoginActivity : AppCompatActivity() {
         }
 
         val loginButton = findViewById<Button>(R.id.button)
-        loginButton.setOnClickListener {
-            // 로그인 버튼을 클릭하면 DashboardActivity로 이동
+        val rememberMeCheckBox = findViewById<CheckBox>(R.id.remember_me_checkbox)
+        val inputIdEditText = findViewById<EditText>(R.id.input_id)
+        val inputPasswordEditText = findViewById<EditText>(R.id.input_password)
+
+        //자동 로그인 이력이 있는 경우
+        val auto = getSharedPreferences("autoLogin", Context.MODE_PRIVATE)
+        if(auto.getInt("saved_loginNum", -1) > 0) {
+            //DashboardActivity로 이동
             val intent = Intent(this, DashboardActivity::class.java)
+            val loginNum = auto.getInt("saved_loginNum", -1)
+            intent.putExtra("m_num", loginNum)
             startActivity(intent)
-            finish() // 로그인 화면을 종료하여 뒤로 가기 버튼을 눌렀을 때 다시 로그인 화면이 나타나지 않도록 함
+            finish()
+        }
+
+        loginButton.setOnClickListener {
+            val inputId = inputIdEditText.text.toString()
+            val inputPassword = inputPasswordEditText.text.toString()
+
+            //데이터베이스 연동: 로그인 검사
+            dbManager = DBManager(this, "RUOKsample", null, 1)
+            sqlitedb = dbManager.readableDatabase
+            val sql = "SELECT m_num FROM member WHERE m_id=? AND m_pw=?;"
+            var cursor: Cursor
+            cursor = sqlitedb.rawQuery(sql, arrayOf(inputId, inputPassword))
+            cursor.moveToNext()
+            val num = cursor.getInt(cursor.getColumnIndex("m_num"))
+
+            if (cursor.count > 0) { //로그인 성공
+                // 로그인 이력 저장 체크되었을 경우
+                if (rememberMeCheckBox.isChecked) {
+                    val autoLoginEdit = auto.edit()
+                    autoLoginEdit.putInt("saved_loginNum", num)
+                    autoLoginEdit.commit()
+                }
+
+                // 로그인 성공 시 DashboardActivity로 이동
+                val intent = Intent(this, DashboardActivity::class.java)
+                intent.putExtra("m_num", num)
+                startActivity(intent)
+                finish()
+            } else {
+                Toast.makeText(this, "아이디 또는 비밀번호가 잘못되었습니다", Toast.LENGTH_SHORT).show()
+            }
+            cursor.close()
+            sqlitedb.close()
+            dbManager.close()
         }
     }
 }

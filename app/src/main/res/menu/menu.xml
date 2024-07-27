@@ -4,11 +4,37 @@
     tools:showIn = "nv_view">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/tabDashboard"
-            android:title="Dashboard" />
+            android:id="@+id/tabLogout"
+            android:title="로그아웃"
+            />
         <item
-            android:id="@+id/tablist"
-            android:title="details" />
+            android:id="@+id/tabInfoRevision"
+            android:title="회원정보 수정"
+            />
+        <item
+            android:id="@+id/tabDashboard"
+            android:title="홈" />
+        <item
+            android:id="@+id/tabList"
+            android:title="상담내역 목록"
+            />
+        <item
+            android:id="@+id/tabCountingList"
+            android:title="카운팅 테이블 목록"
+            />
+        <item
+            android:id="@+id/tabBriefingBoard"
+            android:title="브리핑 게시판"
+            />
+        <item
+            android:id="@+id/tabUnknownHomeless"
+            android:title="이름을 알 수 없는 노숙인 모음"
+            />
+        <item
+            android:id="@+id/tabHomelessList"
+            android:title="노숙인 목록,검색"
+            />
+
     </group>
 
 </menu>

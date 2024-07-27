@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".BriefingDetailFragment">
+
+    <!-- 작성자 -->
+    <TextView
+        android:id="@+id/tvDetailAuthor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="작성자: "
+        android:textStyle="bold" />
+
+    <!-- 게시글 제목 -->
+    <TextView
+        android:id="@+id/tvDetailTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvDetailAuthor"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="게시글 제목"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <!-- 작성 시간 -->
+    <TextView
+        android:id="@+id/tvDetailTimestamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvDetailTitle"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:text="작성 시간: "
+        android:textStyle="bold" />
+
+    <!-- 작성 내용 상세 -->
+    <TextView
+        android:id="@+id/tvBriefingDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvDetailTimestamp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="작성 내용 상세"
+        android:textStyle="bold" />
+
+    <!-- 작성 내용 상세 -->
+    <EditText
+        android:id="@+id/etBriefingDetails"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_below="@id/tvDetailTimestamp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/edit_text_background"
+        android:gravity="start|top"
+        android:hint=" 작성 내용 상세"
+        android:textSize="16sp" />
+
+    <!-- 버튼들을 담을 수 있는 가로 방향 LinearLayout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp">
+
+        <!-- 글 수정 버튼 -->
+        <Button
+            android:id="@+id/button_edit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:backgroundTint="#bf9000"
+            android:text="글 수정"
+            android:textStyle="bold" />
+
+        <!-- '목록으로' 버튼 -->
+        <Button
+            android:id="@+id/button_back"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:backgroundTint="#555555"
+            android:text="목록으로"
+            android:textStyle="bold" />
+
+        <!-- 글 삭제 버튼 -->
+        <Button
+            android:id="@+id/button_delete"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#cc0000"
+            android:text="글 삭제"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</RelativeLayout>

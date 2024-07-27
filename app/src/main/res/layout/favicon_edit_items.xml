@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cvFaviconEdit"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:backgroundTint="#FFFFFF"
+    android:elevation="20dp"
+    android:padding="20dp"
+    app:cardCornerRadius="20dp">
+
+
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="20dp">
+
+            <ImageView
+                android:id="@+id/ivProfileEdit"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/dflt"/>
+
+        <LinearLayout
+            android:id="@+id/LinearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="#FFFFFFFF"
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical"
+            android:paddingStart="20dp">
+
+            <TextView
+                android:id="@+id/tvfeName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="이름: "
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvfeBirth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="생년월일: "
+                android:textStyle="bold" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/ibtnStar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|center_vertical"
+        android:layout_marginEnd="10dp"
+        android:backgroundTint="#FFFFFF"
+        app:srcCompat="@android:drawable/btn_star"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+</androidx.cardview.widget.CardView>
