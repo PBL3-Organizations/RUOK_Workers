@@ -111,19 +111,29 @@ class LocationRevisionFragment : Fragment(), OnMapReadyCallback {
         this.naverMap = naverMap
         setUpMap()
 
+        // 초기 위치를 데이터베이스에서 가져온 위치로 설정
+        val initialLocation = Location("").apply {
+            latitude = l_lat
+            longitude = l_lon
+        }
+        updateMarkerLocation(initialLocation)
+        updateAddress(initialLocation)
+
         fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
             location?.let {
-                updateMarkerLocation(it)
-                updateAddress(it)
+                if (!cameraMoved) { // 초기 카메라 이동은 데이터베이스 위치로만
+                    updateMarkerLocation(it)
+                    updateAddress(it)
+                }
             }
         }
 
-        naverMap.addOnLocationChangeListener { location ->
-            if (!isManualLocation) {
-                updateMarkerLocation(location)
-                updateAddress(location)
-            }
-        }
+//        naverMap.addOnLocationChangeListener { location ->
+//            if (!isManualLocation) {
+//                updateMarkerLocation(location)
+//                updateAddress(location)
+//            }
+//        }
 
         // 클릭한 곳으로 마커와 주소 업데이트
         naverMap.setOnMapClickListener { _, latLng ->
@@ -142,7 +152,7 @@ class LocationRevisionFragment : Fragment(), OnMapReadyCallback {
         if (::naverMap.isInitialized) {
             naverMap.locationSource = locationSource //현 위치
             naverMap.uiSettings.isLocationButtonEnabled = true //현 위치 버튼 기능
-            naverMap.locationTrackingMode = LocationTrackingMode.Follow //위치를 추적하면서 카메라도 같이 움직임
+            naverMap.locationTrackingMode = LocationTrackingMode.NoFollow //위치를 추적하면서 카메라도 같이 움직임
             naverMap.isIndoorEnabled = true //실내지도 활성화
 
             //더블 클릭하면 현 위치 정보로 업데이트
