@@ -13,11 +13,16 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ruok_workers.databinding.FaviconEditItemsBinding
 
-class HomelessListAdapter (private val context: Context, val itemList: ArrayList<FaviconItem>) : RecyclerView.Adapter<HomelessListAdapter.FaviconViewHolder>(){
+class HomelessListAdapter (private val context: Context, val itemList: ArrayList<FaviconItem>, private val itemClickListener: OnItemClickListener) : RecyclerView.Adapter<HomelessListAdapter.FaviconViewHolder>(){
     lateinit var homelessListFragment: HomelessListFragment
 
     lateinit var dbManager: DBManager
     lateinit var sqlitedb: SQLiteDatabase
+
+    // 인터페이스 정의
+    interface OnItemClickListener {
+        fun onItemClicked()
+    }
 
     var h_num = 0;
 
@@ -89,6 +94,9 @@ class HomelessListAdapter (private val context: Context, val itemList: ArrayList
             selectedPosition = holder.adapterPosition
             h_num = item.num
             notifyDataSetChanged()
+
+            // 아이템이 클릭되었음을 Fragment에 알림
+            itemClickListener.onItemClicked()
         }
 
         // 선택된 아이템에 이펙트 추가
