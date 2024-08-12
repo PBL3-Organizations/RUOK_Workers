@@ -140,4 +140,6 @@
     <color name="md_theme_surfaceContainer_highContrast">#FCEAE2</color>
     <color name="md_theme_surfaceContainerHigh_highContrast">#F6E5DD</color>
     <color name="md_theme_surfaceContainerHighest_highContrast">#F0DFD7</color>
+    <color name="default_card">#FFFFFF</color>
+    <color name="selected_card">#FFE8DD</color>
 </resources>
