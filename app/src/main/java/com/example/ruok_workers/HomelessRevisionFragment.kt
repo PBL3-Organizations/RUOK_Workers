@@ -3,9 +3,11 @@ package com.example.ruok_workers
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -82,7 +84,15 @@ class HomelessRevisionFragment : Fragment() {
         binding.centerTextView2.visibility = View.VISIBLE
         binding.recyclerView.visibility = View.VISIBLE
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
-        adapter = HomelessListAdapter(requireContext(), list)
+
+        // Adapter에 OnItemClickListener를 전달
+        adapter = HomelessListAdapter(requireContext(), list, object : HomelessListAdapter.OnItemClickListener {
+            override fun onItemClicked() {
+                // 아이템이 클릭될 때 btnNoName의 배경색을 default_card로 변경
+                binding.btnNoName.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.default_card))
+            }
+        })
+
         binding.recyclerView.adapter = adapter
 
         //데이터베이스 연동
@@ -143,7 +153,13 @@ class HomelessRevisionFragment : Fragment() {
 
             binding.recyclerView.layoutManager = LinearLayoutManager(context)
 
-            adapter = HomelessListAdapter(requireContext(), list)
+            // Adapter에 OnItemClickListener를 전달
+            adapter = HomelessListAdapter(requireContext(), list, object : HomelessListAdapter.OnItemClickListener {
+                override fun onItemClicked() {
+                    // 아이템이 클릭될 때 btnNoName의 배경색을 default_card로 변경
+                    binding.btnNoName.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.default_card))
+                }
+            })
 
             binding.recyclerView.adapter = adapter
 
@@ -166,21 +182,34 @@ class HomelessRevisionFragment : Fragment() {
 
         //btnNextHomelessList 클릭시 HomelessRevisionFragment에서 LocationRevisionFragment로 이동
         binding.btnNextHomelessList.setOnClickListener{
+            Log.d("HomelessRevisionFragment", "Current item.h_num: ${item.h_num}, adapter.h_num: ${adapter.h_num}")
             item.h_num = adapter.h_num
-            if (num != 0) item.h_num = num
+            Log.d("HomelessRevisionFragment", "After assigning adapter.h_num to item.h_num: item.h_num: ${item.h_num}, num: $num")
+            if (num != 0) num = item.h_num
+            Log.d("HomelessRevisionFragment", "After checking num != 0: item.h_num: ${item.h_num}, num: $num")
             val parentActivity = activity as DashboardActivity
             val locationRevisionFragment = LocationRevisionFragment()
             bundle.putInt("hasConsultation", hasConsultation)
             bundle.putInt("c_num", c_num)
             bundle.putInt("h_num", num)
+            Log.d("HomelessRevisionFragment", "Final values before transition: hasConsultation: $hasConsultation, c_num: $c_num, h_num: ${item.h_num}, num: $num")
             bundle.putParcelable("consultation_item", item)
             locationRevisionFragment.arguments = bundle
             parentActivity.setFragment(locationRevisionFragment)
         }
 
-        //btnNoName 클릭시 h_num을 0으로 설정
+        //btnNoName 클릭시 num을 0으로 설정하고 아이템들의 배경색을 default_card로 변경
         binding.btnNoName.setOnClickListener{
             num = 0
+
+            // 어댑터가 초기화되었는지 그리고 리스트에 아이템이 있는지 확인
+            if (::adapter.isInitialized && adapter.itemCount > 0) {
+                adapter.resetItemBackgrounds()
+                binding.btnNoName.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.selected_card))
+            } else {
+                // 아이템이 없을 경우의 처리 로직
+                binding.btnNoName.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.selected_card))
+            }
         }
 
         //btnNewHomeless 클릭시 HomelessRevisionFragment에서 ProfileAddFragment로 이동

@@ -10,6 +10,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ruok_workers.databinding.FaviconEditItemsBinding
 
@@ -50,6 +51,9 @@ class FaviconAdapter(private val context: Context, val itemList: ArrayList<Favic
             holder.binding.ibtnStar.setImageResource(android.R.drawable.btn_star_big_off)
             holder.binding.ibtnStar.tag = "off"
         }
+
+        // ibtnStar 배경색을 기본값으로 설정
+        holder.binding.ibtnStar.setBackgroundColor(ContextCompat.getColor(context, R.color.default_card))
 
         // ibtnStar 클릭 리스너 설정
         holder.binding.ibtnStar.setOnClickListener{

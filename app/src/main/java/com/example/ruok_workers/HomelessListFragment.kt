@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ruok_workers.databinding.FragmentHomelessListBinding
 
@@ -105,7 +106,15 @@ class HomelessListFragment : Fragment() {
 
             binding.recyclerView.layoutManager = LinearLayoutManager(context)
 
-            adapter = HomelessListAdapter(requireContext(), list)
+//            adapter = HomelessListAdapter(requireContext(), list)
+
+            // Adapter에 OnItemClickListener를 전달
+            adapter = HomelessListAdapter(requireContext(), list, object : HomelessListAdapter.OnItemClickListener {
+                override fun onItemClicked() {
+                    // 아이템이 클릭될 때 btnNoName의 배경색을 default_card로 변경
+                    binding.btnNoName.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.default_card))
+                }
+            })
 
             binding.recyclerView.adapter = adapter
 
@@ -146,9 +155,18 @@ class HomelessListFragment : Fragment() {
             parentActivity.setFragment(locationAddFragment)
         }
 
-        //btnNoName 클릭시 h_num을 0으로 설정
+        //btnNoName 클릭시 h_num을 0으로 설정하고 아이템들의 배경색을 default_card로 변경
         binding.btnNoName.setOnClickListener{
             item.h_num = 0
+
+            // 어댑터가 초기화되었는지 그리고 리스트에 아이템이 있는지 확인
+            if (::adapter.isInitialized && adapter.itemCount > 0) {
+                adapter.resetItemBackgrounds()
+                binding.btnNoName.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.selected_card))
+            } else {
+                // 아이템이 없을 경우의 처리 로직
+                binding.btnNoName.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.selected_card))
+            }
         }
 
         //btnNewHomeless 클릭시 HomelessListFragment에서 ProfileAddFragment로 이동

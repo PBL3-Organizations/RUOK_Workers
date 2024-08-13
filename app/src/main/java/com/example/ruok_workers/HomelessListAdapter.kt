@@ -9,14 +9,20 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ruok_workers.databinding.FaviconEditItemsBinding
 
-class HomelessListAdapter (private val context: Context, val itemList: ArrayList<FaviconItem>) : RecyclerView.Adapter<HomelessListAdapter.FaviconViewHolder>(){
+class HomelessListAdapter (private val context: Context, val itemList: ArrayList<FaviconItem>, private val itemClickListener: OnItemClickListener) : RecyclerView.Adapter<HomelessListAdapter.FaviconViewHolder>(){
     lateinit var homelessListFragment: HomelessListFragment
 
     lateinit var dbManager: DBManager
     lateinit var sqlitedb: SQLiteDatabase
+
+    // 인터페이스 정의
+    interface OnItemClickListener {
+        fun onItemClicked()
+    }
 
     var h_num = 0;
 
@@ -25,6 +31,8 @@ class HomelessListAdapter (private val context: Context, val itemList: ArrayList
         val tvfeBirth = itemView.findViewById<TextView>(R.id.tvfeBirth)
         val ibtnStar = itemView.findViewById<ImageButton>(R.id.ibtnStar)
     }
+
+    private var selectedPosition = RecyclerView.NO_POSITION
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -81,13 +89,38 @@ class HomelessListAdapter (private val context: Context, val itemList: ArrayList
             dbManager.close()
         }
 
+        // 아이템 클릭 리스너 설정
         holder.binding.cvFaviconEdit.setOnClickListener {
+            selectedPosition = holder.adapterPosition
             h_num = item.num
+            notifyDataSetChanged()
+
+            // 아이템이 클릭되었음을 Fragment에 알림
+            itemClickListener.onItemClicked()
+        }
+
+        // 선택된 아이템에 이펙트 추가
+        if (selectedPosition == position) {
+            holder.binding.cvFaviconEdit.setCardBackgroundColor(ContextCompat.getColor(context, R.color.selected_card))
+            holder.binding.LinearLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.selected_card))
+            holder.binding.ibtnStar.setBackgroundColor(ContextCompat.getColor(context, R.color.selected_card))
+            holder.binding.cvFaviconEdit.elevation = 20f // 그림자 강하게
+        } else {
+            holder.binding.cvFaviconEdit.setCardBackgroundColor(ContextCompat.getColor(context, R.color.default_card))
+            holder.binding.LinearLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.default_card))
+            holder.binding.ibtnStar.setBackgroundColor(ContextCompat.getColor(context, R.color.default_card))
+            holder.binding.cvFaviconEdit.elevation = 10f // 기본 그림자
         }
     }
 
     override fun getItemCount(): Int {
         return itemList.count()
+    }
+
+    // 모든 아이템의 배경색을 default_card로 변경하는 메서드 추가
+    fun resetItemBackgrounds() {
+        selectedPosition = RecyclerView.NO_POSITION
+        notifyDataSetChanged()
     }
 
 }
