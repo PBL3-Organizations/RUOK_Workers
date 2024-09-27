@@ -7,7 +7,7 @@
     tools:context=".LocationAddFragment">
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/mapLocationAdd"
+        android:id="@+id/mapLocationShow"
         android:name="com.naver.maps.map.MapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -82,7 +82,7 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/mapLocationAdd"
+            app:layout_constraintTop_toBottomOf="@id/mapLocationShow"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout

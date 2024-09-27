@@ -15,9 +15,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="30dp"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -30,48 +30,48 @@
                 android:id="@+id/tvName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_weight="1"
                 android:text=""
-                android:textSize="18sp"
-                android:layout_marginStart="8dp" />
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:text="생년월일:"
                 android:textSize="18sp"
-                android:layout_marginTop="16dp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvBirthdate"
-                android:layout_marginTop="16dp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_weight="1"
                 android:text=""
-                android:textSize="18sp"
-                android:layout_marginStart="8dp" />
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="전화번호:"
                 android:layout_marginTop="16dp"
+                android:text="전화번호:"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -79,28 +79,59 @@
                 android:id="@+id/tvPhoneNumber"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_weight="1"
                 android:text=""
-                android:textSize="18sp"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:layout_marginStart="8dp" />
+                android:text="특이사항:"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvSpecialNote"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_weight="1"
+                android:text=""
+                android:textSize="18sp" />
         </LinearLayout>
 
         <ImageView
             android:id="@+id/ivProfiledetail"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
+            android:layout_width="207dp"
+            android:layout_height="175dp"
             android:layout_gravity="center"
             android:layout_marginTop="25dp"
             android:layout_marginBottom="25dp"
             android:src="@drawable/aegis_logo" />
 
+        <Button
+            android:id="@+id/buttonConnection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="연계 과정 보기" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="16dp"
-            android:gravity="center">
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/btn_EditProfile"

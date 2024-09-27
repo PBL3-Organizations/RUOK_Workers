@@ -97,9 +97,9 @@ class LocationAddFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun initMapView() {
-        val mapFragment = childFragmentManager.findFragmentById(R.id.mapLocationAdd) as MapFragment?
+        val mapFragment = childFragmentManager.findFragmentById(R.id.mapLocationShow) as MapFragment?
             ?: MapFragment.newInstance().also {
-                childFragmentManager.beginTransaction().add(R.id.mapLocationAdd, it).commit()
+                childFragmentManager.beginTransaction().add(R.id.mapLocationShow, it).commit()
             }
         // fragment의 getMapAsync() 메서드로 OnMapReadyCallBack 콜백을 등록하면, 비동기로 NaverMap 객체를 얻을 수 있음
         mapFragment.getMapAsync(this)
