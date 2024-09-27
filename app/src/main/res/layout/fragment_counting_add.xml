@@ -75,7 +75,7 @@
                     android:id="@+id/checkBox11"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="서울역광장일대"
+                    android:text="서울역광장"
                     android:visibility="gone" />
 
                 <CheckBox
