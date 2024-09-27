@@ -60,14 +60,14 @@ class PhotoAddFragment : Fragment() {
             questionnaireFragment.arguments = bundle
             DashboardActivity.setFragment(questionnaireFragment)
         }
-        //btnPhotoAddNext클릭시 PhotoAddFragment에서 HomelessListFragment로 이동
+        //btnPhotoAddNext클릭시 PhotoAddFragment에서 LocationAddFragment로 이동
         binding.btnPhotoAddNext.setOnClickListener {
             val DashboardActivity = activity as DashboardActivity
-            val homelessListFragment = HomelessListFragment()
+            val locationAddFragment = LocationAddFragment()
             bundle.putInt("hasConsultation", hasConsultation)
             bundle.putParcelable("consultation_item", item)
-            homelessListFragment.arguments = bundle
-            DashboardActivity.setFragment(homelessListFragment)
+            locationAddFragment.arguments = bundle
+            DashboardActivity.setFragment(locationAddFragment)
         }
         //btnPhotoAddCamera클릭시 카메라열고 찍은 사진 ivPhotoAdd에 넣기
         binding.btnPhotoAddCamera.setOnClickListener{

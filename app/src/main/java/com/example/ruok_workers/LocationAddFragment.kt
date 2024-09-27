@@ -237,12 +237,12 @@ class LocationAddFragment : Fragment(), OnMapReadyCallback {
         bundle.putInt("hasConsultation", hasConsultation)
         bundle.putParcelable("consultation_item", item)
 
-        //btnBeforeLocationAdd 클릭시 LocationAddFragment에서 HomelessListFragment로 이동
+        //btnBeforeLocationAdd 클릭시 LocationAddFragment에서 PhotoAddFragment로 이동
         binding.btnBeforeLocationAdd.setOnClickListener{
             val parentActivity = activity as DashboardActivity
-            val homelessListFragment = HomelessListFragment()
-            homelessListFragment.arguments = bundle
-            parentActivity.setFragment(homelessListFragment)
+            val PhotoAddFragment = PhotoAddFragment()
+            PhotoAddFragment.arguments = bundle
+            parentActivity.setFragment(PhotoAddFragment)
         }
 
         //btnCompleteLocationAdd 클릭시 LocationAddFragment에서 LocationTrackingFragment로 이동

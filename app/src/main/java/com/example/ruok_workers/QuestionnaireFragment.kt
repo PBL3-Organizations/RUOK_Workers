@@ -15,6 +15,7 @@ class QuestionnaireFragment : Fragment() {
     lateinit var cameraPermission: ActivityResultLauncher<String>
 
     var loginNum: Int = -1
+    lateinit var item: ConsultationItem
     var health = 0
 
     override fun onCreateView(
@@ -26,26 +27,40 @@ class QuestionnaireFragment : Fragment() {
         //로그인 정보 가져오기
         loginNum = arguments?.getInt("m_num", 0)!!
 
-        //btnFinish클릭시 QuestionnaireFragment에서 PhotoAddFragment로 이동
-        binding.btnFinish.setOnClickListener {
-            //데이터 bundle에 저장하기
-            val m_num = loginNum
-            val unusual = binding.edtUnusual.text.toString()
-            val measure = binding.edtMeasure.text.toString()
-            val content = binding.edtContent.text.toString()
+        val onRecording = arguments?.getInt("onRecording", 0)!!
+        val bundle = Bundle()
+        bundle.putInt("onRecording", onRecording)
 
-            val item = ConsultationItem(m_num, 0, "", health, unusual, measure, content, "", 0.0, 0.0, arrayOf(""))
+        item = arguments?.getParcelable<ConsultationItem>("consultation_item")!!
+        val hasConsultation = arguments?.getInt("hasConsultation")!!
 
-            val DashboardActivity = activity as DashboardActivity
-            val onRecording = arguments?.getInt("onRecording", 0)!!
-            val bundle = Bundle()
-            bundle.putInt("onRecording", onRecording)
-            bundle.putInt("hasConsultation", 1)
+        //btnBeforeQuestionnaire 클릭시 QuestionnaireFragment에서 HomelessListFragment로 이동
+        binding.btnBeforeQuestionnaire.setOnClickListener{
+            item.unusual = binding.edtUnusual.text.toString()
+            item.measure = binding.edtMeasure.text.toString()
+            item.content = binding.edtContent.text.toString()
+            item.health = health
+
+            val parentActivity = activity as DashboardActivity
+            val HomelessListFragment = HomelessListFragment()
+            bundle.putInt("hasConsultation", hasConsultation)
             bundle.putParcelable("consultation_item", item)
+            HomelessListFragment.arguments = bundle
+            parentActivity.setFragment(HomelessListFragment)
+        }
+        //btnNextQuestionnaire클릭시 QuestionnaireFragment에서 PhotoAddFragment로 이동
+        binding.btnNextQuestionnaire.setOnClickListener {
+            item.unusual = binding.edtUnusual.text.toString()
+            item.measure = binding.edtMeasure.text.toString()
+            item.content = binding.edtContent.text.toString()
+            item.health = health
 
+            val parentActivity = activity as DashboardActivity
+            bundle.putInt("hasConsultation", hasConsultation)
+            bundle.putParcelable("consultation_item", item)
             val photoAddFragment = PhotoAddFragment()
             photoAddFragment.arguments = bundle
-            DashboardActivity.setFragment(photoAddFragment)
+            parentActivity.setFragment(photoAddFragment)
         }
         //건강상태 버튼 클릭시 색변경
         binding.btnQuestionGood.setOnClickListener {
