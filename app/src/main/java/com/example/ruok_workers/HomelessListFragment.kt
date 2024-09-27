@@ -22,6 +22,7 @@ class HomelessListFragment : Fragment() {
     lateinit var sqlitedb: SQLiteDatabase
 
     var loginNum: Int = -1
+
     lateinit var item: ConsultationItem
 
     var list = ArrayList<FaviconItem>()
@@ -29,6 +30,7 @@ class HomelessListFragment : Fragment() {
     var birth: String = ""
     var bookmark: Int = -1
     var num: Int = -1
+    var h_num = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -123,41 +125,28 @@ class HomelessListFragment : Fragment() {
 
         dbManager.close()
 
-        val onRecording = arguments?.getInt("onRecording", 0)!!
-        val bundle = Bundle()
-        bundle.putInt("onRecording", onRecording)
-
-        item = arguments?.getParcelable<ConsultationItem>("consultation_item")!!
-        val hasConsultation = arguments?.getInt("hasConsultation")!!
-        bundle.putInt("hasConsultation", hasConsultation)
-        bundle.putParcelable("consultation_item", item)
-
-        //btnBeforeHomelessList 클릭시 HomelessListFragment에서 PhotoAddFragment로 이동
-        binding.btnBeforeHomelessList.setOnClickListener{
-            val parentActivity = activity as DashboardActivity
-            val photoAddFragment = PhotoAddFragment()
-            bundle.putInt("hasConsultation", hasConsultation)
-            bundle.putParcelable("consultation_item", item)
-            photoAddFragment.arguments = bundle
-            parentActivity.setFragment(photoAddFragment)
-        }
-
         //btnNextHomelessList 클릭시 HomelessListFragment에서 LocationAddFragment로 이동
         binding.btnNextHomelessList.setOnClickListener{
-            if (::adapter.isInitialized) item.h_num = adapter.h_num
-            else item.h_num = 0
+            val m_num = loginNum
+            if (::adapter.isInitialized) h_num = adapter.h_num
+            else h_num = 0
+
+            val item = ConsultationItem(m_num, h_num, "", 0, "", "", "", "", 0.0, 0.0, arrayOf(""))
 
             val parentActivity = activity as DashboardActivity
-            val locationAddFragment = LocationAddFragment()
-            bundle.putInt("hasConsultation", hasConsultation)
+            val onRecording = arguments?.getInt("onRecording", 0)!!
+            val bundle = Bundle()
+            bundle.putInt("onRecording", onRecording)
+            bundle.putInt("hasConsultation", 1)
             bundle.putParcelable("consultation_item", item)
-            locationAddFragment.arguments = bundle
-            parentActivity.setFragment(locationAddFragment)
+            val QuestionnaireFragment = QuestionnaireFragment()
+            QuestionnaireFragment.arguments = bundle
+            parentActivity.setFragment(QuestionnaireFragment)
         }
 
         //btnNoName 클릭시 h_num을 0으로 설정하고 아이템들의 배경색을 default_card로 변경
         binding.btnNoName.setOnClickListener{
-            item.h_num = 0
+            h_num = 0
 
             // 어댑터가 초기화되었는지 그리고 리스트에 아이템이 있는지 확인
             if (::adapter.isInitialized && adapter.itemCount > 0) {
