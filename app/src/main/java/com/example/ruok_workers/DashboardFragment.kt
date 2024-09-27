@@ -96,10 +96,10 @@ class DashboardFragment : Fragment() {
             parentActivity.setFragment(BriefingBoardFragment())
         }
 
-        //btnCounsel 클릭시 DashboardFragment에서 QuestionnaireFragment로 이동
+        //btnCounsel 클릭시 DashboardFragment에서 HomelessListFragment로 이동
         binding.btnCounsel.setOnClickListener{
             val parentActivity = activity as DashboardActivity
-            parentActivity.setFragment(QuestionnaireFragment())
+            parentActivity.setFragment(HomelessListFragment())
         }
 
         //btnOutReach 클릭시 DashboardFragment에서 LocationShowFragment로 이동
