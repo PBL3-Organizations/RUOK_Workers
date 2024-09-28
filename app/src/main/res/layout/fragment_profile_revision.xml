@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:gravity="center_vertical">
 
             <TextView
@@ -46,7 +46,6 @@
                 android:layout_height="wrap_content"
                 android:text="생년월일:"
                 android:textSize="18sp"
-                android:layout_marginTop="16dp"
                 android:textStyle="bold" />
 
             <EditText
@@ -69,7 +68,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="전화번호:"
-                android:layout_marginTop="16dp"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -78,11 +76,35 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
                 android:layout_weight="1"
                 android:hint="전화번호를 입력하세요 (숫자만 입력)"
                 android:inputType="phone"
                 android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="특이사항:"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <EditText
+                    android:id="@+id/profile_revision_SpecialNote"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:hint="특이사항을 입력하세요"
+                    android:inputType="textImeMultiLine"
+                    android:textSize="20sp" />
+
         </LinearLayout>
 
         <ImageView
@@ -94,26 +116,27 @@
             android:layout_marginBottom="25dp"
             android:src="@drawable/aegis_logo" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/profile_revieion_ok"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="16dp"
-            android:gravity="center">
-
-            <Button
-                android:id="@+id/profile_revieion_ok"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_weight="1"
-                android:backgroundTint="#3E3D39"
-                android:text="수정하기"
-                android:textStyle="bold"
-                android:onClick="onEditProfileClicked"/>
-
-        </LinearLayout>
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:backgroundTint="#3E3D39"
+            android:onClick="onEditProfileClicked"
+            android:text="수정하기"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
