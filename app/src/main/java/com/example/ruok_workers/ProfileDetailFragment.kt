@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import com.example.ruok_workers.BriefingDetailFragment
 import com.example.ruok_workers.DBManager
@@ -22,6 +23,7 @@ class ProfileDetailFragment : Fragment() {
     private lateinit var tvName: TextView
     private lateinit var tvBirthdate: TextView
     private lateinit var tvPhoneNumber: TextView
+    private lateinit var tvSpecialNote: TextView
     private lateinit var btnRemoveProfile: Button
     private lateinit var btnGoToList: Button
     private lateinit var ivProfiledetail:ImageView
@@ -42,6 +44,7 @@ class ProfileDetailFragment : Fragment() {
         tvName = view.findViewById(R.id.tvName)
         tvBirthdate = view.findViewById(R.id.tvBirthdate)
         tvPhoneNumber = view.findViewById(R.id.tvPhoneNumber)
+        tvSpecialNote = view.findViewById(R.id.tvSpecialNote)
         btnRemoveProfile = view.findViewById(R.id.btn_removeProfile)
         btnGoToList = view.findViewById(R.id.btn_goTolist)
         ivProfiledetail = view.findViewById(R.id.ivProfiledetail)
@@ -58,6 +61,7 @@ class ProfileDetailFragment : Fragment() {
         if (cursor.moveToFirst()) {
             homelessId = cursor.getInt(cursor.getColumnIndex("h_num"))
             val phoneNumber = cursor.getString(cursor.getColumnIndex("h_phone"))
+            var specialNote = cursor.getString(cursor.getColumnIndex("h_unusual"))
             var photoFilename: String = cursor.getString(cursor.getColumnIndex("h_photo"))
             var resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
 
@@ -65,6 +69,7 @@ class ProfileDetailFragment : Fragment() {
             tvName.text = name
             tvBirthdate.text = birth
             tvPhoneNumber.text = phoneNumber
+            tvSpecialNote.text = specialNote
             ivProfiledetail.setImageResource(resId)
         }
         cursor.close()
@@ -72,7 +77,8 @@ class ProfileDetailFragment : Fragment() {
         // '프로필 수정' 버튼 클릭 이벤트 처리
         view.findViewById<Button>(R.id.btn_EditProfile).setOnClickListener {
             val phoneNumber = tvPhoneNumber.text.toString()
-            navigateToProfileRevisionFragment(name, birth, phoneNumber)
+            val specialNote = tvSpecialNote.text.toString()
+            navigateToProfileRevisionFragment(name, birth, phoneNumber, specialNote)
         }
 
         // btnGoToList 버튼 클릭 리스너 설정
@@ -94,13 +100,14 @@ class ProfileDetailFragment : Fragment() {
         dbManager.close()
     }
 
-    private fun navigateToProfileRevisionFragment(name: String, birth: String, phone: String) {
+    private fun navigateToProfileRevisionFragment(name: String, birth: String, phone: String, specialNote: String) {
         // ProfileRevisionFragment로 이동
         val fragment = ProfileRevisionFragment()
         val args = Bundle()
         args.putString("name", name)
         args.putString("birth", birth)
         args.putString("phone", phone)
+        args.putString("specialNote", specialNote)
         fragment.arguments = args
 
         requireActivity().supportFragmentManager.beginTransaction()
@@ -161,5 +168,20 @@ class ProfileDetailFragment : Fragment() {
 
     private fun showToast(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+
+    // onViewCreated 메서드 추가
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // 뒤로가기 버튼 비활성화 콜백 설정
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // 뒤로가기 버튼을 막고, 원하는 경우 메시지를 표시
+                // showToast("뒤로가기가 비활성화되었습니다.")
+            }
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 }

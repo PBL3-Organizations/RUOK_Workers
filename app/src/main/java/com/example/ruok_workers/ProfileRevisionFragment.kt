@@ -18,6 +18,7 @@ class ProfileRevisionFragment : Fragment() {
     private lateinit var etName: EditText
     private lateinit var etBirthdate: EditText
     private lateinit var etPhoneNumber: EditText
+    private lateinit var etSpecialNote: EditText
     private lateinit var ivProfileRevision:ImageView
 
     lateinit var dbManager: DBManager
@@ -34,17 +35,20 @@ class ProfileRevisionFragment : Fragment() {
         etName = view.findViewById(R.id.profile_revision_Name)
         etBirthdate = view.findViewById(R.id.profile_revision_Birth)
         etPhoneNumber = view.findViewById(R.id.profile_revision_PhoneNumber)
+        etSpecialNote = view.findViewById(R.id.profile_revision_SpecialNote)
         ivProfileRevision = view.findViewById(R.id.imageView_profile_revison)
 
         // 기존 데이터 가져오기
         val name = arguments?.getString("name") ?: ""
         val birth = arguments?.getString("birth") ?: ""
         val phoneNumber = arguments?.getString("phone") ?: ""
+        val specialNote = arguments?.getString("specialNote") ?: ""
 
         // 화면에 기존 데이터 설정
         etName.setText(name)
         etBirthdate.setText(birth)
         etPhoneNumber.setText(phoneNumber)
+        etSpecialNote.setText(specialNote)
 
         // 데이터베이스 초기화 및 열기
         dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
@@ -61,17 +65,18 @@ class ProfileRevisionFragment : Fragment() {
 
         // '수정하기' 버튼 클릭 시 이벤트 처리
         view.findViewById<Button>(R.id.profile_revieion_ok).setOnClickListener {
-            updateProfile(name, birth, phoneNumber)
+            updateProfile(name, birth, phoneNumber, specialNote)
         }
 
         return view
     }
 
-    private fun updateProfile(name: String, birth: String, phoneNumber: String) {
+    private fun updateProfile(name: String, birth: String, phoneNumber: String, specialNote: String) {
         // 수정된 데이터 가져오기
         val newName = etName.text.toString()
         val newBirth = etBirthdate.text.toString()
         val newPhoneNumber = etPhoneNumber.text.toString()
+        val newSpecialNote = etSpecialNote.text.toString()
 
         if (newName.isBlank() || newBirth.isBlank() || newPhoneNumber.isBlank()) {
             Toast.makeText(context, "모든 필드를 입력하세요.", Toast.LENGTH_SHORT).show()
@@ -82,13 +87,13 @@ class ProfileRevisionFragment : Fragment() {
             sqlitedb.beginTransaction()
             try {
                 // 기존 데이터를 삭제합니다.
-                val deleteQuery = "DELETE FROM homeless WHERE h_name=? AND h_birth=? AND h_phone=?;"
-                sqlitedb.execSQL(deleteQuery, arrayOf(name, birth, phoneNumber))
+                val deleteQuery = "DELETE FROM homeless WHERE h_name=? AND h_birth=? AND h_phone=? AND h_unusual=?;"
+                sqlitedb.execSQL(deleteQuery, arrayOf(name, birth, phoneNumber, specialNote))
 
                 // 새 데이터를 추가합니다.
                 val insertQuery =
-                    "INSERT INTO homeless (h_name, h_birth, h_phone, h_photo) VALUES (?, ?, ?, ?);"
-                sqlitedb.execSQL(insertQuery, arrayOf(newName, newBirth, newPhoneNumber, resId.toString()))
+                    "INSERT INTO homeless (h_name, h_birth, h_phone, h_unusual, h_photo) VALUES (?, ?, ?, ?, ?);"
+                sqlitedb.execSQL(insertQuery, arrayOf(newName, newBirth, newPhoneNumber, newSpecialNote, resId.toString()))
 
                 sqlitedb.setTransactionSuccessful()
             } finally {
@@ -115,12 +120,13 @@ class ProfileRevisionFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(name: String, birth: String, phone: String) =
+        fun newInstance(name: String, birth: String, phone: String, specialNote: String) =
             ProfileRevisionFragment().apply {
                 arguments = Bundle().apply {
                     putString("name", name)
                     putString("birth", birth)
                     putString("phone", phone)
+                    putString("specialNote", specialNote)
                 }
             }
     }

@@ -55,10 +55,11 @@ class ProfileAddFragment : Fragment() {
             val name = view.findViewById<EditText>(R.id.name_input).text.toString()
             val birth = view.findViewById<EditText>(R.id.birth_input_profile_add).text.toString()
             val phone = view.findViewById<EditText>(R.id.phone_input).text.toString()
+            val specialNote = view.findViewById<EditText>(R.id.special_note_input).text.toString()
 
             // SQL 쿼리를 생성하여 실행합니다.
-            val query = "INSERT INTO homeless (h_name, h_birth, h_phone, h_photo) " +
-                    "VALUES ('$name', '$birth', '$phone', 'default.jpeg')"
+            val query = "INSERT INTO homeless (h_name, h_birth, h_phone, h_unusual, h_photo) " +
+                    "VALUES ('$name', '$birth', '$phone', '$specialNote', 'default.jpeg')"
             sqlitedb.execSQL(query)
 
             // 저장 후에는 검색 화면(SearchFragment)으로 이동합니다.
