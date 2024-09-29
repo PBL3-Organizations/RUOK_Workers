@@ -24,7 +24,7 @@ class DBManager(
         db!!.execSQL("CREATE TABLE IF NOT EXISTS counting_area (ca_num INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,ca_name TEXT NOT NULL,cc_num INTEGER NOT NULL);")
         db!!.execSQL("CREATE TABLE IF NOT EXISTS counting_record (cl_date TEXT NOT NULL,cl_order INTEGER NOT NULL,ca_num INTEGER NOT NULL,m_num INTEGER NOT NULL,cr_male INTEGER NOT NULL,cr_female INTEGER NOT NULL,cr_sum INTEGER NOT NULL,PRIMARY KEY(cl_date,cl_order,ca_num));")
         db!!.execSQL("CREATE TABLE IF NOT EXISTS counting_list (cl_date TEXT NOT NULL,cl_order INTEGER NOT NULL,cc_num INTEGER NOT NULL,cl_title TEXT NOT NULL,cl_sum INTEGER NOT NULL,PRIMARY KEY(cl_date,cl_order,cc_num));")
-        db!!.execSQL("CREATE TABLE IF NOT EXISTS time (m_num INTEGER NOT NULL, t_time INTEGER, c_num	INTEGER NOT NULL, PRIMARY KEY(m_num));")
+        db!!.execSQL("CREATE TABLE IF NOT EXISTS time (m_num INTEGER NOT NULL, t_time INTEGER, c_num	INTEGER NOT NULL, PRIMARY KEY(c_num));")
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {}
