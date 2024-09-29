@@ -62,6 +62,7 @@
 
         <EditText
             android:id="@+id/etMenCountingRevisionItems"
+            android:imeOptions="actionDone"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:inputType="number"
@@ -91,6 +92,7 @@
 
         <EditText
             android:id="@+id/etWomenCountingRevisionItems"
+            android:imeOptions="actionDone"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:inputType="number"
