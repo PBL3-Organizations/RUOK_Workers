@@ -3,10 +3,15 @@ package com.example.ruok_workers
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
+import android.view.KeyEvent
+import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -42,6 +47,7 @@ class RegisterActivity : AppCompatActivity() {
             view.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
         input_workerName = findViewById(R.id.input_workerName)
         input_workerBirth = findViewById(R.id.input_workerBirth)
         input_id = findViewById(R.id.input_id)
@@ -60,7 +66,7 @@ class RegisterActivity : AppCompatActivity() {
             val inputOrganization = input_organization.text.toString() // 사용자 소속 입력
             val organization_num = organization_number.text.toString().toInt()
 
-            //데이터베이스 연동: 아이디 중복검사
+            // 데이터베이스 연동: 아이디 중복검사
             dbManager = DBManager(this, "RUOKsample", null, 1)
             sqlitedb = dbManager.readableDatabase
             var cursor: Cursor
@@ -77,15 +83,17 @@ class RegisterActivity : AppCompatActivity() {
                 Toast.makeText(this, "모든 필드를 입력해주세요", Toast.LENGTH_SHORT).show()
             } else if (inputPassword != inputCheckPassword) {
                 Toast.makeText(this, "비밀번호가 일치하지 않습니다", Toast.LENGTH_SHORT).show()
+            } else if (!isPasswordValid(inputPassword)) {
+                Toast.makeText(this, "비밀번호는 최소 8자리 이상이어야 하며 대문자, 소문자, 숫자, 특수 문자를 포함해야 합니다.", Toast.LENGTH_SHORT).show()
             } else if (count > 0) {
                 Toast.makeText(this, "중복된 아이디입니다", Toast.LENGTH_SHORT).show()
             } else if (inputBirth.length != 8) {
                 Toast.makeText(this, "생년월일을 YYYYMMDD 형식으로 입력해주세요", Toast.LENGTH_SHORT).show()
             } else {
-                //데이터베이스 연동: 회원정보 저장
+                // 데이터베이스 연동: 회원정보 저장
                 dbManager = DBManager(this, "RUOKsample", null, 1)
                 sqlitedb = dbManager.writableDatabase
-                var sql = "INSERT INTO member (m_name, m_id, m_pw, m_birth, m_type, m_photo, wf_num) VALUES (?, ?, ?, ?, 1, 'default.jpeg', ?);"
+                val sql = "INSERT INTO member (m_name, m_id, m_pw, m_birth, m_type, m_photo, wf_num) VALUES (?, ?, ?, ?, 1, 'default.jpeg', ?);"
                 sqlitedb.execSQL(sql, arrayOf(inputName, inputId, inputPassword, inputBirth, organization_num))
 
                 sqlitedb.close()
@@ -108,6 +116,61 @@ class RegisterActivity : AppCompatActivity() {
         checkIdButton.setOnClickListener {
             checkIdDuplicate()
         }
+
+        // Enter 키 입력 후 키보드 숨기기
+        input_workerName.setOnEditorActionListener { _, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE || (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
+                hideKeyboard(input_workerName)
+                true
+            } else {
+                false
+            }
+        }
+
+        input_workerBirth.setOnEditorActionListener { _, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE || (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
+                hideKeyboard(input_workerBirth)
+                true
+            } else {
+                false
+            }
+        }
+
+        input_id.setOnEditorActionListener { _, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE || (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
+                hideKeyboard(input_id)
+                true
+            } else {
+                false
+            }
+        }
+
+        input_password.setOnEditorActionListener { _, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE || (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
+                hideKeyboard(input_password)
+                true
+            } else {
+                false
+            }
+        }
+
+        input_check_password.setOnEditorActionListener { _, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE || (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
+                hideKeyboard(input_check_password)
+                true
+            } else {
+                false
+            }
+        }
+
+        input_organization.setOnEditorActionListener { _, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE || (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
+                hideKeyboard(input_organization)
+                true
+            } else {
+                false
+            }
+        }
     }
 
     @SuppressLint("Range", "ResourceType")
@@ -121,18 +184,18 @@ class RegisterActivity : AppCompatActivity() {
         searchButton.setOnClickListener {
             val query = searchInput.text.toString()
 
-            //데이터베이스 연동: 복지시설 정보 가져오기
+            // 데이터베이스 연동: 복지시설 정보 가져오기
             dbManager = DBManager(this, "RUOKsample", null, 1)
             sqlitedb = dbManager.readableDatabase
             var cursor: Cursor
-            val pstmt = "SELECT * FROM welfare_facilities WHERE wf_name LIKE ?;";
+            val pstmt = "SELECT * FROM welfare_facilities WHERE wf_name LIKE ?;"
             cursor = sqlitedb.rawQuery(pstmt, arrayOf("%$query%"))
 
-            var orgList = ArrayList<OrganizationItem>()
+            val orgList = ArrayList<OrganizationItem>()
             while (cursor.moveToNext()) {
                 val wfNum = cursor.getInt(cursor.getColumnIndex("wf_num"))
                 val wfName = cursor.getString(cursor.getColumnIndex("wf_name")).toString()
-                val wfAddr  = cursor.getString(cursor.getColumnIndex("wf_addr")).toString()
+                val wfAddr = cursor.getString(cursor.getColumnIndex("wf_addr")).toString()
                 orgList.add(OrganizationItem(wfNum, wfName, wfAddr))
             }
             cursor.close()
@@ -150,7 +213,7 @@ class RegisterActivity : AppCompatActivity() {
     fun checkIdDuplicate() {
         val inputId = findViewById<EditText>(R.id.input_id).text.toString()
 
-        //데이터베이스 연동: 기존 아이디 리스트 가져오기
+        // 데이터베이스 연동: 기존 아이디 리스트 가져오기
         dbManager = DBManager(this, "RUOKsample", null, 1)
         sqlitedb = dbManager.readableDatabase
         var cursor: Cursor
@@ -170,11 +233,36 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
+    fun isPasswordValid(password: String): Boolean {
+        // 최소 길이 체크
+        if (password.length < 8) return false
+
+        // 대문자 포함 체크
+        if (!password.any { it.isUpperCase() }) return false
+
+        // 소문자 포함 체크
+        if (!password.any { it.isLowerCase() }) return false
+
+        // 숫자 포함 체크
+        if (!password.any { it.isDigit() }) return false
+
+        // 특수 문자 포함 체크
+        if (!password.any { "!@#$%^&*()_+[]{}|;:,.<>?/".contains(it) }) return false
+
+        return true
+    }
+
     fun showAlertDialog(title: String, message: String) {
         AlertDialog.Builder(this)
             .setTitle(title)
             .setMessage(message)
             .setPositiveButton("확인", null)
             .show()
+    }
+
+    // 키보드 숨기기 메서드
+    private fun hideKeyboard(view: View) {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }
