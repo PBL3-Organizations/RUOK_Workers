@@ -1,12 +1,15 @@
 package com.example.ruok_workers
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -63,6 +66,43 @@ class ProfileRevisionFragment : Fragment() {
         }
         cursor.close()
 
+        // 엔터 누를 시 키보드 숨기기 처리
+        etName.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                hideKeyboard()
+                true
+            } else {
+                false
+            }
+        }
+
+        etBirthdate.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                hideKeyboard()
+                true
+            } else {
+                false
+            }
+        }
+
+        etPhoneNumber.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                hideKeyboard()
+                true
+            } else {
+                false
+            }
+        }
+
+        etSpecialNote.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                hideKeyboard()
+                true
+            } else {
+                false
+            }
+        }
+
         // '수정하기' 버튼 클릭 시 이벤트 처리
         view.findViewById<Button>(R.id.profile_revieion_ok).setOnClickListener {
             updateProfile(name, birth, phoneNumber, specialNote)
@@ -116,6 +156,12 @@ class ProfileRevisionFragment : Fragment() {
         super.onDestroy()
         sqlitedb.close()
         dbManager.close()
+    }
+
+    // 키보드를 숨기는 함수
+    private fun hideKeyboard() {
+        val inputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(requireView().windowToken, 0)
     }
 
     companion object {
