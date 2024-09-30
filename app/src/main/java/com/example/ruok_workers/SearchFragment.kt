@@ -1,19 +1,17 @@
 package com.example.ruok_workers
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
-import android.nfc.Tag
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.ruok_workers.databinding.FragmentSearchBinding
 
 class SearchFragment : Fragment() {
@@ -114,6 +112,14 @@ class SearchFragment : Fragment() {
             sqlitedb.close()
         }
 
+        binding.searchEditText.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                hideKeyboard()
+                true
+            } else {
+                false
+            }
+        }
 
         dbManager.close()
 
@@ -130,6 +136,12 @@ class SearchFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+    }
+
+    // 키보드를 숨기는 함수
+    private fun hideKeyboard() {
+        val inputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(requireView().windowToken, 0)
     }
 
     companion object {
