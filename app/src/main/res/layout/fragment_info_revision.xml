@@ -16,6 +16,8 @@
 
         <EditText
             android:id="@+id/input_id"
+            android:singleLine="true"
+            android:imeOptions="actionDone"
             android:layout_width="160dp"
             android:layout_height="49dp"
             android:layout_marginTop="-20dp"
@@ -43,6 +45,7 @@
 
         <EditText
             android:id="@+id/input_password"
+            android:imeOptions="actionDone"
             android:layout_width="291dp"
             android:layout_height="49dp"
             android:layout_marginTop="-20dp"
@@ -66,6 +69,7 @@
 
         <EditText
             android:id="@+id/input_check_password"
+            android:imeOptions="actionDone"
             android:layout_width="240dp"
             android:layout_height="49dp"
             android:layout_marginTop="-20dp"
@@ -137,6 +141,8 @@
 
         <EditText
             android:id="@+id/input_workerName"
+            android:singleLine="true"
+            android:imeOptions="actionDone"
             android:layout_width="148dp"
             android:layout_height="48dp"
             android:layout_marginTop="-20dp"
@@ -150,6 +156,7 @@
 
         <EditText
             android:id="@+id/input_workerBirth"
+            android:imeOptions="actionDone"
             android:layout_width="148dp"
             android:layout_height="49dp"
             android:layout_marginTop="-20dp"
