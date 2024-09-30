@@ -7,8 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ruok_workers.databinding.FragmentDetailsBinding
 import java.util.Vector
@@ -131,6 +133,41 @@ class DetailsFragment : Fragment() {
         }
 
         return this.binding.root
+    }
+
+//    // onViewCreated 메서드 추가
+//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//        super.onViewCreated(view, savedInstanceState)
+//
+//        // 뒤로가기 버튼 비활성화 콜백 설정
+//        val callback = object : OnBackPressedCallback(true) {
+//            override fun handleOnBackPressed() {
+//                // 뒤로가기 버튼을 막고, 원하는 경우 메시지를 표시
+//                // showToast("뒤로가기가 비활성화되었습니다.")
+//            }
+//        }
+//
+//        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+//    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        // 뒤로가기 버튼을 눌렀을 때 백스택을 비우고 ListFragment로 이동
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    // 백스택을 전부 비움
+                    parentFragmentManager.popBackStack(
+                        null,
+                        FragmentManager.POP_BACK_STACK_INCLUSIVE
+                    )
+                    // ListFragment로 이동
+                    val parentActivity = activity as DashboardActivity
+                    parentActivity.setFragment(ListFragment())
+                }
+            }
+        )
     }
 
 }

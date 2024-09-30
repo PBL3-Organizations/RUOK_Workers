@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ruok_workers.databinding.FragmentListBinding
 import java.util.Vector
@@ -186,5 +188,25 @@ class ListFragment : Fragment() {
         binding!!.listRecyclerView.adapter = adapter
 
         binding.searchviewList.onActionViewExpanded()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        // 뒤로가기 버튼을 눌렀을 때 백스택을 비우고 DashboardFragment로 이동
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    // 백스택을 전부 비움
+                    parentFragmentManager.popBackStack(
+                        null,
+                        FragmentManager.POP_BACK_STACK_INCLUSIVE
+                    )
+                    // DashboardFragment로 이동
+                    val parentActivity = activity as DashboardActivity
+                    parentActivity.setFragment(DashboardFragment())
+                }
+            }
+        )
     }
 }
