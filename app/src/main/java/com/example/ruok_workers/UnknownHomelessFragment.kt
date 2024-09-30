@@ -17,6 +17,8 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ruok_workers.databinding.FragmentUnknownHomelessBinding
@@ -182,6 +184,27 @@ class UnknownHomelessFragment : Fragment() {
 
         binding.serchviewUnknown.onActionViewExpanded()
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        // 뒤로가기 버튼을 눌렀을 때 백스택을 비우고 DashboardFragment로 이동
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    // 백스택을 전부 비움
+                    parentFragmentManager.popBackStack(
+                        null,
+                        FragmentManager.POP_BACK_STACK_INCLUSIVE
+                    )
+                    // DashboardFragment로 이동
+                    val parentActivity = activity as DashboardActivity
+                    parentActivity.setFragment(DashboardFragment())
+                }
+            }
+        )
+    }
+
     companion object {
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
