@@ -99,12 +99,7 @@ class ProfileDetailFragment : Fragment() {
         }
         // 상담내역 보기 버튼 클릭 리스너 설정
         buttonConnection.setOnClickListener {
-            val parentActivity = activity as DashboardActivity
-            val bundle = Bundle()
-            bundle.putInt("HomelessQuestionListHomelessId", homelessId)
-            val HomelessQuestionListFragment = HomelessQuestionListFragment()
-            HomelessQuestionListFragment.arguments = bundle
-            parentActivity.setFragment(HomelessQuestionListFragment)
+            navigateToHomelessQuestionListFragment(homelessId)
         }
 
         return view
@@ -124,6 +119,18 @@ class ProfileDetailFragment : Fragment() {
         args.putString("birth", birth)
         args.putString("phone", phone)
         args.putString("specialNote", specialNote)
+        fragment.arguments = args
+
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.rootLayout, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+    private fun navigateToHomelessQuestionListFragment(h_num : Int) {
+        // HomelessQuestionListFragment로 이동
+        val fragment = HomelessQuestionListFragment()
+        val args = Bundle()
+        args.putInt("HomelessId", h_num)
         fragment.arguments = args
 
         requireActivity().supportFragmentManager.beginTransaction()
