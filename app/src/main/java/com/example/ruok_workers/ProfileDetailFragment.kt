@@ -12,10 +12,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.example.ruok_workers.BriefingDetailFragment
 import com.example.ruok_workers.DBManager
 import com.example.ruok_workers.DashboardActivity
 import com.example.ruok_workers.HomelessQuestionListFragment
+import com.example.ruok_workers.DashboardFragment
 import com.example.ruok_workers.ProfileRevisionFragment
 import com.example.ruok_workers.QuestionnaireFragment
 import com.example.ruok_workers.R
@@ -184,18 +186,38 @@ class ProfileDetailFragment : Fragment() {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
-    // onViewCreated 메서드 추가
+//    // onViewCreated 메서드 추가
+//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//        super.onViewCreated(view, savedInstanceState)
+//
+//        // 뒤로가기 버튼 비활성화 콜백 설정
+//        val callback = object : OnBackPressedCallback(true) {
+//            override fun handleOnBackPressed() {
+//                // 뒤로가기 버튼을 막고, 원하는 경우 메시지를 표시
+//                // showToast("뒤로가기가 비활성화되었습니다.")
+//            }
+//        }
+//
+//        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+//    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // 뒤로가기 버튼 비활성화 콜백 설정
-        val callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                // 뒤로가기 버튼을 막고, 원하는 경우 메시지를 표시
-                // showToast("뒤로가기가 비활성화되었습니다.")
+        // 뒤로가기 버튼을 눌렀을 때 백스택을 비우고 DashboardFragment로 이동
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    // 백스택을 전부 비움
+                    parentFragmentManager.popBackStack(
+                        null,
+                        FragmentManager.POP_BACK_STACK_INCLUSIVE
+                    )
+                    // DashboardFragment로 이동
+                    val parentActivity = activity as DashboardActivity
+                    parentActivity.setFragment(DashboardFragment())
+                }
             }
-        }
-
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+        )
     }
 }

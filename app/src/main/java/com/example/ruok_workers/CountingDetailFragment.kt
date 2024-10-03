@@ -9,7 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ruok_workers.LocationTrackingFragment.Companion.TAG
@@ -198,7 +200,43 @@ class CountingDetailFragment : Fragment() {
         return binding!!.root
     }
 
-    companion object {
+//    // onViewCreated 메서드 추가
+//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//        super.onViewCreated(view, savedInstanceState)
+//
+//        // 뒤로가기 버튼 비활성화 콜백 설정
+//        val callback = object : OnBackPressedCallback(true) {
+//            override fun handleOnBackPressed() {
+//                // 뒤로가기 버튼을 막고, 원하는 경우 메시지를 표시
+//                // showToast("뒤로가기가 비활성화되었습니다.")
+//            }
+//        }
+//
+//        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+//    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        // 뒤로가기 버튼을 눌렀을 때 백스택을 비우고 CountingListFragment로 이동
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    // 백스택을 전부 비움
+                    parentFragmentManager.popBackStack(
+                        null,
+                        FragmentManager.POP_BACK_STACK_INCLUSIVE
+                    )
+                    // CountingListFragment로 이동
+                    val parentActivity = activity as DashboardActivity
+                    parentActivity.setFragment(CountingListFragment())
+                }
+            }
+        )
+    }
+
+
+        companion object {
 
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
