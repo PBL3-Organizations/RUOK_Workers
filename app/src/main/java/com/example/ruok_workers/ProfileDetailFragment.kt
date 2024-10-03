@@ -2,6 +2,7 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +15,9 @@ import androidx.fragment.app.Fragment
 import com.example.ruok_workers.BriefingDetailFragment
 import com.example.ruok_workers.DBManager
 import com.example.ruok_workers.DashboardActivity
+import com.example.ruok_workers.HomelessQuestionListFragment
 import com.example.ruok_workers.ProfileRevisionFragment
+import com.example.ruok_workers.QuestionnaireFragment
 import com.example.ruok_workers.R
 import com.example.ruok_workers.SearchFragment
 
@@ -27,6 +30,7 @@ class ProfileDetailFragment : Fragment() {
     private lateinit var btnRemoveProfile: Button
     private lateinit var btnGoToList: Button
     private lateinit var ivProfiledetail:ImageView
+    private lateinit var buttonConnection: Button
 
     private lateinit var dbManager: DBManager
     private lateinit var sqlitedb: SQLiteDatabase
@@ -48,6 +52,7 @@ class ProfileDetailFragment : Fragment() {
         btnRemoveProfile = view.findViewById(R.id.btn_removeProfile)
         btnGoToList = view.findViewById(R.id.btn_goTolist)
         ivProfiledetail = view.findViewById(R.id.ivProfiledetail)
+        buttonConnection = view.findViewById(R.id.buttonConnection)
 
         // FaviconAdapter에서 전달받은 데이터
         val name = arguments?.getString("name") ?: ""
@@ -89,6 +94,15 @@ class ProfileDetailFragment : Fragment() {
         // 프로필 삭제 버튼 클릭 리스너 설정
         btnRemoveProfile.setOnClickListener {
             showRemoveProfileDialog()
+        }
+        // 상담내역 보기 버튼 클릭 리스너 설정
+        buttonConnection.setOnClickListener {
+            val parentActivity = activity as DashboardActivity
+            val bundle = Bundle()
+            bundle.putInt("HomelessQuestionListHomelessId", homelessId)
+            val HomelessQuestionListFragment = HomelessQuestionListFragment()
+            HomelessQuestionListFragment.arguments = bundle
+            parentActivity.setFragment(HomelessQuestionListFragment)
         }
 
         return view
