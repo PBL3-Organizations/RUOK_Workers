@@ -62,8 +62,10 @@ class ProfileAddFragment : Fragment() {
             val phone = view.findViewById<EditText>(R.id.phone_input).text.toString()
             val specialNote = view.findViewById<EditText>(R.id.special_note_input).text.toString()
 
-            // 입력된 필수 값 검증 및 이미지 선택 확인
-            if (name.isNotEmpty() && birth.isNotEmpty() && phone.isNotEmpty() && selectedImageUri != null) {
+            // 모든 필드가 비어있는지 확인
+            if (name.isEmpty() || birth.isEmpty() || phone.isEmpty() || specialNote.isEmpty() || selectedImageUri == null) {
+                Toast.makeText(requireContext(), "모든 항목을 입력해주세요!", Toast.LENGTH_SHORT).show()
+            } else {
                 // 이미지 URI와 함께 데이터베이스에 저장
                 val query = "INSERT INTO homeless (h_name, h_birth, h_phone, h_unusual, h_photo) " +
                         "VALUES ('$name', '$birth', '$phone', '$specialNote', '${selectedImageUri.toString()}')"
@@ -78,8 +80,6 @@ class ProfileAddFragment : Fragment() {
                 // 검색 화면(SearchFragment)으로 이동
                 val parentActivity = activity as DashboardActivity
                 parentActivity.setFragment(SearchFragment())
-            } else {
-                Toast.makeText(requireContext(), "모든 필드를 입력하고 이미지를 선택하세요.", Toast.LENGTH_SHORT).show()
             }
         }
 
