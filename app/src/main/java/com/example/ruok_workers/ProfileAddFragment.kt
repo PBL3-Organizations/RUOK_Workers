@@ -1,7 +1,10 @@
 package com.example.ruok_workers
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +12,8 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 
 private const val ARG_PARAM1 = "param1"
@@ -20,6 +25,9 @@ class ProfileAddFragment : Fragment() {
 
     lateinit var dbManager: DBManager
     lateinit var sqlitedb: SQLiteDatabase
+
+    private val GALLERY_REQUEST_CODE = 1001
+    private var selectedImageUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +47,14 @@ class ProfileAddFragment : Fragment() {
         sqlitedb = dbManager.writableDatabase
 
         val saveButton = view.findViewById<Button>(R.id.save_button_in_add_profile)
+        val profileImageView = view.findViewById<ImageView>(R.id.profile_image)
+
+        // 프로필 이미지 클릭 시 갤러리에서 이미지 선택
+        profileImageView.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            startActivityForResult(intent, GALLERY_REQUEST_CODE)
+        }
 
         saveButton.setOnClickListener {
             val name = view.findViewById<EditText>(R.id.name_input).text.toString()
@@ -46,16 +62,25 @@ class ProfileAddFragment : Fragment() {
             val phone = view.findViewById<EditText>(R.id.phone_input).text.toString()
             val specialNote = view.findViewById<EditText>(R.id.special_note_input).text.toString()
 
-            val query = "INSERT INTO homeless (h_name, h_birth, h_phone, h_unusual, h_photo) " +
-                    "VALUES ('$name', '$birth', '$phone', '$specialNote', 'default.jpeg')"
-            sqlitedb.execSQL(query)
+            // 입력된 필수 값 검증 및 이미지 선택 확인
+            if (name.isNotEmpty() && birth.isNotEmpty() && phone.isNotEmpty() && selectedImageUri != null) {
+                // 이미지 URI와 함께 데이터베이스에 저장
+                val query = "INSERT INTO homeless (h_name, h_birth, h_phone, h_unusual, h_photo) " +
+                        "VALUES ('$name', '$birth', '$phone', '$specialNote', '${selectedImageUri.toString()}')"
+                sqlitedb.execSQL(query)
 
-            // 키보드 숨기기
-            hideKeyboard()
+                // 성공 메시지
+                Toast.makeText(requireContext(), "프로필이 저장되었습니다.", Toast.LENGTH_SHORT).show()
 
-            // 검색 화면(SearchFragment)으로 이동
-            val parentActivity = activity as DashboardActivity
-            parentActivity.setFragment(SearchFragment())
+                // 키보드 숨기기
+                hideKeyboard()
+
+                // 검색 화면(SearchFragment)으로 이동
+                val parentActivity = activity as DashboardActivity
+                parentActivity.setFragment(SearchFragment())
+            } else {
+                Toast.makeText(requireContext(), "모든 필드를 입력하고 이미지를 선택하세요.", Toast.LENGTH_SHORT).show()
+            }
         }
 
         // EditText에서 포커스가 벗어날 때 키보드 숨기기
@@ -75,6 +100,20 @@ class ProfileAddFragment : Fragment() {
         }
 
         return view
+    }
+
+    // 갤러리에서 이미지 선택 후 URI 저장
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == GALLERY_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
+            val imageUri = data.data
+            if (imageUri != null) {
+                selectedImageUri = imageUri
+                val profileImageView = requireView().findViewById<ImageView>(R.id.profile_image)
+                profileImageView.setImageURI(imageUri) // 선택한 이미지를 ImageView에 표시
+            }
+        }
     }
 
     private fun hideKeyboard() {
