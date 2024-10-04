@@ -1,14 +1,16 @@
 package com.example.ruok_workers
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.ActivityResultLauncher
+import androidx.fragment.app.Fragment
 import com.example.ruok_workers.databinding.FragmentQuestionnaireBinding
-import kotlin.math.log
 
 class QuestionnaireFragment : Fragment() {
     lateinit var binding: FragmentQuestionnaireBinding
@@ -33,6 +35,25 @@ class QuestionnaireFragment : Fragment() {
 
         item = arguments?.getParcelable<ConsultationItem>("consultation_item")!!
         val hasConsultation = arguments?.getInt("hasConsultation")!!
+
+        // 엔터 누를 시 키보드 숨기기 처리
+        binding.edtUnusual.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                hideKeyboard()
+                true
+            } else {
+                false
+            }
+        }
+
+        binding.edtMeasure.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                hideKeyboard()
+                true
+            } else {
+                false
+            }
+        }
 
         //btnBeforeQuestionnaire 클릭시 QuestionnaireFragment에서 HomelessListFragment로 이동
         binding.btnBeforeQuestionnaire.setOnClickListener{
@@ -90,5 +111,11 @@ class QuestionnaireFragment : Fragment() {
         binding.btnQuestionNotbad.setBackgroundColor(Color.parseColor("#8F9090"))
         binding.btnQuestionBad.setBackgroundColor(Color.parseColor("#8F9090"))
         binding.btnQuestionNeed.setBackgroundColor(Color.parseColor("#8F9090"))
+    }
+
+    // 키보드를 숨기는 함수
+    private fun hideKeyboard() {
+        val inputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(requireView().windowToken, 0)
     }
 }

@@ -1,14 +1,16 @@
 package com.example.ruok_workers
 
+import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.ruok_workers.databinding.FragmentDetailsBinding
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import androidx.fragment.app.Fragment
 import com.example.ruok_workers.databinding.FragmentRevisionBinding
 
 class RevisionFragment : Fragment() {
@@ -66,6 +68,26 @@ class RevisionFragment : Fragment() {
             }
         }
 
+        // 엔터 누를 시 키보드 숨기기 처리
+        binding.edtUnusualRev.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                hideKeyboard()
+                true
+            } else {
+                false
+            }
+        }
+
+        // 엔터 누를 시 키보드 숨기기 처리
+        binding.edtMeasureRev.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                hideKeyboard()
+                true
+            } else {
+                false
+            }
+        }
+
         cursor.close()
         sqlitedb.close()
         dbManager.close()
@@ -117,5 +139,11 @@ class RevisionFragment : Fragment() {
         binding.btnRevisionNotbad.setBackgroundColor(Color.parseColor("#8F9090"))
         binding.btnRevisionBad.setBackgroundColor(Color.parseColor("#8F9090"))
         binding.btnRevisionNeed.setBackgroundColor(Color.parseColor("#8F9090"))
+    }
+
+    // 키보드를 숨기는 함수
+    private fun hideKeyboard() {
+        val inputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(requireView().windowToken, 0)
     }
 }
