@@ -34,6 +34,10 @@
             android:id="@+id/tabHomelessList"
             android:title="노숙인 목록,검색"
             />
+        <item
+            android:id="@+id/tabDownload"
+            android:title="Excel 다운로드"
+            />
 
     </group>
 

@@ -46,6 +46,17 @@
             </intent-filter>
         </activity>
 
+        <!-- FileProvider 추가 -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="eq7ehlqkoi" />
