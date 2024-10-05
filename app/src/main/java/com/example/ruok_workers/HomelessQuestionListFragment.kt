@@ -18,7 +18,6 @@ class HomelessQuestionListFragment : Fragment() {
 
     lateinit var dbManager: DBManager
     lateinit var sqlitedb: SQLiteDatabase
-    var homelessId: Int = -1 // 노숙인 번호
     var list = Vector<HomelessQuestionListCard>()
 
 
@@ -29,7 +28,7 @@ class HomelessQuestionListFragment : Fragment() {
     ): View? {
         binding = FragmentHomelesQuestionListBinding.inflate(inflater, container,false)
         //homelessId 가져오기
-        homelessId = arguments?.getInt("HomelessQuestionListHomelessId")!!
+        val homelessId = arguments?.getInt("HomelessId",0)!!
         Log.i("DB","$homelessId")
 
         //데이터베이스 연동
