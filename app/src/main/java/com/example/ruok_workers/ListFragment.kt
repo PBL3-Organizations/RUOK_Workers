@@ -92,7 +92,7 @@ class ListFragment : Fragment() {
                         dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
                         sqlitedb = dbManager.readableDatabase
                         var cursor: Cursor
-                        sql = "SELECT c.c_num, c.c_time, c.c_unusual, l.l_addr, h.h_name FROM consultation c JOIN location l ON c.c_num = l.c_num JOIN homeless h ON c.h_num = h.h_num WHERE c.c_time LIKE ? ORDER BY c.c_time DESC;"
+                        sql = "SELECT c.c_num, c.c_time, c.c_unusual, l.l_addr, h.h_name FROM consultation c JOIN location l ON c.c_num = l.c_num JOIN homeless h ON c.h_num = h.h_num WHERE strftime('%Y-%m-%d', c.c_time) LIKE ? ORDER BY c.c_time DESC;"
                         cursor = sqlitedb.rawQuery(sql, arrayOf("%$query%"))
                         list = addToList(cursor)
                         cursor.close()
