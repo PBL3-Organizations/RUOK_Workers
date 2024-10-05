@@ -9,8 +9,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.example.ruok_workers.databinding.FragmentDownloadBinding
 import com.getkeepsafe.relinker.BuildConfig
 import org.apache.poi.ss.usermodel.*
@@ -333,4 +335,25 @@ class DownloadFragment : Fragment() {
 
         return file
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        // 뒤로가기 버튼을 눌렀을 때 백스택을 비우고 DashboardFragment로 이동
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    // 백스택을 전부 비움
+                    parentFragmentManager.popBackStack(
+                        null,
+                        FragmentManager.POP_BACK_STACK_INCLUSIVE
+                    )
+                    // DashboardFragment로 이동
+                    val parentActivity = activity as DashboardActivity
+                    parentActivity.setFragment(DashboardFragment())
+                }
+            }
+        )
+    }
 }
+
