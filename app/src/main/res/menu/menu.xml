@@ -4,33 +4,49 @@
     tools:showIn = "nv_view">
     <group android:checkableBehavior="single">
         <item
+            android:icon="@drawable/baseline_logout_24"
             android:id="@+id/tabLogout"
+            android:iconTint="#F27406"
             android:title="로그아웃"
             />
         <item
+            android:icon="@drawable/baseline_settings_24"
+            android:iconTint="#F27406"
             android:id="@+id/tabInfoRevision"
             android:title="회원정보 수정"
             />
         <item
+            android:icon="@drawable/baseline_home_24"
+            android:iconTint="#F27406"
             android:id="@+id/tabDashboard"
             android:title="홈" />
         <item
+            android:icon="@drawable/baseline_view_list_24"
+            android:iconTint="#F27406"
             android:id="@+id/tabList"
             android:title="상담내역 목록"
             />
         <item
+            android:icon="@drawable/baseline_add_location_alt_24"
+            android:iconTint="#F27406"
             android:id="@+id/tabCountingList"
             android:title="카운팅 테이블 목록"
             />
         <item
+            android:icon="@drawable/baseline_headset_mic_24"
+            android:iconTint="#F27406"
             android:id="@+id/tabBriefingBoard"
             android:title="브리핑 게시판"
             />
         <item
+            android:icon="@drawable/baseline_person_off_24"
+            android:iconTint="#F27406"
             android:id="@+id/tabUnknownHomeless"
             android:title="이름을 알 수 없는 노숙인 모음"
             />
         <item
+            android:icon="@drawable/baseline_person_search_24"
+            android:iconTint="#F27406"
             android:id="@+id/tabHomelessList"
             android:title="노숙인 목록,검색"
             />
