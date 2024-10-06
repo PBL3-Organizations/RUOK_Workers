@@ -1,8 +1,11 @@
 package com.example.ruok_workers
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -26,7 +29,12 @@ class ProfileRevisionFragment : Fragment() {
 
     lateinit var dbManager: DBManager
     lateinit var sqlitedb: SQLiteDatabase
+
+    private val GALLERY_REQUEST_CODE = 1001
+    private var selectedImageUri: Uri? = null
+
     var resId = -1
+
     @SuppressLint("Range", "MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,12 +67,39 @@ class ProfileRevisionFragment : Fragment() {
 
         val cursor = sqlitedb.rawQuery("SELECT * FROM homeless WHERE h_name = ? AND h_birth = ?", arrayOf(name, birth))
         while (cursor.moveToNext()) {
-            var photoFilename: String = cursor.getString(cursor.getColumnIndex("h_photo"))
-            resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
-            // TextView에 데이터 표시
-            ivProfileRevision.setImageResource(resId)
+
+            val photoPath: String = cursor.getString(cursor.getColumnIndex("h_photo"))
+
+            // 이미지가 URI인지 drawable인지 확인하여 처리
+            if (photoPath.startsWith("content://") || photoPath.startsWith("file://")) {
+                // URI에서 이미지 불러오기
+                val imageUri = Uri.parse(photoPath)
+                ivProfileRevision.setImageURI(imageUri)
+            } else {
+                // drawable 이미지 불러오기
+                val resId = resources.getIdentifier(photoPath.substringBefore('.'), "drawable", requireContext().packageName)
+                if (resId != 0) {
+                    ivProfileRevision.setImageResource(resId)
+                } else {
+                    // 이미지가 없는 경우 기본 이미지 표시
+                    ivProfileRevision.setImageResource(R.drawable.aegis_logo)
+                }
+            }
+
+//            var photoFilename: String = cursor.getString(cursor.getColumnIndex("h_photo"))
+//            resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
+//            // TextView에 데이터 표시
+//            ivProfileRevision.setImageResource(resId)
         }
         cursor.close()
+
+        // 프로필 사진 클릭 시 갤러리에서 이미지 선택
+        ivProfileRevision.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            startActivityForResult(intent, GALLERY_REQUEST_CODE)
+        }
 
         // 엔터 누를 시 키보드 숨기기 처리
         etName.setOnEditorActionListener { _, actionId, _ ->
@@ -130,10 +165,14 @@ class ProfileRevisionFragment : Fragment() {
                 val deleteQuery = "DELETE FROM homeless WHERE h_name=? AND h_birth=? AND h_phone=? AND h_unusual=?;"
                 sqlitedb.execSQL(deleteQuery, arrayOf(name, birth, phoneNumber, specialNote))
 
+                // 새로운 이미지 경로를 사용하거나 기존 경로를 유지
+                val photoPath = selectedImageUri?.toString() ?: resId.toString()
+
                 // 새 데이터를 추가합니다.
                 val insertQuery =
                     "INSERT INTO homeless (h_name, h_birth, h_phone, h_unusual, h_photo) VALUES (?, ?, ?, ?, ?);"
-                sqlitedb.execSQL(insertQuery, arrayOf(newName, newBirth, newPhoneNumber, newSpecialNote, resId.toString()))
+//                sqlitedb.execSQL(insertQuery, arrayOf(newName, newBirth, newPhoneNumber, newSpecialNote, resId.toString()))
+                sqlitedb.execSQL(insertQuery, arrayOf(newName, newBirth, newPhoneNumber, newSpecialNote, photoPath))
 
                 sqlitedb.setTransactionSuccessful()
             } finally {
@@ -156,6 +195,18 @@ class ProfileRevisionFragment : Fragment() {
         super.onDestroy()
         sqlitedb.close()
         dbManager.close()
+    }
+
+    // 갤러리에서 이미지 선택 후 URI 저장
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == GALLERY_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
+            val imageUri = data.data
+            if (imageUri != null) {
+                selectedImageUri = imageUri
+                ivProfileRevision.setImageURI(imageUri)
+            }
+        }
     }
 
     // 키보드를 숨기는 함수

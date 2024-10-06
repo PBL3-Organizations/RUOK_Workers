@@ -53,6 +53,7 @@ class ProfileAddFragment : Fragment() {
         profileImageView.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION) // URI 읽기 권한 부여
             startActivityForResult(intent, GALLERY_REQUEST_CODE)
         }
 

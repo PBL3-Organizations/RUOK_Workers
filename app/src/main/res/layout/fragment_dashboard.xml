@@ -67,7 +67,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:gravity="center"
-            android:text="노숙인 위치"
+            android:text="노숙인 위치 모아보기"
             android:textColor="#FFFFFF"
             android:textSize="20sp"
             android:textStyle="bold"

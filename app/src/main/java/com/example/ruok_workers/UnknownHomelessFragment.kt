@@ -114,7 +114,7 @@ class UnknownHomelessFragment : Fragment() {
                         dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
                         sqlitedb = dbManager.readableDatabase
                         var cursor: Cursor
-                        unknownQuery = "SELECT c.c_time, l.l_addr, p.p_filename FROM consultation c JOIN location l ON c.c_num = l.c_num JOIN photo p ON c.c_num = p.c_num WHERE c.h_num = '0' AND c.c_time LIKE ?;"
+                        unknownQuery = "SELECT c.c_time, l.l_addr, p.p_filename FROM consultation c JOIN location l ON c.c_num = l.c_num JOIN photo p ON c.c_num = p.c_num WHERE c.h_num = '0' AND strftime('%Y-%m-%d', c.c_time) LIKE ?;"
                         cursor = sqlitedb.rawQuery(unknownQuery, arrayOf("%$query%"))
                         list = addToList(cursor)
                         cursor.close()

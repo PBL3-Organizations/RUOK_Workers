@@ -1,6 +1,14 @@
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.database.sqlite.SQLiteDatabase
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.media.MediaScannerConnection
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,6 +19,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.ruok_workers.BriefingDetailFragment
@@ -22,6 +31,8 @@ import com.example.ruok_workers.ProfileRevisionFragment
 import com.example.ruok_workers.QuestionnaireFragment
 import com.example.ruok_workers.R
 import com.example.ruok_workers.SearchFragment
+import java.io.File
+import java.io.InputStream
 
 class ProfileDetailFragment : Fragment() {
 
@@ -69,15 +80,29 @@ class ProfileDetailFragment : Fragment() {
             homelessId = cursor.getInt(cursor.getColumnIndex("h_num"))
             val phoneNumber = cursor.getString(cursor.getColumnIndex("h_phone"))
             var specialNote = cursor.getString(cursor.getColumnIndex("h_unusual"))
-            var photoFilename: String = cursor.getString(cursor.getColumnIndex("h_photo"))
-            var resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
+            val photoPath: String = cursor.getString(cursor.getColumnIndex("h_photo"))
 
             // TextView에 데이터 표시
             tvName.text = name
             tvBirthdate.text = birth
             tvPhoneNumber.text = phoneNumber
             tvSpecialNote.text = specialNote
-            ivProfiledetail.setImageResource(resId)
+
+            // 이미지가 URI인지 drawable인지 확인하여 처리
+            if (photoPath.startsWith("content://") || photoPath.startsWith("file://")) {
+                // URI에서 이미지 불러오기
+                val imageUri = Uri.parse(photoPath)
+                ivProfiledetail.setImageURI(imageUri)
+            } else {
+                // drawable 이미지 불러오기
+                val resId = resources.getIdentifier(photoPath.substringBefore('.'), "drawable", requireContext().packageName)
+                if (resId != 0) {
+                    ivProfiledetail.setImageResource(resId)
+                } else {
+                    // 이미지가 없는 경우 기본 이미지 표시
+                    ivProfiledetail.setImageResource(R.drawable.aegis_logo)
+                }
+            }
         }
         cursor.close()
 

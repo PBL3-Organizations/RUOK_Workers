@@ -3,6 +3,7 @@ package com.example.ruok_workers
 import ProfileDetailFragment
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -41,7 +42,24 @@ class FaviconAdapter(private val context: Context, val itemList: ArrayList<Favic
 
         holder.binding.tvfeName.text = "이름: " + item.name
         holder.binding.tvfeBirth.text = "생년월일: " + item.birth.substring(0,4) + "." + item.birth.substring(4,6) + "." + item.birth.substring(6) + "."
-        holder.binding.ivProfileEdit.setImageResource(item.photo)
+//        holder.binding.ivProfileEdit.setImageResource(item.photo)
+
+        val photoPath = item.photo.toString()
+
+        // 이미지가 URI 또는 파일 경로일 경우 처리
+        if (photoPath.startsWith("content://") || photoPath.startsWith("file://")) {
+            val imageUri = Uri.parse(photoPath)
+            holder.binding.ivProfileEdit.setImageURI(imageUri)
+        } else {
+            // 리소스 ID일 경우 처리
+            val resId = context.resources.getIdentifier(photoPath, "drawable", context.packageName)
+            if (resId != 0) {
+                holder.binding.ivProfileEdit.setImageResource(item.photo)
+            } else {
+                // 이미지가 없을 경우 기본 이미지 설정
+                holder.binding.ivProfileEdit.setImageResource(R.drawable.dflt)
+            }
+        }
 
         // 즐겨찾기 상태에 따라 별 아이콘 설정
         if (item.bookmark == 1) {
