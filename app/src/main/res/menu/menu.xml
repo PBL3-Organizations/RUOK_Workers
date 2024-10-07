@@ -51,6 +51,7 @@
             android:title="노숙인 목록,검색"
             />
         <item
+            android:icon="@drawable/baseline_file_download_24"
             android:id="@+id/tabDownload"
             android:title="Excel 다운로드"
             />
