@@ -2,6 +2,8 @@ package com.example.ruok_workers
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ruok_workers.databinding.FaviconEditItemsBinding
+import java.io.File
 
 class HomelessListAdapter (private val context: Context, val itemList: ArrayList<FaviconItem>, private val itemClickListener: OnItemClickListener) : RecyclerView.Adapter<HomelessListAdapter.FaviconViewHolder>(){
     lateinit var homelessListFragment: HomelessListFragment
@@ -47,7 +50,15 @@ class HomelessListAdapter (private val context: Context, val itemList: ArrayList
 
         val item = itemList[position]
 
-        holder.binding.ivProfileEdit.setImageResource(itemList[position].photo)
+        if (item.photoBitmap != null) {
+            holder.binding.ivProfileEdit.setImageBitmap(item.photoBitmap)
+        } else if (item.photoResId != null) {
+            holder.binding.ivProfileEdit.setImageResource(item.photoResId!!)
+        } else {
+            holder.binding.ivProfileEdit.setImageResource(R.drawable.dflt) // 기본 이미지 설정
+        }
+
+//        holder.binding.ivProfileEdit.setImageResource(itemList[position].photo)
         holder.binding.tvfeName.text = "이름: " + itemList[position].name
         holder.binding.tvfeBirth.text = "생년월일: " + itemList[position].birth.substring(0,4) + "." + itemList[position].birth.substring(4,6) + "." + itemList[position].birth.substring(6) + "."
 

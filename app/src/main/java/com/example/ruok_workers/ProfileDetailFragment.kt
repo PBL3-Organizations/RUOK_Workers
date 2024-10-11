@@ -88,11 +88,17 @@ class ProfileDetailFragment : Fragment() {
             tvPhoneNumber.text = phoneNumber
             tvSpecialNote.text = specialNote
 
-            // 이미지가 URI인지 drawable인지 확인하여 처리
-            if (photoPath.startsWith("content://") || photoPath.startsWith("file://")) {
-                // URI에서 이미지 불러오기
-                val imageUri = Uri.parse(photoPath)
-                ivProfiledetail.setImageURI(imageUri)
+            if (photoPath.startsWith("/")) {
+                // 내부 저장소 경로에서 이미지 불러오기
+                val file = File(photoPath)
+                if (file.exists()) {
+                    // Bitmap으로 변환하여 ImageView에 설정
+                    val bitmap = BitmapFactory.decodeFile(file.absolutePath)
+                    ivProfiledetail.setImageBitmap(bitmap)
+                } else {
+                    // 파일이 없을 경우 기본 이미지 설정
+                    ivProfiledetail.setImageResource(R.drawable.aegis_logo)
+                }
             } else {
                 // drawable 이미지 불러오기
                 val resId = resources.getIdentifier(photoPath.substringBefore('.'), "drawable", requireContext().packageName)
