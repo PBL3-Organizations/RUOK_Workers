@@ -4,6 +4,7 @@ import BriefingBoardFragment
 import android.annotation.SuppressLint
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,6 +16,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ruok_workers.databinding.FragmentDashboardBinding
+import java.io.File
 import java.util.Vector
 
 class DashboardFragment : Fragment() {
@@ -75,9 +77,31 @@ class DashboardFragment : Fragment() {
             var hName:String = cursor.getString(cursor.getColumnIndex("h_name"))
             var hBirth:String = cursor.getString(cursor.getColumnIndex("h_birth"))
 
-            var resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
-            val item = Dashboard(hNum, resId, hName, hBirth)
-            list.add(item)
+            if (photoFilename.startsWith("/")) {
+                // 내부 저장소 경로에서 이미지 불러오기
+                val file = File(photoFilename)
+                if (file.exists()) {
+                    // Bitmap으로 변환하여 ImageView에 설정
+                    val bitmap = BitmapFactory.decodeFile(file.absolutePath)
+                    list.add(Dashboard(hNum, null, bitmap, hName, hBirth))
+                } else {
+                    // 파일이 없을 경우 기본 이미지 설정
+                    list.add(Dashboard(hNum, R.drawable.dflt, null, hName, hBirth))
+                }
+            } else {
+                // drawable 이미지 불러오기
+                val resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
+                if (resId != 0) {
+                    list.add(Dashboard(hNum, resId, null, hName, hBirth))
+                } else {
+                    // 이미지가 없는 경우 기본 이미지 표시
+                    list.add(Dashboard(hNum, R.drawable.dflt, null, hName, hBirth))
+                }
+            }
+
+//            var resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
+//            val item = Dashboard(hNum, resId, hName, hBirth)
+//            list.add(item)
         }
 
         cursor.close()

@@ -2,6 +2,7 @@ package com.example.ruok_workers
 
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ruok_workers.databinding.FragmentHomelessRevisionBinding
+import java.io.File
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -71,14 +73,41 @@ class HomelessRevisionFragment : Fragment() {
             bookmark = if (cursor.getInt(cursor.getColumnIndexOrThrow("is_bookmarked")) == 1) 1 else 0
 
             var photoFilename: String = cursor.getString(cursor.getColumnIndexOrThrow("h_photo"))
-            var resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
+//            var resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
+
+//            var photoUri: String = cursor.getString(cursor.getColumnIndexOrThrow("h_photo"))
+//            val resId = resources.getIdentifier(photoUri.substringBefore('.'), "drawable", requireContext().packageName)
 
             cursor.close()
             sqlitedb.close()
             dbManager.close()
 
             list.clear()
-            list.add(FaviconItem(name, birth, num, bookmark, resId, loginNum))
+//            list.add(FaviconItem(name, birth, num, bookmark, photoFilename, loginNum))  // photoFilename을 사용
+//            list.add(FaviconItem(name, birth, num, bookmark, resId, loginNum))
+
+            if (photoFilename.startsWith("/")) {
+                // 내부 저장소 경로에서 이미지 불러오기
+                val file = File(photoFilename)
+                if (file.exists()) {
+                    // Bitmap으로 변환하여 ImageView에 설정
+                    val bitmap = BitmapFactory.decodeFile(file.absolutePath)
+                    list.add(FaviconItem(name, birth, num, bookmark, null, bitmap, loginNum))
+                } else {
+                    // 파일이 없을 경우 기본 이미지 설정
+                    list.add(FaviconItem(name, birth, num, bookmark, R.drawable.dflt, null, loginNum))
+                }
+            } else {
+                // drawable 이미지 불러오기
+                val resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
+                if (resId != 0) {
+                    list.add(FaviconItem(name, birth, num, bookmark, resId, null, loginNum))
+                } else {
+                    // 이미지가 없는 경우 기본 이미지 표시
+                    list.add(FaviconItem(name, birth, num, bookmark, R.drawable.dflt, null, loginNum))
+                }
+            }
+
         }
 
         binding.centerTextView2.visibility = View.VISIBLE
@@ -119,9 +148,30 @@ class HomelessRevisionFragment : Fragment() {
                         bookmark = if (cursor.getInt(cursor.getColumnIndexOrThrow("is_bookmarked")) == 1) 1 else 0
 
                         var photoFilename: String = cursor.getString(cursor.getColumnIndexOrThrow("h_photo"))
-                        var resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
+//                        var resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
 
-                        list.add(FaviconItem(name, birth, num, bookmark, resId, loginNum))
+                        if (photoFilename.startsWith("/")) {
+                            // 내부 저장소 경로에서 이미지 불러오기
+                            val file = File(photoFilename)
+                            if (file.exists()) {
+                                // Bitmap으로 변환하여 ImageView에 설정
+                                val bitmap = BitmapFactory.decodeFile(file.absolutePath)
+                                list.add(FaviconItem(name, birth, num, bookmark, null, bitmap, loginNum))
+                            } else {
+                                // 파일이 없을 경우 기본 이미지 설정
+                                list.add(FaviconItem(name, birth, num, bookmark, R.drawable.dflt, null, loginNum))
+                            }
+                        } else {
+                            // drawable 이미지 불러오기
+                            val resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
+                            if (resId != 0) {
+                                list.add(FaviconItem(name, birth, num, bookmark, resId, null, loginNum))
+                            } else {
+                                // 이미지가 없는 경우 기본 이미지 표시
+                                list.add(FaviconItem(name, birth, num, bookmark, R.drawable.dflt, null, loginNum))
+                            }
+                        }
+
                     } while (cursor.moveToNext())
                 }
                 cursor?.close()
@@ -139,10 +189,30 @@ class HomelessRevisionFragment : Fragment() {
                         num = cursor.getInt(cursor.getColumnIndexOrThrow("h.h_num"))
                         bookmark = if (cursor.getInt(cursor.getColumnIndexOrThrow("is_bookmarked")) == 1) 1 else 0
 
-                        var photoFilename: String = cursor.getString(cursor.getColumnIndexOrThrow("h.h_photo"))
-                        var resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
+                        val photoFilename: String = cursor.getString(cursor.getColumnIndexOrThrow("h_photo"))
 
-                        list.add(FaviconItem(name, birth, num, bookmark, resId, loginNum))
+                        if (photoFilename.startsWith("/")) {
+                            // 내부 저장소 경로에서 이미지 불러오기
+                            val file = File(photoFilename)
+                            if (file.exists()) {
+                                // Bitmap으로 변환하여 ImageView에 설정
+                                val bitmap = BitmapFactory.decodeFile(file.absolutePath)
+                                list.add(FaviconItem(name, birth, num, bookmark, null, bitmap, loginNum))
+                            } else {
+                                // 파일이 없을 경우 기본 이미지 설정
+                                list.add(FaviconItem(name, birth, num, bookmark, R.drawable.dflt, null, loginNum))
+                            }
+                        } else {
+                            // drawable 이미지 불러오기
+                            val resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
+                            if (resId != 0) {
+                                list.add(FaviconItem(name, birth, num, bookmark, resId, null, loginNum))
+                            } else {
+                                // 이미지가 없는 경우 기본 이미지 표시
+                                list.add(FaviconItem(name, birth, num, bookmark, R.drawable.dflt, null, loginNum))
+                            }
+                        }
+
                     } while (cursor.moveToNext())
                 }
                 cursor?.close()
@@ -220,38 +290,6 @@ class HomelessRevisionFragment : Fragment() {
 
         return binding!!.root
     }
-
-//    private fun performSearch() {
-//        val query = searchEditText.text.toString()
-//        profileList.removeAllViews()
-//        // 더미 데이터 사용
-//        val dummyProfiles = listOf("John Doe", "Jane Smith", "Emily Johnson")
-//        for (profile in dummyProfiles) {
-//            if (profile.contains(query, true)) {
-//                val profileView = TextView(requireContext()).apply {
-//                    text = profile
-//                    textSize = 18f
-//                    setPadding(16, 16, 16, 16)
-//                    setOnClickListener {
-//                        highlightProfile(this)
-//                    }
-//                }
-//                profileList.addView(profileView)
-//            }
-//        }
-//    }
-//
-//    private fun highlightProfile(profileView: TextView) {
-//        // 모든 프로필 뷰의 배경을 기본값으로 설정
-//        for (i in 0 until profileList.childCount) {
-//            val child = profileList.getChildAt(i)
-//            if (child is TextView) {
-//                child.setBackgroundResource(R.drawable.border) // 기본 테두리
-//            }
-//        }
-//        // 클릭된 프로필 뷰의 배경을 강조된 테두리로 설정
-//        profileView.setBackgroundResource(R.drawable.highlight_border) // 강조된 테두리
-//    }
 
     private fun goToLocationRevisionFragment() {
         val fragment = LocationRevisionFragment()

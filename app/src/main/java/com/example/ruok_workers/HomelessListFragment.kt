@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ruok_workers.databinding.FragmentHomelessListBinding
+import java.io.File
 
 
 class HomelessListFragment : Fragment() {
@@ -94,10 +96,70 @@ class HomelessListFragment : Fragment() {
                         num = cursor.getInt(cursor.getColumnIndex("h_num"))
                         bookmark = if (cursor.getInt(cursor.getColumnIndex("is_bookmarked")) == 1) 1 else 0
 
-                        var photoFilename: String = cursor.getString(cursor.getColumnIndex("h_photo"))
-                        var resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
+//                        var photoFilename: String = cursor.getString(cursor.getColumnIndex("h_photo"))
+//                        var resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
 
-                        list.add(FaviconItem(name, birth, num, bookmark, resId, loginNum))
+//                        list.add(FaviconItem(name, birth, num, bookmark, resId, loginNum))
+
+//                        val photoFilename = cursor.getString(cursor.getColumnIndex("h_photo"))
+//                        var resId: Int? = null
+//                        var photoPath: String? = null
+//
+//                        // 이미지가 URI인지 drawable인지 확인
+//                        if (photoFilename.startsWith("content://") || photoFilename.startsWith("file://")) {
+//                            photoPath = photoFilename  // URI 경우
+//                        } else {
+//                            resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
+//                            if (resId != 0) {
+//                                photoPath = photoFilename // Drawable 경우
+//                            }
+//                        }
+//
+//                        // FaviconItem에 photoPath (URI 또는 drawable 이름) 추가
+//                        list.add(FaviconItem(name, birth, num, bookmark, photoPath, loginNum))
+
+                        val photoFilename = cursor.getString(cursor.getColumnIndex("h_photo"))
+//                        list.add(FaviconItem(name, birth, num, bookmark, photoFilename, loginNum))
+
+                        if (photoFilename.startsWith("/")) {
+                            // 내부 저장소 경로에서 이미지 불러오기
+                            val file = File(photoFilename)
+                            if (file.exists()) {
+                                // Bitmap으로 변환하여 ImageView에 설정
+                                val bitmap = BitmapFactory.decodeFile(file.absolutePath)
+                                list.add(FaviconItem(name, birth, num, bookmark, null, bitmap, loginNum))
+                            } else {
+                                // 파일이 없을 경우 기본 이미지 설정
+                                list.add(FaviconItem(name, birth, num, bookmark, R.drawable.dflt, null, loginNum))
+                            }
+                        } else {
+                            // drawable 이미지 불러오기
+                            val resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
+                            if (resId != 0) {
+                                list.add(FaviconItem(name, birth, num, bookmark, resId, null, loginNum))
+                            } else {
+                                // 이미지가 없는 경우 기본 이미지 표시
+                                list.add(FaviconItem(name, birth, num, bookmark, R.drawable.dflt, null, loginNum))
+                            }
+                        }
+
+//                        var resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
+//                        if (resId != 0) {
+//                            list.add(FaviconItem(name, birth, num, bookmark, resId, null, loginNum))
+//                        } else {
+//                            // 내부 저장소 이미지를 처리
+//                            val filePath = requireContext().filesDir.absolutePath + "/" + photoFilename
+//                            val imgFile = File(filePath)
+//                            if (imgFile.exists()) {
+//                                val bitmap = BitmapFactory.decodeFile(imgFile.absolutePath)
+//                                list.add(FaviconItem(name, birth, num, bookmark, null, bitmap, loginNum))
+//                            } else {
+//                                // 기본 이미지 추가
+//                                list.add(FaviconItem(name, birth, num, bookmark, R.drawable.dflt, null, loginNum))
+//                            }
+//                        }
+
+
                     } while (cursor.moveToNext())
                 }
                 cursor?.close()
@@ -114,11 +176,36 @@ class HomelessListFragment : Fragment() {
                         birth = cursor.getString(cursor.getColumnIndexOrThrow("h_birth")).toString()
                         num = cursor.getInt(cursor.getColumnIndex("h_num"))
                         bookmark = if (cursor.getInt(cursor.getColumnIndex("is_bookmarked")) == 1) 1 else 0
+//
+//                        // FaviconItem에 photoPath (URI 또는 drawable 이름) 추가
+//                        list.add(FaviconItem(name, birth, num, bookmark, photoPath, loginNum))
 
-                        var photoFilename: String = cursor.getString(cursor.getColumnIndex("h_photo"))
-                        var resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
+                        val photoFilename = cursor.getString(cursor.getColumnIndex("h_photo"))
+//                        list.add(FaviconItem(name, birth, num, bookmark, photoFilename, loginNum))
 
-                        list.add(FaviconItem(name, birth, num, bookmark, resId, loginNum))
+                        if (photoFilename.startsWith("/")) {
+                            // 내부 저장소 경로에서 이미지 불러오기
+                            val file = File(photoFilename)
+                            if (file.exists()) {
+                                // Bitmap으로 변환하여 ImageView에 설정
+                                val bitmap = BitmapFactory.decodeFile(file.absolutePath)
+                                list.add(FaviconItem(name, birth, num, bookmark, null, bitmap, loginNum))
+                            } else {
+                                // 파일이 없을 경우 기본 이미지 설정
+                                list.add(FaviconItem(name, birth, num, bookmark, R.drawable.dflt, null, loginNum))
+                            }
+                        } else {
+                            // drawable 이미지 불러오기
+                            val resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
+                            if (resId != 0) {
+                                list.add(FaviconItem(name, birth, num, bookmark, resId, null, loginNum))
+                            } else {
+                                // 이미지가 없는 경우 기본 이미지 표시
+                                list.add(FaviconItem(name, birth, num, bookmark, R.drawable.dflt, null, loginNum))
+                            }
+                        }
+
+
                     } while (cursor.moveToNext())
                 }
                 cursor?.close()

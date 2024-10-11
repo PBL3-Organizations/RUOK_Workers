@@ -2,17 +2,23 @@ package com.example.ruok_workers
 
 import ProfileDetailFragment
 import android.content.Context
+import android.content.pm.PackageManager
 import android.database.sqlite.SQLiteDatabase
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ruok_workers.databinding.FaviconEditItemsBinding
+import java.io.File
 
 class FaviconAdapter(private val context: Context, val itemList: ArrayList<FaviconItem>) : RecyclerView.Adapter<FaviconAdapter.FaviconViewHolder>(){
     lateinit var profileDetailFragment: ProfileDetailFragment
@@ -41,7 +47,18 @@ class FaviconAdapter(private val context: Context, val itemList: ArrayList<Favic
 
         holder.binding.tvfeName.text = "이름: " + item.name
         holder.binding.tvfeBirth.text = "생년월일: " + item.birth.substring(0,4) + "." + item.birth.substring(4,6) + "." + item.birth.substring(6) + "."
-        holder.binding.ivProfileEdit.setImageResource(item.photo)
+//        holder.binding.ivProfileEdit.setImageResource(item.photo)
+
+
+
+        // 드로어블 리소스 또는 Bitmap을 사용할지 확인
+        if (item.photoBitmap != null) {
+            holder.binding.ivProfileEdit.setImageBitmap(item.photoBitmap)
+        } else if (item.photoResId != null) {
+            holder.binding.ivProfileEdit.setImageResource(item.photoResId!!)
+        } else {
+            holder.binding.ivProfileEdit.setImageResource(R.drawable.dflt) // 기본 이미지 설정
+        }
 
         // 즐겨찾기 상태에 따라 별 아이콘 설정
         if (item.bookmark == 1) {
