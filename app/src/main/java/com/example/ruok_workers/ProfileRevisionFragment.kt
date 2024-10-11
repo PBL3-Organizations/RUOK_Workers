@@ -100,27 +100,6 @@ class ProfileRevisionFragment : Fragment() {
                     ivProfileRevision.setImageResource(R.drawable.aegis_logo)
                 }
             }
-
-//            // 이미지가 URI인지 drawable인지 확인하여 처리
-//            if (photoPath.startsWith("content://") || photoPath.startsWith("file://")) {
-//                // URI에서 이미지 불러오기
-//                val imageUri = Uri.parse(photoPath)
-//                ivProfileRevision.setImageURI(imageUri)
-//            } else {
-//                // drawable 이미지 불러오기
-//                val resId = resources.getIdentifier(photoPath.substringBefore('.'), "drawable", requireContext().packageName)
-//                if (resId != 0) {
-//                    ivProfileRevision.setImageResource(resId)
-//                } else {
-//                    // 이미지가 없는 경우 기본 이미지 표시
-//                    ivProfileRevision.setImageResource(R.drawable.aegis_logo)
-//                }
-//            }
-
-//            var photoFilename: String = cursor.getString(cursor.getColumnIndex("h_photo"))
-//            resId = resources.getIdentifier(photoFilename.substringBefore('.'), "drawable", requireContext().packageName)
-//            // TextView에 데이터 표시
-//            ivProfileRevision.setImageResource(resId)
         }
         cursor.close()
 
@@ -259,34 +238,6 @@ class ProfileRevisionFragment : Fragment() {
             }
         }
     }
-
-//    private fun saveImageToInternalStorage(uri: Uri): String {
-//        val inputStream: InputStream? = requireContext().contentResolver.openInputStream(uri)
-//        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-//        val fileName = "profile_image_$timeStamp.jpg"
-//        val file = File(requireContext().filesDir, fileName)
-//        val outputStream = FileOutputStream(file)
-//
-//        inputStream?.use { input ->
-//            outputStream.use { output ->
-//                input.copyTo(output)
-//            }
-//        }
-//
-//        return file.absolutePath
-//    }
-//
-//    // 갤러리에서 이미지 선택 후 URI 저장
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        if (requestCode == GALLERY_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
-//            val imageUri = data.data
-//            if (imageUri != null) {
-//                selectedImageUri = imageUri
-//                ivProfileRevision.setImageURI(imageUri)
-//            }
-//        }
-//    }
 
     // 키보드를 숨기는 함수
     private fun hideKeyboard() {

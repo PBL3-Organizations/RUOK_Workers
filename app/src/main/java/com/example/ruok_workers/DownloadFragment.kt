@@ -285,35 +285,83 @@ class DownloadFragment : Fragment() {
             dataRow.createCell(6).setCellValue(record.cContent) // 상담내역
             dataRow.createCell(7).setCellValue(record.cMeasure) // 조치내용
 
-            // 이미지 파일 경로 (drawable에서 가져오기)
-            val imageName = record.hPhoto.substringBefore('.') // 확장자 제거
-            val imagePath = context.resources.getIdentifier(imageName, "drawable", context.packageName)
+            val photoPath = record.hPhoto
+            if (photoPath.startsWith("/")) {
+                // 내부 저장소 경로에서 이미지 불러오기
+                val file = File(photoPath)
+                if (file.exists()) {
+                    val bitmap: Bitmap = BitmapFactory.decodeFile(file.absolutePath)
 
-            // 로그 출력
-            Log.d("ExcelCreation", "이미지 리소스 ID: $imagePath")
+                    // Bitmap을 byte array로 변환
+                    val stream = ByteArrayOutputStream()
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+                    val bytes = workbook.addPicture(stream.toByteArray(), Workbook.PICTURE_TYPE_PNG)
+                    stream.close()
 
-            if (imagePath != 0) { // 이미지 리소스가 존재하는지 확인
-                Log.d("ExcelCreation", "이미지 리소스 존재: $imagePath")
+                    // 이미지 삽입 (resize 없이 직접 위치 및 크기 지정)
+                    val anchor = XSSFClientAnchor(0, 0, 1023, 255, 1, index + 2, 2, index + 3)
+                    anchor.anchorType = ClientAnchor.AnchorType.MOVE_AND_RESIZE
 
-                val bitmap: Bitmap = BitmapFactory.decodeResource(context.resources, imagePath)
-
-                // Bitmap을 byte array로 변환
-                val stream = ByteArrayOutputStream()
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-                val bytes = workbook.addPicture(stream.toByteArray(), Workbook.PICTURE_TYPE_PNG)
-                stream.close()
-
-                // 이미지 삽입 (resize 없이 직접 위치 및 크기 지정)
-                val anchor = XSSFClientAnchor(0, 0, 1023, 255, 1, index + 2, 2, index + 3) // 크기 조정 없이 앵커 설정
-                anchor.anchorType = ClientAnchor.AnchorType.MOVE_AND_RESIZE
-
-                drawing.createPicture(anchor, bytes)
+                    drawing.createPicture(anchor, bytes)
+                } else {
+                    Log.e("ExcelCreation", "내부 저장소 이미지가 존재하지 않음: $photoPath")
+                    dataRow.createCell(1).setCellValue("")
+                }
             } else {
-                Log.e("ExcelCreation", "이미지 리소스가 존재하지 않음: $imageName")
-                // 이미지가 없는 경우 공란으로 처리
-                dataRow.createCell(1).setCellValue("")
+                // drawable에서 이미지 불러오기
+                val imageName = photoPath.substringBefore('.') // 확장자 제거
+                val imagePath = context.resources.getIdentifier(imageName, "drawable", context.packageName)
+
+                if (imagePath != 0) { // 이미지 리소스가 존재하는지 확인
+                    val bitmap: Bitmap = BitmapFactory.decodeResource(context.resources, imagePath)
+
+                    // Bitmap을 byte array로 변환
+                    val stream = ByteArrayOutputStream()
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+                    val bytes = workbook.addPicture(stream.toByteArray(), Workbook.PICTURE_TYPE_PNG)
+                    stream.close()
+
+                    // 이미지 삽입 (resize 없이 직접 위치 및 크기 지정)
+                    val anchor = XSSFClientAnchor(0, 0, 1023, 255, 1, index + 2, 2, index + 3)
+                    anchor.anchorType = ClientAnchor.AnchorType.MOVE_AND_RESIZE
+
+                    drawing.createPicture(anchor, bytes)
+                } else {
+                    Log.e("ExcelCreation", "drawable 이미지가 존재하지 않음: $imageName")
+                    dataRow.createCell(1).setCellValue("")
+                }
             }
         }
+
+//            // 이미지 파일 경로 (drawable에서 가져오기)
+//            val imageName = record.hPhoto.substringBefore('.') // 확장자 제거
+//            val imagePath = context.resources.getIdentifier(imageName, "drawable", context.packageName)
+//
+//            // 로그 출력
+//            Log.d("ExcelCreation", "이미지 리소스 ID: $imagePath")
+//
+//            if (imagePath != 0) { // 이미지 리소스가 존재하는지 확인
+//                Log.d("ExcelCreation", "이미지 리소스 존재: $imagePath")
+//
+//                val bitmap: Bitmap = BitmapFactory.decodeResource(context.resources, imagePath)
+//
+//                // Bitmap을 byte array로 변환
+//                val stream = ByteArrayOutputStream()
+//                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+//                val bytes = workbook.addPicture(stream.toByteArray(), Workbook.PICTURE_TYPE_PNG)
+//                stream.close()
+//
+//                // 이미지 삽입 (resize 없이 직접 위치 및 크기 지정)
+//                val anchor = XSSFClientAnchor(0, 0, 1023, 255, 1, index + 2, 2, index + 3) // 크기 조정 없이 앵커 설정
+//                anchor.anchorType = ClientAnchor.AnchorType.MOVE_AND_RESIZE
+//
+//                drawing.createPicture(anchor, bytes)
+//            } else {
+//                Log.e("ExcelCreation", "이미지 리소스가 존재하지 않음: $imageName")
+//                // 이미지가 없는 경우 공란으로 처리
+//                dataRow.createCell(1).setCellValue("")
+//            }
+//        }
 
         // 열 너비 조정 (cm 단위)
         sheet.setColumnWidth(1, (13 * 256)) // B열 너비 3.3 cm -> 약 13 character width
