@@ -186,7 +186,8 @@ class ListFragment : Fragment() {
     private fun setListAdapter(items: Vector<ListCard>) {
         adapter = ListAdapter(requireContext(),items)
         binding!!.listRecyclerView.adapter = adapter
-
+        binding.ListResult.text = if (items.isEmpty()) "검색 결과가 없습니다." else "검색 결과: ${items.size}개"
+        binding.ListResult.visibility = View.VISIBLE
         binding.searchviewList.onActionViewExpanded()
     }
 
