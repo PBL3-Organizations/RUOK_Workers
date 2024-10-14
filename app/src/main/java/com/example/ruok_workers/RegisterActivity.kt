@@ -13,6 +13,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
@@ -37,6 +38,13 @@ class RegisterActivity : AppCompatActivity() {
     lateinit var input_organization: EditText
     lateinit var organization_number: TextView
 
+    lateinit var checkBoxRegisterAll: CheckBox
+    lateinit var checkBoxRegister1: CheckBox
+    lateinit var checkBoxRegister2: CheckBox
+    lateinit var signUpButton: Button
+    lateinit var tvRegisterAgree1: TextView
+    lateinit var tvRegisterAgree2: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -49,6 +57,55 @@ class RegisterActivity : AppCompatActivity() {
             view.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        // 체크박스 및 버튼 초기화
+        checkBoxRegisterAll = findViewById(R.id.checkBoxRegisterAll)
+        checkBoxRegister1 = findViewById(R.id.checkBoxRegister1)
+        checkBoxRegister2 = findViewById(R.id.checkBoxRegister2)
+        signUpButton = findViewById(R.id.signUp_button2)
+        tvRegisterAgree1 = findViewById(R.id.tvRegisterAgree1)
+        tvRegisterAgree2 = findViewById(R.id.tvRegisterAgree2)
+
+        // '전체 동의' 체크박스 클릭 이벤트
+        checkBoxRegisterAll.setOnCheckedChangeListener { _, isChecked ->
+            checkBoxRegister1.isChecked = isChecked
+            checkBoxRegister2.isChecked = isChecked
+        }
+
+        // 각각의 필수 약관 체크박스 클릭 이벤트
+        checkBoxRegister1.setOnCheckedChangeListener { _, _ ->
+            syncCheckAll()
+        }
+
+        checkBoxRegister2.setOnCheckedChangeListener { _, _ ->
+            syncCheckAll()
+        }
+
+        // '서비스 이용약관 보기' 버튼 클릭 이벤트
+        tvRegisterAgree1.setOnClickListener{
+            val intent = Intent(this, ServiceAgreeActivity::class.java)
+            startActivity(intent)
+        }
+
+//        tvRegisterAgree1.setOnClickListener {
+//            supportFragmentManager.beginTransaction()
+//                .replace(R.id.main, ServiceAgreeFragment())
+//                .addToBackStack(null)
+//                .commit()
+//        }
+
+        // '개인정보 수집 및 이용 보기' 버튼 클릭 이벤트
+        tvRegisterAgree2.setOnClickListener{
+            val intent = Intent(this, PrivacyAgreeActivity::class.java)
+            startActivity(intent)
+        }
+
+//        tvRegisterAgree2.setOnClickListener {
+//            supportFragmentManager.beginTransaction()
+//                .replace(R.id.main, PrivacyAgreeFragment())
+//                .addToBackStack(null)
+//                .commit()
+//        }
 
         input_workerName = findViewById(R.id.input_workerName)
         input_workerBirth = findViewById(R.id.input_workerBirth)
@@ -81,7 +138,9 @@ class RegisterActivity : AppCompatActivity() {
             sqlitedb.close()
             dbManager.close()
 
-            if (inputId.isBlank() || inputPassword.isBlank() || inputCheckPassword.isBlank() || inputName.isBlank() || inputBirth.isBlank() || inputOrganization.isBlank()) {
+            if (!checkBoxRegister1.isChecked || !checkBoxRegister2.isChecked) {
+                Toast.makeText(this, "필수 약관에 동의해주세요.", Toast.LENGTH_SHORT).show()
+            } else if (inputId.isBlank() || inputPassword.isBlank() || inputCheckPassword.isBlank() || inputName.isBlank() || inputBirth.isBlank() || inputOrganization.isBlank()) {
                 Toast.makeText(this, "모든 필드를 입력해주세요", Toast.LENGTH_SHORT).show()
             } else if (inputPassword != inputCheckPassword) {
                 Toast.makeText(this, "비밀번호가 일치하지 않습니다", Toast.LENGTH_SHORT).show()
@@ -173,6 +232,11 @@ class RegisterActivity : AppCompatActivity() {
                 false
             }
         }
+    }
+
+    // checkBoxRegisterAll 상태를 동기화하는 함수
+    private fun syncCheckAll() {
+        checkBoxRegisterAll.isChecked = checkBoxRegister1.isChecked && checkBoxRegister2.isChecked
     }
 
     @SuppressLint("Range", "ResourceType")
