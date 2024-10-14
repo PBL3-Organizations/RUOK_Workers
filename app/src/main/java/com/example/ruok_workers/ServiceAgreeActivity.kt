@@ -5,6 +5,9 @@ import android.graphics.Bitmap
 import android.graphics.pdf.PdfRenderer
 import android.os.Bundle
 import android.os.ParcelFileDescriptor
+import android.view.MotionEvent
+import android.view.ScaleGestureDetector
+import android.view.ScaleGestureDetector.SimpleOnScaleGestureListener
 import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import kotlin.math.max
 
 
 class ServiceAgreeActivity : AppCompatActivity() {
@@ -23,10 +27,13 @@ class ServiceAgreeActivity : AppCompatActivity() {
     private var pdfRenderer: PdfRenderer? = null
     private var currentPage: PdfRenderer.Page? = null
 
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        //액션바 제목 변경
+        supportActionBar?.setTitle("RUOK?")
+
         setContentView(R.layout.activity_service_agree)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -92,5 +99,6 @@ class ServiceAgreeActivity : AppCompatActivity() {
         super.onDestroy()
 //        currentPage?.close()
         pdfRenderer?.close()
+
     }
 }
