@@ -16,12 +16,15 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import kotlin.math.max
+import kotlin.math.min
 
 class PrivacyAgreeActivity : AppCompatActivity() {
 
     private lateinit var pdfImageView: ImageView
     private var pdfRenderer: PdfRenderer? = null
     private var currentPage: PdfRenderer.Page? = null
+    private var scaleGestureDetector: ScaleGestureDetector? = null
+    private var scaleFactor = 1.0f
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +40,7 @@ class PrivacyAgreeActivity : AppCompatActivity() {
         }
 
         pdfImageView = findViewById(R.id.pdfImageView2)
+        scaleGestureDetector = ScaleGestureDetector(this, ScaleListener())
 
         // PDF 파일을 assets에서 읽고 화면에 표시하는 함수 호출
         try {
@@ -67,6 +71,27 @@ class PrivacyAgreeActivity : AppCompatActivity() {
             val bitmap = Bitmap.createBitmap(page.width, page.height, Bitmap.Config.ARGB_8888)
             page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
             pdfImageView.setImageBitmap(bitmap)
+        }
+    }
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+
+        if (event != null) {
+            scaleGestureDetector?.onTouchEvent(event)
+        }
+        return true
+    }
+
+    inner class ScaleListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {
+        override fun onScale(scaleGestureDetector: ScaleGestureDetector): Boolean {
+            scaleFactor *= scaleGestureDetector.scaleFactor
+
+            // 최소 0.5, 최대 2배
+            scaleFactor = max(0.5f, min(scaleFactor, 2.0f))
+
+            // 이미지뷰에 적용
+            pdfImageView.scaleX = scaleFactor
+            pdfImageView.scaleY = scaleFactor
+            return true
         }
     }
 
