@@ -19,6 +19,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import kotlin.math.max
+import kotlin.math.min
 
 
 class ServiceAgreeActivity : AppCompatActivity() {
@@ -27,9 +28,9 @@ class ServiceAgreeActivity : AppCompatActivity() {
     private var pdfRenderer: PdfRenderer? = null
     private var currentPage: PdfRenderer.Page? = null
 
-
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         //액션바 제목 변경
         supportActionBar?.setTitle("RUOK?")
@@ -56,7 +57,7 @@ class ServiceAgreeActivity : AppCompatActivity() {
 
         // PDF 파일 로드
         try {
-            openPdfFromAssets("서비스 이용약관_v1.0_241013.pdf")?.let { renderer ->
+            openPdfFromAssets("서비스_이용약관_v1.0_241013.pdf")?.let { renderer ->
                 pdfRenderer = renderer
                 val adapter = ServiceAgreeAdapter(pdfRenderer!!)
                 pdfRecyclerView.adapter = adapter
