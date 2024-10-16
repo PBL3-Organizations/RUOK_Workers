@@ -8,15 +8,11 @@
     android:orientation="vertical"
     tools:context=".ServiceAgreeActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/pdfRecyclerView"
+    <TextView
+        android:id="@+id/markdownTextView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-    <ImageView
-        android:id="@+id/pdfImageView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitCenter"/>
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:padding="8dp"/>
 
 </LinearLayout>
