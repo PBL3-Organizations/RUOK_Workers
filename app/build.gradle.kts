@@ -59,5 +59,7 @@ dependencies {
     implementation("com.naver.maps:map-sdk:3.18.0")
     // 엑셀 다운로드를 위한 Apache POI
     implementation("org.apache.poi:poi-ooxml:5.2.3")
+    // 회원가입 동의서 마크다운
+    implementation ("io.noties.markwon:core:4.6.2")
 
 }

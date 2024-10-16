@@ -8,10 +8,12 @@ import android.os.ParcelFileDescriptor
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import io.noties.markwon.Markwon
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -19,12 +21,6 @@ import kotlin.math.max
 import kotlin.math.min
 
 class PrivacyAgreeActivity : AppCompatActivity() {
-
-    private lateinit var pdfImageView: ImageView
-    private var pdfRenderer: PdfRenderer? = null
-    private var currentPage: PdfRenderer.Page? = null
-    private var scaleGestureDetector: ScaleGestureDetector? = null
-    private var scaleFactor = 1.0f
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,65 +35,49 @@ class PrivacyAgreeActivity : AppCompatActivity() {
             insets
         }
 
-        pdfImageView = findViewById(R.id.pdfImageView2)
-        scaleGestureDetector = ScaleGestureDetector(this, ScaleListener())
+        // Find the TextView
+        val markdownTextView = findViewById<TextView>(R.id.markdownTextView2)
 
-        // PDF 파일을 assets에서 읽고 화면에 표시하는 함수 호출
-        try {
-            openPdfFromAssets("개인정보처리동의서_v1.0_241012.pdf")
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-    }
+        val markdown = """
+            # 개인정보처리동의서
 
-    private fun openPdfFromAssets(fileName: String) {
-        // assets에서 PDF 파일을 내부 저장소에 복사
-        val file = File(cacheDir, fileName)
-        if (!file.exists()) {
-            assets.open(fileName).use { inputStream ->
-                FileOutputStream(file).use { outputStream ->
-                    inputStream.copyTo(outputStream)
-                }
-            }
-        }
+            RUOK(이하 '어플리케이션')은 개인정보보호법 등 관련 법령상의 개인정보보호 규정을 준수하며 귀하의 개인정보보호에 최선을 다하고 있습니다. 본 어플리케이션은 개인정보보호법에 근거하여 다음과 같은 내용으로 개인정보를 수집 및 처리하고자 합니다.
 
-        // PdfRenderer를 통해 PDF 파일을 표시
-        val fileDescriptor = ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY)
-        pdfRenderer = PdfRenderer(fileDescriptor)
+            다음의 내용을 자세히 읽어보시고 모든 내용을 이해하신 후에 동의 여부를 결정해주시기 바랍니다.
 
-        // 첫 번째 페이지를 이미지로 변환하여 ImageView에 설정
-        currentPage = pdfRenderer?.openPage(0)
-        currentPage?.let { page ->
-            val bitmap = Bitmap.createBitmap(page.width, page.height, Bitmap.Config.ARGB_8888)
-            page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
-            pdfImageView.setImageBitmap(bitmap)
-        }
-    }
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
+            ## 제1조(개인정보 수집 및 이용 목적)
+            이용자가 제공한 모든 정보는 다음의 목적을 위해 활용하며, 목적 이외의 용도로는 사용되지 않습니다.
+            
+            - 개인식별 및 어플리케이션 서비스 제공
 
-        if (event != null) {
-            scaleGestureDetector?.onTouchEvent(event)
-        }
-        return true
-    }
+            ## 제2조(개인정보 수집 및 이용 항목)
+            어플리케이션은 개인정보 수집 목적을 위하여 다음과 같은 정보를 수집합니다.
+            
+            - 성명, 전화번호, 생년월일 및 소속 기관, 아이디, 비밀번호
 
-    inner class ScaleListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {
-        override fun onScale(scaleGestureDetector: ScaleGestureDetector): Boolean {
-            scaleFactor *= scaleGestureDetector.scaleFactor
+            ## 제3조(개인정보 보유 및 이용 기간)
+            1. 수집한 개인정보는 수집·이용 동의일로부터 개인정보 수집·이용 목적을 달성할 때까지 보관 및 이용합니다.  
+            2. 개인정보 보유기간의 경과, 처리목적의 달성 등 개인정보가 불필요하게 되었을 때에는 지체없이 해당 개인정보를 파기합니다.
 
-            // 최소 0.5, 최대 2배
-            scaleFactor = max(0.5f, min(scaleFactor, 2.0f))
+            ## 제4조(동의 거부 관리)
+            귀하는 본 안내에 따른 개인정보 수집·이용에 대하여 동의를 거부할 권리가 있습니다. 다만, 귀하가 개인정보 동의를 거부하시는 경우에 회원가입 불가로 인한 서비스 이용 제한의 불이익이 발생할 수 있음을 알려드립니다.
 
-            // 이미지뷰에 적용
-            pdfImageView.scaleX = scaleFactor
-            pdfImageView.scaleY = scaleFactor
-            return true
-        }
+            ---
+
+            본인은 위의 동의서 내용을 충분히 숙지하였으며, 위와 같이 개인정보를 수집·이용하는데 동의합니다.
+
+
+        """.trimIndent()
+
+        // Initialize Markwon
+        val markwon = Markwon.create(this)
+
+        // Set markdown content to TextView
+        markwon.setMarkdown(markdownTextView, markdown)
+
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        currentPage?.close()
-        pdfRenderer?.close()
     }
 }
