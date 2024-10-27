@@ -22,6 +22,10 @@ import kotlin.math.min
 
 class PrivacyAgreeActivity : AppCompatActivity() {
 
+    private lateinit var scaleGestureDetector: ScaleGestureDetector
+    private lateinit var markdownTextView: TextView
+    private var fontSize = 16f // 기본 폰트 크기 설정
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,8 +39,10 @@ class PrivacyAgreeActivity : AppCompatActivity() {
             insets
         }
 
-        // Find the TextView
-        val markdownTextView = findViewById<TextView>(R.id.markdownTextView2)
+        // TextView 초기화
+        markdownTextView = findViewById<TextView>(R.id.markdownTextView2)
+//        val markdownTextView = findViewById<TextView>(R.id.markdownTextView2)
+        markdownTextView.textSize = fontSize // 초기 폰트 크기 설정
 
         val markdown = """
             # 개인정보처리동의서
@@ -75,6 +81,33 @@ class PrivacyAgreeActivity : AppCompatActivity() {
         // Set markdown content to TextView
         markwon.setMarkdown(markdownTextView, markdown)
 
+        // ScaleGestureDetector 초기화
+        scaleGestureDetector = ScaleGestureDetector(this, object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
+            override fun onScale(detector: ScaleGestureDetector): Boolean {
+                fontSize *= detector.scaleFactor
+                fontSize = max(10f, min(fontSize, 50f)) // 폰트 크기의 최소/최대값 설정
+                markdownTextView.textSize = fontSize
+                return true
+            }
+        })
+
+        // TextView에 터치 리스너 추가
+        markdownTextView.setOnTouchListener { _, event ->
+            if (event.pointerCount == 2) {
+                // 두 손가락으로 폰트 크기 조절
+                scaleGestureDetector.onTouchEvent(event)
+                true
+            } else {
+                // 한 손가락일 경우 스크롤 동작 유지
+                false
+            }
+        }
+    }
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        // Activity에서도 터치 이벤트 전달
+        scaleGestureDetector.onTouchEvent(event)
+        return super.onTouchEvent(event)
     }
 
     override fun onDestroy() {
