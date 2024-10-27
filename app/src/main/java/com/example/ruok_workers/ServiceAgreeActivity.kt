@@ -26,6 +26,10 @@ import kotlin.math.min
 
 class ServiceAgreeActivity : AppCompatActivity() {
 
+    private lateinit var scaleGestureDetector: ScaleGestureDetector
+    private lateinit var markdownTextView: TextView
+    private var fontSize = 16f // 기본 폰트 크기 설정
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -40,8 +44,13 @@ class ServiceAgreeActivity : AppCompatActivity() {
             insets
         }
 
-        // Find the TextView
-        val markdownTextView = findViewById<TextView>(R.id.markdownTextView)
+        // TextView 초기화
+//        val markdownTextView = findViewById<TextView>(R.id.markdownTextView)
+        markdownTextView = findViewById<TextView>(R.id.markdownTextView)
+
+        // XML에서 초기 폰트 크기를 가져와 변수로 설정
+//        fontSize = markdownTextView.textSize / resources.displayMetrics.scaledDensity
+        markdownTextView.textSize = fontSize // 초기 폰트 크기 설정
 
         val markdown = """
             # R U OK? 서비스 이용약관
@@ -105,6 +114,34 @@ class ServiceAgreeActivity : AppCompatActivity() {
 
         // Set markdown content to TextView
         markwon.setMarkdown(markdownTextView, markdown)
+
+        // ScaleGestureDetector 초기화
+        scaleGestureDetector = ScaleGestureDetector(this, object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
+            override fun onScale(detector: ScaleGestureDetector): Boolean {
+                fontSize *= detector.scaleFactor
+                fontSize = max(10f, min(fontSize, 50f)) // 폰트 크기의 최소/최대값 설정
+                markdownTextView.textSize = fontSize
+                return true
+            }
+        })
+
+        // TextView에 터치 리스너 추가
+        markdownTextView.setOnTouchListener { _, event ->
+            if (event.pointerCount == 2) {
+                // 두 손가락으로 폰트 크기 조절
+                scaleGestureDetector.onTouchEvent(event)
+                true
+            } else {
+                // 한 손가락일 경우 스크롤 동작 유지
+                false
+            }
+        }
+    }
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        // ScaleGestureDetector에 터치 이벤트 전달
+        scaleGestureDetector.onTouchEvent(event)
+        return super.onTouchEvent(event)
     }
 
     override fun onDestroy() {

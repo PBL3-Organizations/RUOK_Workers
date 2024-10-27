@@ -24,7 +24,7 @@
             android:layout_height="100dp"
             android:layout_gravity="center|left"
             android:layout_marginBottom="10dp"
-            android:text="브리핑 게시판"
+            android:text="노숙인 목록"
             android:textColor="#FFFFFF"
             android:textSize="20sp"
             android:textStyle="bold"

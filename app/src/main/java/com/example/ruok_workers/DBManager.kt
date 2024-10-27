@@ -19,7 +19,7 @@ class DBManager(
         db!!.execSQL("CREATE TABLE IF NOT EXISTS consultation (c_num INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,m_num INTEGER NOT NULL,h_num INTEGER,c_time TEXT NOT NULL,c_health INTEGER NOT NULL,c_unusual TEXT,c_measure TEXT,c_content TEXT);")
         db!!.execSQL("CREATE TABLE IF NOT EXISTS location (c_num INTEGER NOT NULL,l_addr TEXT NOT NULL,l_lat REAL NOT NULL,l_lon REAL NOT NULL,PRIMARY KEY(c_num));")
         db!!.execSQL("CREATE TABLE IF NOT EXISTS photo (p_filename TEXT NOT NULL,c_num INTEGER NOT NULL,PRIMARY KEY(p_filename));")
-        db!!.execSQL("CREATE TABLE IF NOT EXISTS briefing (b_num INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,b_title TEXT NOT NULL,b_content TEXT NOT NULL,m_num INTEGER NOT NULL,b_time TEXT NOT NULL,b_type INTEGER NOT NULL,b_notice INTEGER NOT NULL);")
+//        db!!.execSQL("CREATE TABLE IF NOT EXISTS briefing (b_num INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,b_title TEXT NOT NULL,b_content TEXT NOT NULL,m_num INTEGER NOT NULL,b_time TEXT NOT NULL,b_type INTEGER NOT NULL,b_notice INTEGER NOT NULL);")
         db!!.execSQL("CREATE TABLE IF NOT EXISTS counting_course (cc_num INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,cc_name TEXT NOT NULL,wf_num INTEGER NOT NULL);")
         db!!.execSQL("CREATE TABLE IF NOT EXISTS counting_area (ca_num INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,ca_name TEXT NOT NULL,cc_num INTEGER NOT NULL);")
         db!!.execSQL("CREATE TABLE IF NOT EXISTS counting_record (cl_date TEXT NOT NULL,cl_order INTEGER NOT NULL,ca_num INTEGER NOT NULL,m_num INTEGER NOT NULL,cr_male INTEGER NOT NULL,cr_female INTEGER NOT NULL,cr_sum INTEGER NOT NULL,PRIMARY KEY(cl_date,cl_order,ca_num));")

@@ -95,6 +95,10 @@ class CountingRevisionFragment : Fragment() {
         binding.btnCountingRevision.setOnClickListener {
 
             try {
+
+                //카운팅 리스트 타이틀 날짜 변경 필요한 경우 "2024년6월1일1차 카운팅" -> "2024년06월1일1차 카운팅"
+//                title = title.substring(0, 5) + "0" + title.substring(5)
+
                 //데이터베이스 연동
                 dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
                 sqlitedb = dbManager.writableDatabase
@@ -118,6 +122,9 @@ class CountingRevisionFragment : Fragment() {
 
                     //카운팅 리스트 수정
                     sqlitedb.execSQL("UPDATE counting_list SET cl_sum='$total' WHERE cl_date ='$clDate' AND cl_order='$clOrder' AND cc_num='$ccNum';")
+
+                    //카운팅 리스트 타이틀 날짜 변경 필요한 경우 "2024년6월1일1차 카운팅" -> "2024년06월1일1차 카운팅"
+//                    sqlitedb.execSQL("UPDATE counting_list SET cl_title='$title', cl_sum='$total' WHERE cl_date ='$clDate' AND cl_order='$clOrder' AND cc_num='$ccNum';")
 
                     //카운팅 구역 번호 가져오기
                     val caNumQuery = "SELECT ca_num, ca_name FROM counting_area WHERE ca_name = '$place'"

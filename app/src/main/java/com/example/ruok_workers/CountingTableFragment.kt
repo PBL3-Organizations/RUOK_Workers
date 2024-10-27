@@ -91,7 +91,7 @@ class CountingTableFragment : Fragment() {
                 val currentTime : Long = System.currentTimeMillis() // ms로 반환
                 val formatDate = SimpleDateFormat("yyyyMMdd")
                 val date = formatDate.format(currentTime)
-                val formatTitle = SimpleDateFormat("yyyy년M월dd일")
+                val formatTitle = SimpleDateFormat("yyyy년MM월dd일")
                 val formatter = formatTitle.format(currentTime)
                 val titleList = listOf(formatter, " ", countingOrder, "차 카운팅")
                 val title = titleList.joinToString("")

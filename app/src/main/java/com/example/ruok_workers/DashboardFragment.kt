@@ -114,10 +114,10 @@ class DashboardFragment : Fragment() {
         adapter = DashboardAdapter(requireContext(), list)
         binding!!.recyclerViewProfile.adapter = adapter
 
-        //btnBriefing 클릭시 DashboardFragment에서 BriefingBoardFragment로 이동
+        //btnBriefing 클릭시 DashboardFragment에서 SearchFragment로 이동
         binding.btnBriefing.setOnClickListener{
             val parentActivity = activity as DashboardActivity
-            parentActivity.setFragment(BriefingBoardFragment())
+            parentActivity.setFragment(SearchFragment())
         }
 
         //btnCounsel 클릭시 DashboardFragment에서 HomelessListFragment로 이동

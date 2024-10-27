@@ -32,12 +32,12 @@
             android:id="@+id/tabCountingList"
             android:title="카운팅 테이블 목록"
             />
-        <item
-            android:icon="@drawable/baseline_headset_mic_24"
-            android:iconTint="#F27406"
-            android:id="@+id/tabBriefingBoard"
-            android:title="브리핑 게시판"
-            />
+<!--        <item-->
+<!--            android:icon="@drawable/baseline_headset_mic_24"-->
+<!--            android:iconTint="#F27406"-->
+<!--            android:id="@+id/tabBriefingBoard"-->
+<!--            android:title="브리핑 게시판"-->
+<!--            />-->
         <item
             android:icon="@drawable/baseline_person_off_24"
             android:iconTint="#F27406"
