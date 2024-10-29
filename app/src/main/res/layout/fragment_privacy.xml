@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".PrivacyFragment">
+
+    <TextView
+        android:id="@+id/markdownTextView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
+        android:padding="8dp"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/buttonPrivacyDownload"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_margin="10dp"
+        android:text="개인정보 처리방침 다운로드"
+        android:textSize="16sp"
+        app:cornerRadius="10dp" />
+
+</FrameLayout>
