@@ -55,6 +55,11 @@
             android:id="@+id/tabDownload"
             android:title="Excel 다운로드"
             />
+        <item
+            android:icon="@drawable/baseline_admin_panel_settings_24"
+            android:id="@+id/tabPrivacy"
+            android:title="개인정보 처리방침"
+            />
 
     </group>
 
