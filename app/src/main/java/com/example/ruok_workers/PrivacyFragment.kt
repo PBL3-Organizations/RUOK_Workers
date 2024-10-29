@@ -200,6 +200,12 @@ class PrivacyFragment : Fragment() {
             val downloadFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
             val outputFile = File(downloadFolder, fileName)
 
+            // 파일이 이미 존재하는 경우 삭제
+            if (outputFile.exists()) {
+                outputFile.delete()
+            }
+
+            // 파일 복사
             val outputStream: OutputStream = FileOutputStream(outputFile)
             copyFile(inputStream, outputStream)
 
@@ -213,14 +219,15 @@ class PrivacyFragment : Fragment() {
 
     // 파일 복사 메서드
     private fun copyFile(input: InputStream, output: OutputStream) {
-        val buffer = ByteArray(1024)
-        var read: Int
-        while (input.read(buffer).also { read = it } != -1) {
-            output.write(buffer, 0, read)
+        input.use { inputStream ->
+            output.use { outputStream ->
+                val buffer = ByteArray(1024)
+                var read: Int
+                while (inputStream.read(buffer).also { read = it } != -1) {
+                    outputStream.write(buffer, 0, read)
+                }
+            }
         }
-        input.close()
-        output.flush()
-        output.close()
     }
 
     companion object {
