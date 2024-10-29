@@ -1,14 +1,25 @@
 package com.example.ruok_workers
 
 import android.annotation.SuppressLint
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.ScaleGestureDetector
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import io.noties.markwon.Markwon
+import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
+import java.io.OutputStream
 import kotlin.math.max
 import kotlin.math.min
 
@@ -31,14 +42,19 @@ class PrivacyFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_privacy, container, false)
+        val downloadButton: Button = view.findViewById(R.id.buttonPrivacyDownload)
 
+        // PDF 다운로드 버튼 클릭 리스너 설정
+        downloadButton.setOnClickListener {
+            downloadPdf("RUOK_개인정보처리방침(복지사용)_v3.0_241012.pdf")
+        }
 
         markdownTextView = view.findViewById(R.id.markdownTextView3)
         markdownTextView.textSize = fontSize
 
         // 전문 마크다운 코드
         val markdownContent = """
-            # 개인정보처리방침 (복지사용)
+            # 개인정보처리방침
 
             ## 제1조(목적)
             RUOK(이하 ‘어플리케이션’)에서 제공하고자 하는 서비스(이하 ‘RUOK 서비스’)를 이용하는 개인(이하 ‘이용자’ 또는 ‘개인’)의 정보(이하 ‘개인정보’)를 보호하기 위해, 개인정보보호법, 정보통신망 이용촉진 및 정보보호 등에 관한 법률(이하 '정보통신망법') 등 관련 법령을 준수하고, 서비스 이용자의 개인정보 보호 관련한 고충을 신속하고 원활하게 처리할 수 있도록 하기 위하여 다음과 같이 개인정보처리방침(이하 ‘본 방침’)을 수립합니다.
@@ -172,6 +188,39 @@ class PrivacyFragment : Fragment() {
 
         // Inflate the layout for this fragment
 //        return inflater.inflate(R.layout.fragment_privacy, container, false)
+    }
+
+    // PDF 다운로드 메서드
+    private fun downloadPdf(fileName: String) {
+        try {
+            val assetManager = requireContext().assets
+            val inputStream: InputStream = assetManager.open(fileName)
+
+            // 공용 다운로드 폴더에 저장
+            val downloadFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+            val outputFile = File(downloadFolder, fileName)
+
+            val outputStream: OutputStream = FileOutputStream(outputFile)
+            copyFile(inputStream, outputStream)
+
+            // 다운로드 완료 메시지
+            Toast.makeText(context, "PDF 다운로드 완료: ${outputFile.absolutePath}", Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(context, "PDF 다운로드 실패", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    // 파일 복사 메서드
+    private fun copyFile(input: InputStream, output: OutputStream) {
+        val buffer = ByteArray(1024)
+        var read: Int
+        while (input.read(buffer).also { read = it } != -1) {
+            output.write(buffer, 0, read)
+        }
+        input.close()
+        output.flush()
+        output.close()
     }
 
     companion object {
