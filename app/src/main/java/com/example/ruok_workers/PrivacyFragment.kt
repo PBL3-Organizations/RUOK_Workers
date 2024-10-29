@@ -1,10 +1,14 @@
 package com.example.ruok_workers
 
 import android.annotation.SuppressLint
+import android.content.ContentValues
+import android.content.Context
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.provider.MediaStore
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.ScaleGestureDetector
@@ -13,9 +17,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import io.noties.markwon.Markwon
+import org.apache.logging.log4j.CloseableThreadContext.put
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
@@ -185,36 +191,55 @@ class PrivacyFragment : Fragment() {
         }
 
         return view
-
-        // Inflate the layout for this fragment
-//        return inflater.inflate(R.layout.fragment_privacy, container, false)
     }
 
     // PDF 다운로드 메서드
     private fun downloadPdf(fileName: String) {
         try {
-            val assetManager = requireContext().assets
-            val inputStream: InputStream = assetManager.open(fileName)
+            val inputStream: InputStream = requireContext().assets.open(fileName)
 
-            // 공용 다운로드 폴더에 저장
-            val downloadFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-            val outputFile = File(downloadFolder, fileName)
-
-            // 파일이 이미 존재하는 경우 삭제
-            if (outputFile.exists()) {
-                outputFile.delete()
+            // Android 10 이상 버전에서 MediaStore를 사용하여 파일 저장
+            val uri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                getDownloadUri(requireContext(), fileName)
+            } else {
+                // Android 10 미만에서는 일반 파일 접근 사용
+                val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName)
+                Uri.fromFile(file)
             }
 
-            // 파일 복사
-            val outputStream: OutputStream = FileOutputStream(outputFile)
-            copyFile(inputStream, outputStream)
-
-            // 다운로드 완료 메시지
-            Toast.makeText(context, "PDF 다운로드 완료: ${outputFile.absolutePath}", Toast.LENGTH_SHORT).show()
+            // URI가 유효한 경우 파일을 쓰기
+            if (uri != null) {
+                requireContext().contentResolver.openOutputStream(uri)?.use { outputStream ->
+                    copyFile(inputStream, outputStream)
+                    Toast.makeText(context, "개인정보 처리방침 다운로드 완료", Toast.LENGTH_SHORT).show()
+                } ?: run {
+                    Toast.makeText(context, "개인정보 처리방침 다운로드 실패", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(context, "개인정보 처리방침 다운로드 실패", Toast.LENGTH_SHORT).show()
+            }
         } catch (e: Exception) {
             e.printStackTrace()
-            Toast.makeText(context, "PDF 다운로드 실패", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "개인정보 처리방침 다운로드 실패", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun getDownloadUri(context: Context, fileName: String): Uri? {
+        val contentResolver = context.contentResolver
+        val collection = MediaStore.Downloads.EXTERNAL_CONTENT_URI
+
+        // 이미 존재하는 파일이 있다면 삭제
+        contentResolver.delete(collection, "${MediaStore.MediaColumns.DISPLAY_NAME}=?", arrayOf(fileName))
+
+        // 새 파일 추가
+        val contentValues = ContentValues().apply {
+            put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
+            put(MediaStore.MediaColumns.MIME_TYPE, "application/pdf")
+            put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
+        }
+
+        return contentResolver.insert(collection, contentValues)
     }
 
     // 파일 복사 메서드
