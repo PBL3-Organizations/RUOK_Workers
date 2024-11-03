@@ -87,8 +87,8 @@ class ProfileAddFragment : Fragment() {
 //                val savedImagePath = saveImageToInternalStorage(selectedImageUri!!)
 
                 // 이미지 URI와 함께 데이터베이스에 저장
-                val query = "INSERT INTO homeless (h_name, h_birth, h_phone, h_unusual, h_photo) " +
-                        "VALUES ('$name', '$birth', '$phone', '$specialNote', '$savedImagePath')"
+                val query = "INSERT INTO homeless (h_name, h_birth, h_phone, h_unusual, h_photo, h_agree) " +
+                        "VALUES ('$name', '$birth', '$phone', '$specialNote', '$savedImagePath', '0')"
                 sqlitedb.execSQL(query)
 
 //                // 이미지 URI와 함께 데이터베이스에 저장

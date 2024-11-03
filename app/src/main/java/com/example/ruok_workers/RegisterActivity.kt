@@ -154,8 +154,8 @@ class RegisterActivity : AppCompatActivity() {
                 // 데이터베이스 연동: 회원정보 저장
                 dbManager = DBManager(this, "RUOKsample", null, 1)
                 sqlitedb = dbManager.writableDatabase
-                val sql = "INSERT INTO member (m_name, m_id, m_pw, m_birth, m_type, m_photo, wf_num) VALUES (?, ?, ?, ?, 1, 'default.jpeg', ?);"
-                sqlitedb.execSQL(sql, arrayOf(inputName, inputId, inputPassword, inputBirth, organization_num))
+                val sql = "INSERT INTO member (m_name, m_id, m_pw, wf_num) VALUES (?, ?, ?, ?);"
+                sqlitedb.execSQL(sql, arrayOf(inputName, inputId, inputPassword,organization_num))
 
                 sqlitedb.close()
                 dbManager.close()
