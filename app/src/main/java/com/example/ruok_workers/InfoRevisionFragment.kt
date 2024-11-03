@@ -66,13 +66,12 @@ class InfoRevisionFragment : Fragment() {
         dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
         sqlitedb = dbManager.readableDatabase
         var cursor: Cursor
-        val sql = "SELECT m.m_name, m.m_birth, m.m_id, m.m_pw, m.m_photo, m.wf_num, w.wf_name FROM member m JOIN welfare_facilities w ON m.wf_num = w.wf_num WHERE m.m_num = ?;"
+        val sql = "SELECT m.m_name, m.m_id, m.m_pw, m.wf_num, w.wf_name FROM member m JOIN welfare_facilities w ON m.wf_num = w.wf_num WHERE m.m_num = ?;"
         cursor = sqlitedb.rawQuery(sql, arrayOf(loginNum.toString()))
         cursor.moveToNext()
         var userId = cursor.getString(cursor.getColumnIndex("m.m_id"))
         var userPassword = cursor.getString(cursor.getColumnIndex("m.m_pw"))
         var userName = cursor.getString(cursor.getColumnIndex("m.m_name"))
-        var userBirth = cursor.getString(cursor.getColumnIndex("m.m_birth"))
         var userOrg = cursor.getString(cursor.getColumnIndex("w.wf_name"))
         var userOrgNum = cursor.getInt(cursor.getColumnIndex("m.wf_num"))
 
@@ -84,7 +83,6 @@ class InfoRevisionFragment : Fragment() {
         editUserPassword.setText(userPassword)
         editUserPasswordCheck.setText(userPassword)
         editUserName.setText(userName)
-        editUserBirth.setText(userBirth)
         editUserOrg.setText(userOrg)
         editUserOrgNum.setText(userOrgNum.toString())
 
@@ -94,7 +92,6 @@ class InfoRevisionFragment : Fragment() {
             userPassword = editUserPassword.text.toString()
             val userPasswordCheck = editUserPasswordCheck.text.toString()
             userName = editUserName.text.toString()
-            userBirth = editUserBirth.text.toString()
             userOrg = editUserOrg.text.toString()
             userOrgNum = editUserOrgNum.text.toString().toInt()
 
@@ -111,20 +108,18 @@ class InfoRevisionFragment : Fragment() {
             sqlitedb.close()
             dbManager.close()
 
-            if (userId.isBlank() || userPassword.isBlank() || userPasswordCheck.isBlank() || userName.isBlank() || userBirth.isBlank() || userOrg.isBlank()) {
+            if (userId.isBlank() || userPassword.isBlank() || userPasswordCheck.isBlank() || userName.isBlank()|| userOrg.isBlank()) {
                 Toast.makeText(requireContext(), "모든 필드를 입력해주세요", Toast.LENGTH_SHORT).show()
             } else if (userPassword != userPasswordCheck) {
                 Toast.makeText(requireContext(), "비밀번호가 일치하지 않습니다", Toast.LENGTH_SHORT).show()
             } else if (count > 0) {
                 Toast.makeText(requireContext(), "중복된 아이디입니다", Toast.LENGTH_SHORT).show()
-            } else if (userBirth.length != 8) {
-                Toast.makeText(requireContext(), "생년월일을 YYYYMMDD 형식으로 입력해주세요", Toast.LENGTH_SHORT).show()
             } else {
                 //데이터베이스 연동: 회원정보 수정
                 dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
                 sqlitedb = dbManager.writableDatabase
-                var sql = "UPDATE member SET m_name=?, m_birth=?, m_id=?, m_pw=?, m_photo='default.jpeg', wf_num=? WHERE m_num = ?;"
-                sqlitedb.execSQL(sql, arrayOf(userName, userBirth, userId, userPassword, userOrgNum, loginNum))
+                var sql = "UPDATE member SET m_name=?, m_id=?, m_pw=?, wf_num=? WHERE m_num = ?;"
+                sqlitedb.execSQL(sql, arrayOf(userName, userId, userPassword, userOrgNum, loginNum))
 
                 sqlitedb.close()
                 dbManager.close()
