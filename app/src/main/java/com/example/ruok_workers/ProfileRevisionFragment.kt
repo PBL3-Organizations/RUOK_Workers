@@ -172,7 +172,7 @@ class ProfileRevisionFragment : Fragment() {
             sqlitedb.beginTransaction()
             try {
                 // 기존 데이터를 삭제합니다.
-                val deleteQuery = "DELETE FROM homeless WHERE h_name=? AND h_birth=? AND h_phone=? AND h_unusual=?;"
+                val deleteQuery = "DELETE FROM homeless WHERE h_name=? AND h_birth=? AND h_phone=? AND h_unusual=? AND h_agree=1;"
                 sqlitedb.execSQL(deleteQuery, arrayOf(name, birth, phoneNumber, specialNote))
 
                 // 선택한 이미지를 내부 저장소에 저장하고 경로 반환
@@ -184,7 +184,7 @@ class ProfileRevisionFragment : Fragment() {
 
                 // 새 데이터를 추가합니다.
                 val insertQuery =
-                    "INSERT INTO homeless (h_name, h_birth, h_phone, h_unusual, h_photo) VALUES (?, ?, ?, ?, ?);"
+                    "INSERT INTO homeless (h_name, h_birth, h_phone, h_unusual, h_photo, h_agree) VALUES (?, ?, ?, ?, ?, 0);"
 //                sqlitedb.execSQL(insertQuery, arrayOf(newName, newBirth, newPhoneNumber, newSpecialNote, resId.toString()))
                 sqlitedb.execSQL(insertQuery, arrayOf(newName, newBirth, newPhoneNumber, newSpecialNote, photoPath))
 

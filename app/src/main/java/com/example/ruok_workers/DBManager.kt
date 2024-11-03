@@ -12,9 +12,9 @@ class DBManager(
 ) : SQLiteOpenHelper(context, name, factory, version) {
     override fun onCreate(db: SQLiteDatabase?) {
         //CRAETE 쿼리문 실행
-        db!!.execSQL("CREATE TABLE IF NOT EXISTS member (m_num INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,m_name TEXT NOT NULL,m_id TEXT NOT NULL,m_pw TEXT NOT NULL,m_birth TEXT,m_type INTEGER NOT NULL,m_photo TEXT,wf_num INTEGER NOT NULL);")
+        db!!.execSQL("CREATE TABLE IF NOT EXISTS member (m_num INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,m_name TEXT NOT NULL,m_id TEXT NOT NULL,m_pw TEXT NOT NULL,wf_num INTEGER NOT NULL);")
         db!!.execSQL("CREATE TABLE IF NOT EXISTS welfare_facilities (wf_num INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,wf_name TEXT NOT NULL,wf_addr TEXT);")
-        db!!.execSQL("CREATE TABLE IF NOT EXISTS homeless (h_num INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,h_name TEXT NOT NULL,h_birth TEXT,h_phone TEXT,h_photo TEXT, h_unusual TEXT);")
+        db!!.execSQL("CREATE TABLE IF NOT EXISTS homeless (h_num INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,h_name TEXT NOT NULL,h_birth TEXT,h_phone TEXT,h_photo TEXT, h_unusual TEXT,h_agree INTEGER NOT NULL);")
         db!!.execSQL("CREATE TABLE IF NOT EXISTS bookmark (h_num INTEGER NOT NULL,m_num INTEGER NOT NULL,PRIMARY KEY(h_num,m_num));")
         db!!.execSQL("CREATE TABLE IF NOT EXISTS consultation (c_num INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,m_num INTEGER NOT NULL,h_num INTEGER,c_time TEXT NOT NULL,c_health INTEGER NOT NULL,c_unusual TEXT,c_measure TEXT,c_content TEXT);")
         db!!.execSQL("CREATE TABLE IF NOT EXISTS location (c_num INTEGER NOT NULL,l_addr TEXT NOT NULL,l_lat REAL NOT NULL,l_lon REAL NOT NULL,PRIMARY KEY(c_num));")
