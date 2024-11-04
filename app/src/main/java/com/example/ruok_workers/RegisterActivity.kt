@@ -140,7 +140,7 @@ class RegisterActivity : AppCompatActivity() {
 
             if (!checkBoxRegister1.isChecked || !checkBoxRegister2.isChecked) {
                 Toast.makeText(this, "필수 약관에 동의해주세요.", Toast.LENGTH_SHORT).show()
-            } else if (inputId.isBlank() || inputPassword.isBlank() || inputCheckPassword.isBlank() || inputName.isBlank() || inputBirth.isBlank() || inputOrganization.isBlank()) {
+            } else if (inputId.isBlank() || inputPassword.isBlank() || inputCheckPassword.isBlank() || inputName.isBlank() || inputOrganization.isBlank()) {
                 Toast.makeText(this, "모든 필드를 입력해주세요", Toast.LENGTH_SHORT).show()
             } else if (inputPassword != inputCheckPassword) {
                 Toast.makeText(this, "비밀번호가 일치하지 않습니다", Toast.LENGTH_SHORT).show()
@@ -148,8 +148,6 @@ class RegisterActivity : AppCompatActivity() {
                 Toast.makeText(this, "비밀번호는 최소 8자리 이상이어야 하며 대문자, 소문자, 숫자, 특수 문자를 포함해야 합니다.", Toast.LENGTH_SHORT).show()
             } else if (count > 0) {
                 Toast.makeText(this, "중복된 아이디입니다", Toast.LENGTH_SHORT).show()
-            } else if (inputBirth.length != 8) {
-                Toast.makeText(this, "생년월일을 YYYYMMDD 형식으로 입력해주세요", Toast.LENGTH_SHORT).show()
             } else {
                 // 데이터베이스 연동: 회원정보 저장
                 dbManager = DBManager(this, "RUOKsample", null, 1)
@@ -188,14 +186,6 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
 
-        input_workerBirth.setOnEditorActionListener { _, actionId, event ->
-            if (actionId == EditorInfo.IME_ACTION_DONE || (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
-                hideKeyboard(input_workerBirth)
-                true
-            } else {
-                false
-            }
-        }
 
         input_id.setOnEditorActionListener { _, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE || (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {

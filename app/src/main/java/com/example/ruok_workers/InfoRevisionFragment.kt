@@ -171,15 +171,6 @@ class InfoRevisionFragment : Fragment() {
             }
         }
 
-        editUserBirth.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                hideKeyboard()
-                true
-            } else {
-                false
-            }
-        }
-
         editUserOrg.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 hideKeyboard()
