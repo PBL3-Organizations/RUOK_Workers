@@ -31,7 +31,6 @@ class RegisterActivity : AppCompatActivity() {
     lateinit var sqlitedb: SQLiteDatabase
 
     lateinit var input_workerName: EditText
-    lateinit var input_workerBirth: EditText
     lateinit var input_id: EditText
     lateinit var input_password: EditText
     lateinit var input_check_password: EditText
@@ -87,28 +86,13 @@ class RegisterActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-//        tvRegisterAgree1.setOnClickListener {
-//            supportFragmentManager.beginTransaction()
-//                .replace(R.id.main, ServiceAgreeFragment())
-//                .addToBackStack(null)
-//                .commit()
-//        }
-
         // '개인정보 수집 및 이용 보기' 버튼 클릭 이벤트
         tvRegisterAgree2.setOnClickListener{
             val intent = Intent(this, PrivacyAgreeActivity::class.java)
             startActivity(intent)
         }
 
-//        tvRegisterAgree2.setOnClickListener {
-//            supportFragmentManager.beginTransaction()
-//                .replace(R.id.main, PrivacyAgreeFragment())
-//                .addToBackStack(null)
-//                .commit()
-//        }
-
         input_workerName = findViewById(R.id.input_workerName)
-        input_workerBirth = findViewById(R.id.input_workerBirth)
         input_id = findViewById(R.id.input_id)
         input_password = findViewById(R.id.input_password)
         input_check_password = findViewById(R.id.input_check_password)
@@ -121,7 +105,6 @@ class RegisterActivity : AppCompatActivity() {
             val inputPassword = input_password.text.toString()
             val inputCheckPassword = input_check_password.text.toString()
             val inputName = input_workerName.text.toString() // 사용자 이름 입력
-            val inputBirth = input_workerBirth.text.toString() // 사용자 생년월일 입력
             val inputOrganization = input_organization.text.toString() // 사용자 소속 입력
             val organization_num = organization_number.text.toString().toInt()
 

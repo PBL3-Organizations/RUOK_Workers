@@ -170,10 +170,11 @@ class SearchFragment : Fragment() {
 
         dbManager.close()
 
+        // 노숙인 추가 버튼 클릭 시 개인정보 수집 동의로 이동
         binding.addNewProfile.setOnClickListener {
-            val profileAddFragment = ProfileAddFragment()
+            val agreeFragment = AgreeFragment()
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.rootLayout, profileAddFragment)
+            transaction.replace(R.id.rootLayout, agreeFragment)
             transaction.addToBackStack(null)
             transaction.commit()
         }
