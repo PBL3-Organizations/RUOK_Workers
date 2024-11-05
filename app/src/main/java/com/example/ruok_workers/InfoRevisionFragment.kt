@@ -36,7 +36,6 @@ class InfoRevisionFragment : Fragment() {
     lateinit var editUserPassword: EditText
     lateinit var editUserPasswordCheck: EditText
     lateinit var editUserName: EditText
-    lateinit var editUserBirth: EditText
     lateinit var editUserOrg: EditText
     lateinit var editUserOrgNum: TextView
 
@@ -58,7 +57,6 @@ class InfoRevisionFragment : Fragment() {
         editUserPassword = view.findViewById(R.id.input_password)
         editUserPasswordCheck = view.findViewById(R.id.input_check_password)
         editUserName = view.findViewById(R.id.input_workerName)
-        editUserBirth = view.findViewById(R.id.input_workerBirth)
         editUserOrg = view.findViewById(R.id.input_organizations)
         editUserOrgNum = view.findViewById(R.id.organization_num)
 

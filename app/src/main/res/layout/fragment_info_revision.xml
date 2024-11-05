@@ -10,18 +10,18 @@
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:gravity="center"
+        android:orientation="vertical"
         tools:ignore="ExtraText">
 
         <EditText
             android:id="@+id/input_id"
-            android:singleLine="true"
-            android:imeOptions="actionDone"
             android:layout_width="160dp"
             android:layout_height="49dp"
             android:layout_marginTop="-20dp"
             android:hint="아이디 입력"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.168"
             app:layout_constraintStart_toEndOf="@+id/id"
@@ -39,15 +39,18 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/input_password"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/input_id" />
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/input_id"
+            app:layout_constraintTop_toBottomOf="@+id/input_workerName"
+            app:layout_constraintVertical_bias="1.0" />
 
         <EditText
             android:id="@+id/input_password"
-            android:imeOptions="actionDone"
             android:layout_width="291dp"
             android:layout_height="49dp"
             android:layout_marginTop="-20dp"
             android:hint="비밀번호를 입력하세요"
+            android:imeOptions="actionDone"
             android:inputType="textPassword"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.384"
@@ -67,14 +70,13 @@
 
         <EditText
             android:id="@+id/input_check_password"
-            android:imeOptions="actionDone"
-            android:layout_width="240dp"
+            android:layout_width="250dp"
             android:layout_height="49dp"
             android:layout_marginTop="-20dp"
             android:hint="비밀번호를 다시 입력하세요"
+            android:imeOptions="actionDone"
             android:inputType="textPassword"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.256"
             app:layout_constraintStart_toEndOf="@+id/check_password"
             app:layout_constraintTop_toTopOf="@+id/check_password" />
 
@@ -94,11 +96,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="40dp"
             android:text="아이디"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/worker_birth" />
+            app:layout_constraintTop_toBottomOf="@+id/worker_name" />
 
         <TextView
             android:id="@+id/worker_name"
@@ -111,44 +113,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/worker_birth"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
-            android:text="생년월일"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/input_workerName" />
-
         <EditText
             android:id="@+id/input_workerName"
-            android:singleLine="true"
-            android:imeOptions="actionDone"
             android:layout_width="291dp"
             android:layout_height="48dp"
             android:layout_marginTop="-20dp"
             android:hint="이름을 입력하세요"
-            app:layout_constraintBottom_toTopOf="@+id/input_workerBirth"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.21"
             app:layout_constraintStart_toEndOf="@+id/worker_name"
-            app:layout_constraintTop_toTopOf="@+id/worker_name"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <EditText
-            android:id="@+id/input_workerBirth"
-            android:imeOptions="actionDone"
-            android:layout_width="291dp"
-            android:layout_height="49dp"
-            android:layout_marginTop="-20dp"
-            android:hint="YYYYMMDD"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.102"
-            app:layout_constraintStart_toEndOf="@+id/worker_birth"
-            app:layout_constraintTop_toTopOf="@+id/worker_birth"
-            android:inputType="numberDecimal"/>
+            app:layout_constraintTop_toTopOf="@+id/worker_name" />
 
         <Button
             android:id="@+id/modify_button"
@@ -191,7 +167,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="40dp"
             android:text="소속"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -200,16 +176,16 @@
 
         <EditText
             android:id="@+id/input_organizations"
-            android:clickable="false"
-            android:focusable="false"
-            android:layout_width="wrap_content"
+            android:layout_width="190dp"
             android:layout_height="49dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="32dp"
+            android:clickable="false"
+            android:focusable="false"
             android:hint="소속을 입력하세요"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.07"
             app:layout_constraintStart_toEndOf="@+id/organizations"
             app:layout_constraintTop_toBottomOf="@+id/input_check_password" />
 
@@ -233,8 +209,10 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/modify_button"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.421"
             app:layout_constraintStart_toEndOf="@+id/input_organizations"
             app:layout_constraintTop_toBottomOf="@+id/input_check_password"
+            app:layout_constraintVertical_bias="0.113"
             tools:ignore="MissingConstraints" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
