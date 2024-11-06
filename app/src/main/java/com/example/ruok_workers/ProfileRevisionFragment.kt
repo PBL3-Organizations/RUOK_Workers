@@ -184,7 +184,7 @@ class ProfileRevisionFragment : Fragment() {
 
                 // 새 데이터를 추가합니다.
                 val insertQuery =
-                    "INSERT INTO homeless (h_name, h_birth, h_phone, h_unusual, h_photo, h_agree) VALUES (?, ?, ?, ?, ?, 0);"
+                    "INSERT INTO homeless (h_name, h_birth, h_phone, h_unusual, h_photo, h_agree) VALUES (?, ?, ?, ?, ?, 1);"
 //                sqlitedb.execSQL(insertQuery, arrayOf(newName, newBirth, newPhoneNumber, newSpecialNote, resId.toString()))
                 sqlitedb.execSQL(insertQuery, arrayOf(newName, newBirth, newPhoneNumber, newSpecialNote, photoPath))
 
