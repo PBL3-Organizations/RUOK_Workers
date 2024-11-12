@@ -181,7 +181,8 @@ class UnknownHomelessFragment : Fragment() {
     private fun setUnknwnAdapter(items: Vector<UnknownCard>) {
         adapter = UnknownAdapter(requireContext(),items)
         binding!!.UnknownRecyclerView.adapter = adapter
-
+        binding.UnknownResult.text = if (items.isEmpty()) "검색 결과가 없습니다." else "검색 결과: ${items.size}개"
+        binding.UnknownResult.visibility = View.VISIBLE
         binding.serchviewUnknown.onActionViewExpanded()
     }
 
