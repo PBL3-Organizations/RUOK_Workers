@@ -6,10 +6,13 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -30,19 +33,20 @@ class DashboardFragment : Fragment() {
 
     var loginNum: Int = -1
 
+    private var backPressedOnce = false // 뒤로 가기 버튼이 한 번 눌렸는지 여부
+
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-
-            val parentActivity = activity as DashboardActivity
-            parentActivity.setFragment(DashboardFragment())
-
-            // 현재 Fragment가 DashboardFragment인지 확인하고 백 스택 비우기
-            if (requireActivity().supportFragmentManager.backStackEntryCount > 0) {
-                requireActivity().supportFragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-
+            if (backPressedOnce) {
+                requireActivity().finish() // 두 번 클릭 시 앱 종료
             } else {
-                // 뒤로 가기 기본 동작 수행
-                isEnabled = false
+                backPressedOnce = true
+                Toast.makeText(context, "한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
+
+                // 2초 후에 backPressedOnce를 다시 false로 변경하여 초기화
+                Handler(Looper.getMainLooper()).postDelayed({
+                    backPressedOnce = false
+                }, 2000)
             }
         }
     }
