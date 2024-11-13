@@ -40,6 +40,7 @@ class ProfileRevisionFragment : Fragment() {
 
     private val GALLERY_REQUEST_CODE = 1001
     private var selectedImageBitmap: Bitmap? = null
+    private var photoPath = ""
 //    private var selectedImageUri: Uri? = null
 
     var resId = -1
@@ -77,7 +78,7 @@ class ProfileRevisionFragment : Fragment() {
         val cursor = sqlitedb.rawQuery("SELECT * FROM homeless WHERE h_name = ? AND h_birth = ?", arrayOf(name, birth))
         while (cursor.moveToNext()) {
 
-            val photoPath: String = cursor.getString(cursor.getColumnIndex("h_photo"))
+            photoPath = cursor.getString(cursor.getColumnIndex("h_photo"))
 
             if (photoPath.startsWith("/")) {
                 // 내부 저장소 경로에서 이미지 불러오기
@@ -176,7 +177,8 @@ class ProfileRevisionFragment : Fragment() {
                 sqlitedb.execSQL(deleteQuery, arrayOf(name, birth, phoneNumber, specialNote))
 
                 // 선택한 이미지를 내부 저장소에 저장하고 경로 반환
-                val photoPath = selectedImageBitmap?.let { saveImageToInternalStorage(it) } ?: ""
+                if (selectedImageBitmap != null) {
+                photoPath = selectedImageBitmap?.let { saveImageToInternalStorage(it) } ?: ""}
 //                val photoPath = selectedImageUri?.let { saveImageToInternalStorage(it) } ?: ""
 
 //                // 새로운 이미지 경로를 사용하거나 기존 경로를 유지
