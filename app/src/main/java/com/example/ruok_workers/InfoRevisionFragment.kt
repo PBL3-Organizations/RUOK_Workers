@@ -93,12 +93,11 @@ class InfoRevisionFragment : Fragment() {
             userOrg = editUserOrg.text.toString()
             userOrgNum = editUserOrgNum.text.toString().toInt()
 
-            //데이터베이스 연동: 아이디 중복검사
+            // 데이터베이스 연동: 아이디 중복검사
             dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
             sqlitedb = dbManager.readableDatabase
-            var cursor: Cursor
             val pstmt = "SELECT m_id FROM member WHERE m_id=? AND m_num!=?;"
-            cursor = sqlitedb.rawQuery(pstmt, arrayOf(editUserId.text.toString(), loginNum.toString()))
+            val cursor = sqlitedb.rawQuery(pstmt, arrayOf(userId, loginNum.toString()))
 
             val count = cursor.count
 
@@ -106,17 +105,23 @@ class InfoRevisionFragment : Fragment() {
             sqlitedb.close()
             dbManager.close()
 
-            if (userId.isBlank() || userPassword.isBlank() || userPasswordCheck.isBlank() || userName.isBlank()|| userOrg.isBlank()) {
+            if (userId.isBlank() || userPassword.isBlank() || userPasswordCheck.isBlank() || userName.isBlank() || userOrg.isBlank()) {
                 Toast.makeText(requireContext(), "모든 필드를 입력해주세요", Toast.LENGTH_SHORT).show()
+            } else if (!isPasswordValid(userPassword)) {
+                Toast.makeText(
+                    requireContext(),
+                    "비밀번호는 8자 이상, 대문자, 소문자, 숫자, 특수문자를 포함해야 합니다.",
+                    Toast.LENGTH_SHORT
+                ).show()
             } else if (userPassword != userPasswordCheck) {
                 Toast.makeText(requireContext(), "비밀번호가 일치하지 않습니다", Toast.LENGTH_SHORT).show()
             } else if (count > 0) {
                 Toast.makeText(requireContext(), "중복된 아이디입니다", Toast.LENGTH_SHORT).show()
             } else {
-                //데이터베이스 연동: 회원정보 수정
+                // 데이터베이스 연동: 회원정보 수정
                 dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
                 sqlitedb = dbManager.writableDatabase
-                var sql = "UPDATE member SET m_name=?, m_id=?, m_pw=?, wf_num=? WHERE m_num = ?;"
+                val sql = "UPDATE member SET m_name=?, m_id=?, m_pw=?, wf_num=? WHERE m_num = ?;"
                 sqlitedb.execSQL(sql, arrayOf(userName, userId, userPassword, userOrgNum, loginNum))
 
                 sqlitedb.close()
@@ -131,6 +136,7 @@ class InfoRevisionFragment : Fragment() {
                 activity?.finish() // 회원정보 수정 화면을 종료하여 뒤로 가기 버튼을 눌렀을 때 다시 회원정보 수정 화면이 나타나지 않도록 함
             }
         }
+
 
         // 엔터 누를 시 키보드 숨기기 처리
         editUserId.setOnEditorActionListener { _, actionId, _ ->
@@ -313,5 +319,24 @@ class InfoRevisionFragment : Fragment() {
     private fun hideKeyboard() {
         val inputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(requireView().windowToken, 0)
+    }
+
+    fun isPasswordValid(password: String): Boolean {
+        // 최소 길이 체크
+        if (password.length < 8) return false
+
+        // 대문자 포함 체크
+        if (!password.any { it.isUpperCase() }) return false
+
+        // 소문자 포함 체크
+        if (!password.any { it.isLowerCase() }) return false
+
+        // 숫자 포함 체크
+        if (!password.any { it.isDigit() }) return false
+
+        // 특수 문자 포함 체크
+        if (!password.any { "!@#$%^&*()_+[]{}|;:,.<>?/".contains(it) }) return false
+
+        return true
     }
 }
