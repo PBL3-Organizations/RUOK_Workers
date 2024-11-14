@@ -110,6 +110,8 @@ class FaviconAdapter(private val context: Context, val itemList: ArrayList<Favic
             val bundle = Bundle().apply {
                 putString("name", name)
                 putString("birth", birth)
+                putString("m_num", item.m_num.toString())
+                putInt("bookmark",item.bookmark)
             }
             profileDetailFragment.arguments = bundle
 
