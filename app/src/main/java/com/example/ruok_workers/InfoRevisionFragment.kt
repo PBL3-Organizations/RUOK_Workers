@@ -299,7 +299,7 @@ class InfoRevisionFragment : Fragment() {
         dbManager.close()
 
         // 로그인 화면으로 이동
-        val intent = Intent(activity, LoginActivity::class.java)
+        val intent = Intent(activity, MainActivity::class.java)
         startActivity(intent)
         activity?.finish() // 현재 화면 종료
     }
