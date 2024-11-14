@@ -49,6 +49,8 @@ class ProfileDetailFragment : Fragment() {
     private lateinit var sqlitedb: SQLiteDatabase
 
     private var homelessId: Int = -1 // 노숙인 번호
+    var m_num = ""
+    var bookmark= -1
 
     @SuppressLint("Range", "MissingInflatedId")
     override fun onCreateView(
@@ -70,6 +72,8 @@ class ProfileDetailFragment : Fragment() {
         // FaviconAdapter에서 전달받은 데이터
         val name = arguments?.getString("name") ?: ""
         val birth = arguments?.getString("birth") ?: ""
+        m_num = arguments?.getString("m_num")?:""
+        bookmark = arguments?.getInt("bookmark",0)!!
 
         // 데이터베이스 초기화 및 쿼리 실행
         dbManager = DBManager(requireContext(), "RUOKsample", null, 1)
@@ -116,7 +120,7 @@ class ProfileDetailFragment : Fragment() {
         view.findViewById<Button>(R.id.btn_EditProfile).setOnClickListener {
             val phoneNumber = tvPhoneNumber.text.toString()
             val specialNote = tvSpecialNote.text.toString()
-            navigateToProfileRevisionFragment(name, birth, phoneNumber, specialNote)
+            navigateToProfileRevisionFragment(name, birth, phoneNumber, specialNote, homelessId)
         }
 
         // btnGoToList 버튼 클릭 리스너 설정
@@ -142,7 +146,7 @@ class ProfileDetailFragment : Fragment() {
         dbManager.close()
     }
 
-    private fun navigateToProfileRevisionFragment(name: String, birth: String, phone: String, specialNote: String) {
+    private fun navigateToProfileRevisionFragment(name: String, birth: String, phone: String, specialNote: String,h_num : Int) {
         // ProfileRevisionFragment로 이동
         val fragment = ProfileRevisionFragment()
         val args = Bundle()
@@ -150,6 +154,9 @@ class ProfileDetailFragment : Fragment() {
         args.putString("birth", birth)
         args.putString("phone", phone)
         args.putString("specialNote", specialNote)
+        args.putString("m_num",m_num)
+        args.putInt("bookmark", bookmark)
+        args.putInt("HomelessId", h_num)
         fragment.arguments = args
 
         requireActivity().supportFragmentManager.beginTransaction()

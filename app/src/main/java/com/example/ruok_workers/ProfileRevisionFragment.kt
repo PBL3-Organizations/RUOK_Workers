@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -19,6 +20,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import java.io.File
 import java.io.FileOutputStream
@@ -41,6 +43,10 @@ class ProfileRevisionFragment : Fragment() {
     private val GALLERY_REQUEST_CODE = 1001
     private var selectedImageBitmap: Bitmap? = null
     private var photoPath = ""
+    var loginNum = ""
+    var homeless_num = -1
+    var bookmark = -1
+    var homelessId = -1
 //    private var selectedImageUri: Uri? = null
 
     var resId = -1
@@ -51,6 +57,8 @@ class ProfileRevisionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_profile_revision, container, false)
+//        //상담내역 번호, 노숙인번호 가져오기
+
 
         // 뷰 초기화
         etName = view.findViewById(R.id.profile_revision_Name)
@@ -64,7 +72,10 @@ class ProfileRevisionFragment : Fragment() {
         val birth = arguments?.getString("birth") ?: ""
         val phoneNumber = arguments?.getString("phone") ?: ""
         val specialNote = arguments?.getString("specialNote") ?: ""
-
+        loginNum = arguments?.getString("m_num")?:""
+        homelessId = arguments?.getInt("HomelessId",0)!!
+        bookmark = arguments?.getInt("bookmark",0)!!
+        Log.i("DB","${bookmark}")
         // 화면에 기존 데이터 설정
         etName.setText(name)
         etBirthdate.setText(birth)
@@ -77,8 +88,8 @@ class ProfileRevisionFragment : Fragment() {
 
         val cursor = sqlitedb.rawQuery("SELECT * FROM homeless WHERE h_name = ? AND h_birth = ?", arrayOf(name, birth))
         while (cursor.moveToNext()) {
-
             photoPath = cursor.getString(cursor.getColumnIndex("h_photo"))
+            homeless_num = cursor.getInt(cursor.getColumnIndexOrThrow("h_num"))
 
             if (photoPath.startsWith("/")) {
                 // 내부 저장소 경로에서 이미지 불러오기
@@ -101,8 +112,7 @@ class ProfileRevisionFragment : Fragment() {
                     ivProfileRevision.setImageResource(R.drawable.aegis_logo)
                 }
             }
-        }
-        cursor.close()
+        cursor.close()}
 
         // 프로필 사진 클릭 시 갤러리에서 이미지 선택
         ivProfileRevision.setOnClickListener {
@@ -151,6 +161,8 @@ class ProfileRevisionFragment : Fragment() {
 
         // '수정하기' 버튼 클릭 시 이벤트 처리
         view.findViewById<Button>(R.id.profile_revieion_ok).setOnClickListener {
+//            val cursor = sqlitedb.rawQuery("SELECT h.*, b.m_num NOT NULL AS is_bookmarked FROM homeless h JOIN bookmark b ON h.h_num = b.h_num AND b.m_num = ? WHERE h.h_num = ?", arrayOf(loginNum, homeless_num.toString()))
+
             updateProfile(name, birth, phoneNumber, specialNote)
         }
 
@@ -169,7 +181,7 @@ class ProfileRevisionFragment : Fragment() {
             return
         }
 
-        try {
+            try {
             sqlitedb.beginTransaction()
             try {
                 // 기존 데이터를 삭제합니다.
@@ -189,6 +201,16 @@ class ProfileRevisionFragment : Fragment() {
                     "INSERT INTO homeless (h_name, h_birth, h_phone, h_unusual, h_photo, h_agree) VALUES (?, ?, ?, ?, ?, 1);"
 //                sqlitedb.execSQL(insertQuery, arrayOf(newName, newBirth, newPhoneNumber, newSpecialNote, resId.toString()))
                 sqlitedb.execSQL(insertQuery, arrayOf(newName, newBirth, newPhoneNumber, newSpecialNote, photoPath))
+                val cursor = sqlitedb.rawQuery("SELECT * FROM homeless WHERE h_name = ? AND h_birth = ?", arrayOf(newName, newBirth))
+                while (cursor.moveToNext()) {
+                    homeless_num = cursor.getInt(cursor.getColumnIndexOrThrow("h_num"))
+                }
+                if (bookmark == 1){
+                    val bookmarkQuery = "INSERT INTO bookmark (h_num, m_num) VALUES (?, ?);"
+                    sqlitedb.execSQL(bookmarkQuery, arrayOf(homeless_num, loginNum))}
+
+//                val sql = "INSERT INTO bookmark (h_num, m_num) VALUES (?, ?);"
+//                sqlitedb.execSQL(sql, arrayOf(item.num.toString(), item.m_num.toString()))
 
                 sqlitedb.setTransactionSuccessful()
             } finally {
