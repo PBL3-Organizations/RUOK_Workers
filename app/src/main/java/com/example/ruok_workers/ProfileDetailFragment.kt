@@ -1,16 +1,8 @@
-import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.Intent
-import android.content.pm.PackageManager
 import android.database.sqlite.SQLiteDatabase
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.media.MediaScannerConnection
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,20 +11,16 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import com.example.ruok_workers.BriefingDetailFragment
 import com.example.ruok_workers.DBManager
 import com.example.ruok_workers.DashboardActivity
 import com.example.ruok_workers.HomelessQuestionListFragment
 import com.example.ruok_workers.DashboardFragment
 import com.example.ruok_workers.ProfileRevisionFragment
-import com.example.ruok_workers.QuestionnaireFragment
 import com.example.ruok_workers.R
 import com.example.ruok_workers.SearchFragment
 import java.io.File
-import java.io.InputStream
 
 class ProfileDetailFragment : Fragment() {
 

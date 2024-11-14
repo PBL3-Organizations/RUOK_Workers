@@ -211,7 +211,7 @@ class LocationRevisionFragment : Fragment(), OnMapReadyCallback {
                     binding.tvAddressPopLocationRevision.text = filteredAddress
                 }
             } catch (e: IOException) {
-                Log.e(LocationTrackingFragment.TAG, "Geocoder failed", e)
+                Log.e("LocationRevisionFragment", "Geocoder failed", e)
             }
         }
     }
