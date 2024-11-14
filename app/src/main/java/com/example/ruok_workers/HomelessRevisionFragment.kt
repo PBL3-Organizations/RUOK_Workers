@@ -119,6 +119,8 @@ class HomelessRevisionFragment : Fragment() {
             override fun onItemClicked() {
                 // 아이템이 클릭될 때 btnNoName의 배경색을 default_card로 변경
                 binding.btnNoName.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.default_card))
+                item.h_num = adapter.h_num
+                num = adapter.h_num
             }
         })
 
@@ -228,6 +230,8 @@ class HomelessRevisionFragment : Fragment() {
                 override fun onItemClicked() {
                     // 아이템이 클릭될 때 btnNoName의 배경색을 default_card로 변경
                     binding.btnNoName.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.default_card))
+                    item.h_num = adapter.h_num
+                    num = adapter.h_num
                 }
             })
 
@@ -252,11 +256,11 @@ class HomelessRevisionFragment : Fragment() {
 
         //btnNextHomelessList 클릭시 HomelessRevisionFragment에서 LocationRevisionFragment로 이동
         binding.btnNextHomelessList.setOnClickListener{
-            Log.d("HomelessRevisionFragment", "Current item.h_num: ${item.h_num}, adapter.h_num: ${adapter.h_num}")
-            item.h_num = adapter.h_num
-            Log.d("HomelessRevisionFragment", "After assigning adapter.h_num to item.h_num: item.h_num: ${item.h_num}, num: $num")
-            if (num != 0) num = item.h_num
-            Log.d("HomelessRevisionFragment", "After checking num != 0: item.h_num: ${item.h_num}, num: $num")
+//            Log.d("HomelessRevisionFragment", "Current item.h_num: ${item.h_num}, adapter.h_num: ${adapter.h_num}")
+//            item.h_num = adapter.h_num
+//            Log.d("HomelessRevisionFragment", "After assigning adapter.h_num to item.h_num: item.h_num: ${item.h_num}, num: $num")
+//            if (num != 0) num = item.h_num
+//            Log.d("HomelessRevisionFragment", "After checking num != 0: item.h_num: ${item.h_num}, num: $num")
             val parentActivity = activity as DashboardActivity
             val locationRevisionFragment = LocationRevisionFragment()
             bundle.putInt("hasConsultation", hasConsultation)
