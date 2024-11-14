@@ -202,7 +202,7 @@ class LocationAddFragment : Fragment(), OnMapReadyCallback {
                     binding.tvAddressPopLocationAdd.text = filteredAddress
                 }
             } catch (e: IOException) {
-                Log.e(LocationTrackingFragment.TAG, "Geocoder failed", e)
+                Log.e("LocationAddFragment", "Geocoder failed", e)
             }
         }
     }
@@ -245,7 +245,7 @@ class LocationAddFragment : Fragment(), OnMapReadyCallback {
             parentActivity.setFragment(PhotoAddFragment)
         }
 
-        //btnCompleteLocationAdd 클릭시 LocationAddFragment에서 LocationTrackingFragment로 이동
+        //btnCompleteLocationAdd 클릭시 LocationAddFragment에서 ListFragment로 이동
         binding.btnCompleteLocationAdd.setOnClickListener{
             val parentActivity = activity as DashboardActivity
 
@@ -279,15 +279,9 @@ class LocationAddFragment : Fragment(), OnMapReadyCallback {
             sqlitedb.close()
             dbManager.close()
 
-            if (onRecording == 1) {
-                val locationTrackingFragment = LocationTrackingFragment()
-                locationTrackingFragment.arguments = bundle
-                parentActivity.setFragment(locationTrackingFragment)
-            } else {
-                val listFragment = ListFragment()
-                listFragment.arguments = bundle
-                parentActivity.setFragment(listFragment)
-            }
+            val listFragment = ListFragment()
+            listFragment.arguments = bundle
+            parentActivity.setFragment(listFragment)
 
             Toast.makeText(context, "상담내역 저장!", Toast.LENGTH_SHORT).show()
         }
