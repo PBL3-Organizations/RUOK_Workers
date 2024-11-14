@@ -73,6 +73,7 @@ class PhotoRevisionFragment : Fragment() {
         //기존 사진 ivPhotoRevision 넣기(마지막 사진 하나밖에 안 들어감)
         for (i in 0 until photoList.size) {
             val fileName: String = photoList.get(i)
+            item.filename = arrayOf(fileName)
             if (fileName.contains(".")) { //사진이 drawable에 저장된 경우
                 var resId = resources.getIdentifier(photoList.get(i).substringBefore('.'), "drawable", requireContext().packageName)
                 binding.ivPhotoRevision.setImageResource(resId)
