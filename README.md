@@ -1,11 +1,8 @@
 # 🙋 R U OK? 🙋
-<h3>: 노숙인 아웃리치를 위한 실시간 관리 어플리케이션 </br></h3>
+<h3>: 노숙인 아웃리치를 위한 실시간 관리 애플리케이션 </br></h3>
 <h3>: Real-time management application for homeless outreach</h3>
 
-<br><br><h2>✨ Contents_1) Project Introduction </h2>
-<details>
-<summary><h3>📑Background Description</h3></summary>
-<div markdown="1">
+<br><br><h2>✨ Contents_1) Project Background </h2>
 <h3>👣 Challenges Identified in Social Workers' 'Outreach' Activities</h3>
 
 ![스크린샷 2024-11-16 222708](https://github.com/user-attachments/assets/9ad6ddcc-13bb-4248-b73e-6ad277950455)
@@ -21,227 +18,87 @@ A 2021 Department of Health and Human Services survey revealed that the majority
 
 
 </br><h4>ㅤ이러한 상황에서 아웃리치 업무를 통합 및 관리할 수 있는 서비스의 부재로 인하여, 구두 또는 메신저 앱, 수기 기록 등으로 업무 내용을 기록 및 전달하는 상황에서 아웃리치 업무를 보조 및 효율화할 수 있는 서비스의 필요성을 느껴 본 서비스를 개발하였습니다.</br></br></br>
-In light of the unavailability of a service capable of integrating and managing outreach work, we recognized the need to develop a service that can assist and streamline this process in situations where outreach work is recorded and delivered orally, through messenger apps, handwritten records, and other formats.</h4>
-<hr></details>
-<details>
-</div>
-<summary><h3>📑5 WHYS & Customer Journey Map</h3></summary>
-<div markdown="1">
-<h3>👁️‍🗨️ Establishing a Foundation for Problem Definition</h3>
+In light of the unavailability of a service capable of integrating and managing outreach work, we recognized the need to develop a service that can assist and streamline this process in situations where outreach work is recorded and delivered orally, through messenger apps, handwritten records, and other formats.</h4></br>
 
-![스크린샷 2023-08-10 114634](https://github.com/alimhanhan/2023_SK_SuniC_Project_UniBus_Smart_Shelter_for_Visually_Impaired/assets/102565567/1153b4f4-33e9-41b8-af72-b2882fe48560)
+<br><br><h2>✨ Contents_2) Project Overview </h2>
+<h3>👣 Target Users</h3>
+<b>: 거리 노숙인을 대상으로 아웃리치 업무를 수행하는 사회복지사 또는 관련 종사자</b></br>
+: Social workers or related professionals engaged in outreach activities with individuals experiencing homelessness in public spaces.</h3></br></br></br>
 
-<h4>ㅤRecognizing the notably low bus utilization rate among the visually impaired and the gap between the current situation and the goal of seamless bus boarding for them, when considering the following questions, we were able to extract the following insights:</h4><br>
-<h3>➡️ Since visually impaired individuals are unable to accurately determine when and where buses stop, they often encounter difficulties and perceive risks during the boarding process. This uncertainty leads them to avoid using buses altogether.</h3>
+<h3>👣 Participants</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>R&R</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="https://github.com/alimhanhan">ALim Han(PM)</a></td>
+      <td>Front-End & Privacy</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/GyeongHwa">GyeongHwa Lee</a></td>
+      <td>Back-End</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/coderrim">Hyorim Son</a></td>
+      <td>UI/UX & Front-End</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/Hanbyulha">ByulHa Han</a></td>
+      <td>UI/UX & Back-End</td>
+    </tr>
+  </tbody>
+</table></br></br>
 
-<br><hr><br>
+<h3>👣 Development period</h3>
+: 2024. 03. 01 ~ 2024. 11. 14 </br></br></br>
 
-![스크린샷 2023-08-10 114722](https://github.com/alimhanhan/2023_SK_SuniC_Project_UniBus_Smart_Shelter_for_Visually_Impaired/assets/102565567/76008264-a663-4761-a0e8-1ac562965f0c)
+<h3>👣 Used Tech & Tools</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Category</th>
+      <th>Tools/Technologies</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Front</td>
+      <td><img src="https://img.shields.io/badge/Android Studio-3DDC84?style=flat-square&logo=Android Studio&logoColor=white"/></a>&nbsp
+ <img src="https://img.shields.io/badge/Kotlin-7F52FF?style=flat-square&logo=Kotlin&logoColor=white"/></a>&nbsp
+ <img src="https://img.shields.io/badge/AI•Naver API-03C75A?style=flat-square&logo=Naver&logoColor=white"/></a>&nbsp
+</td>
+    </tr>
+    <tr>
+      <td>Back</td>
+      <td><img src="https://img.shields.io/badge/ERD Cloud-3693F3?style=flat-square&logo=icloud&logoColor=white"/></a>&nbsp
+<img src="https://img.shields.io/badge/SQLite-003B57?style=flat-square&logo=SQLite&logoColor=white"/></a>&nbsp</td>
+    </tr>
+    <tr>
+      <td>Managing</td>
+      <td><img src="https://img.shields.io/badge/Notion-000000?style=flat-square&logo=Notion&logoColor=white"/></a>&nbsp
+  <img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/></a>&nbsp</td>
+    </tr>
+  </tbody>
+</table>
+</br></br></br><h2>✨ Contents_3) Project Details </h2>
 
-<h4>ㅤWith this realization, we shifted our focus towards further systematizing the bus boarding process for the visually impaired, and we recognized the need for deeper empathy.<br><br>
- ㅤTo achieve this, we drew inspiration from various sources featuring visually impaired individuals. Subsequently, we translated the visually impaired individual's bus boarding journey into a table format as depicted above.</h4><hr>
-</div>
-</details>
+</br></br></br><h2>✨ Contents_4) Expected Outcomes</h2>
+![스크린샷 2024-11-17 000854](https://github.com/user-attachments/assets/0b8c99fa-3e19-4f3b-8fcf-3182c77c12a5)
 
-<br><br><br><h2>🐕‍🦺 Contents_2) Defining the Problem</h2>
-<h3>👁️‍🗨️ Defining the Problem Through Interviews & Points of View (PoV) & How Might We(HMW)</h3>
+<b>🟠 상담 내역 및 인원 카운팅 등 기능을 통해 업무 효율을 높여 복지사들의 업무 부담을 줄일 수 있습니다. </b></br>
+: The incorporation of counseling history and headcounting features enables outreach workers to streamline their processes, enhancing their overall efficiency.</br></br>
 
-![스크린샷 2023-08-10 121624](https://github.com/alimhanhan/2023_SK_SuniC_Project_UniBus_Smart_Shelter_for_Visually_Impaired/assets/102565567/635bd8cd-03d2-40cc-9b0c-012c095abf95)
+<b>🟠 아웃리치를 진행 시 활용하기 편리한 모바일 애플리케이션 형태이며, 아웃리치와 카운팅 등 분리되었던 업무를 통합하여 관리할 수 있어, 업무 효율성을 높일 수 있습니다.</b></br>
+: It is a mobile application that is straightforward to use in the field, and it integrates and manages previously separate tasks, such as outreach and counting, to enhance work efficiency.</br></br>
 
-ㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ<img width="298" alt="핑크색" src="https://github.com/alimhanhan/2023_SK_SuniC_Project_UniBus_Smart_Shelter_for_Visually_Impaired/assets/102565567/f7bf1d18-6948-4e7a-a2f0-079e61b064e3">
+<b>🟠 통일된 업무 양식으로 가독성을 높이고, 상담내역 기록 및 정리 과정을 간소화할 수 있습니다.</b></br>
+: Uniform business forms improve readability and simplify the process of recording and organizing consultation history.</br></br>
 
-![스크린샷 2023-08-10 121735](https://github.com/alimhanhan/2023_SK_SuniC_Project_UniBus_Smart_Shelter_for_Visually_Impaired/assets/102565567/4c9862e6-25e2-4867-86c3-83d6ea74b008)
+<b>🟠 기존에 메신저, 개인의 메모장이나 갤러리에 산재되어 있던 정보를 한곳에 저장하여 한눈에 볼 수 있으며, 필터링 및 검색 기능을 통해 원하는 기록 또는 사진을 빠르게 확인할 수 있습니다.</b></br>
+: Information that was previously scattered across messengers, personal notepads, or galleries can now be stored in one place for an at-a-glance view, and filtering and search functions allow for rapid retrieval of the records or photos needed.
 
-<h3>👉 How might we create an environment where visually impaired individuals can board buses safely and without missing them? 👈</h3>
-
-
-<br><br><br><h2>🐕‍🦺 Contents_3) Ideas & Prototypes</h2>
-<details>
-<summary><h3>📑AS-IS & TO-BE</h3></summary>
-<div markdown="1">
-<h3>👁️‍🗨️ Ideas and Ideation Process</h3>
-
-![스크린샷 2023-08-10 123155](https://github.com/alimhanhan/2023_SK_SuniC_Project_UniBus_Smart_Shelter_for_Visually_Impaired/assets/102565567/b348d6bd-4975-4278-88ee-1d1c1a31f1d9)
-
-ㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ<img width="400" alt="핑크색" src="https://github.com/alimhanhan/2023_SK_SuniC_Project_UniBus_Smart_Shelter_for_Visually_Impaired/assets/102565567/1854fed6-9c02-404a-9534-9cdef1538896">
-
-![스크린샷 2023-08-10 123418](https://github.com/alimhanhan/2023_SK_SuniC_Project_UniBus_Smart_Shelter_for_Visually_Impaired/assets/102565567/c5717386-4b13-43fb-8173-9e6febec4272)
-
-
-
-<h4>Combining 'Uni,' meaning 1(one) in Latin ➕ with 'Bus'<br><br>
-➡️ This encapsulates the aspiration to create bus stops that can be universally utilized by everyone, embodying the desire for an integrated and inclusive environment.</h4><br><hr><br>
-</details>
-<details>
-</div>
-<summary><h3>📑Description of a Smart Shelter</h3></summary>
-<div markdown="1">
-<h3>👁️‍🗨️ What is a Smart Shelter?</h3>
-
-![스크린샷 2023-08-10 124347](https://github.com/alimhanhan/2023_SK_SuniC_Project_UniBus_Smart_Shelter_for_Visually_Impaired/assets/102565567/86e78342-a214-46c7-9bd8-b6b2e473ebd2)
-
-
-<h4>ㅤA smart shelter is a bus stop that incorporates forward-looking technologies, including features such as air conditioning, heating, and air purification, as seen in the image above.
-<br><br>ㅤCurrently, there are 10 smart shelters being operated as a pilot project, and they are planned to be gradually expanded across all of Seoul from next year.</h4><br><hr>
-</div>
-</details>
-<details>
-</div>
-<summary><h3>📑UniBus Smart Shelter & 3D Modeling</h3></summary>
-<div markdown="1">
-<h3>👁️‍🗨️ Introducing the UniBus Smart Shelter Implemented through 3D Modeling</h3>
-
-![스크린샷 2023-08-10 125143](https://github.com/alimhanhan/2023_SK_SuniC_Project_UniBus_Smart_Shelter_for_Visually_Impaired/assets/102565567/17f98acb-2604-4af4-a3ab-3aa8255b3cb3)
-
-
-<h4>ㅤRecognizing the notably low bus utilization rate among the visually impaired and the gap between the current situation and the goal of seamless bus boarding for them, when considering the following questions, we were able to extract the following insights:</h4><br>
-<h3>➡️ Since visually impaired individuals are unable to accurately determine when and where buses stop, they often encounter difficulties and perceive risks during the boarding process. This uncertainty leads them to avoid using buses altogether.</h3>
-
-<br><hr><br>
-
-![스크린샷 2023-08-10 114722](https://github.com/alimhanhan/2023_SK_SuniC_Project_UniBus_Smart_Shelter_for_Visually_Impaired/assets/102565567/76008264-a663-4761-a0e8-1ac562965f0c)
-
-<h4>ㅤWith this realization, we shifted our focus towards further systematizing the bus boarding process for the visually impaired, and we recognized the need for deeper empathy.<br><br>
- ㅤTo achieve this, we drew inspiration from various sources featuring visually impaired individuals. Subsequently, we translated the visually impaired individual's bus boarding journey into a table format as depicted above.</h4><hr>
-</div>
-</details>
-
-
-
-<br><br><br><h2>🐕‍🦺 Contents_4) UI & UX and Business Expansion Strategies</h2>
-<h3>👁️‍🗨️ Scenario for Visually Impaired User</h3>
-
-![스크린샷 2023-08-13 084759](https://github.com/alimhanhan/2023_SK_SuniC_Project_UniBus_Smart_Shelter_for_Visually_Impaired/assets/102565567/2ecd7f95-ae41-4977-a2aa-fa06b383c714)
-
-
-<details>
-</div>
-<summary><h3>Step 1️⃣-1️⃣</h3></summary>
-<div markdown="1">
-
-<h3>1️⃣-1️⃣ After the user arrives at the bus stop, they discover the boarding notification.</h3>
-
-![스크린샷 2023-08-13 085641](https://github.com/alimhanhan/2023_SK_SuniC_Project_UniBus_Smart_Shelter_for_Visually_Impaired/assets/102565567/4763aaa8-40ba-4f0c-a772-91c045b7d509)
-
-
-</div>
-</details>
-<details>
-</div>
-<summary><h3>Step 1️⃣-2️⃣</h3></summary>
-<div markdown="1">
-<h3>1️⃣-2️⃣ The user picks up the boarding notification handset, tags their welfare card following the guided voice instructions.</h3>
-
-![스크린샷 2023-08-13 085957](https://github.com/alimhanhan/2023_SK_SuniC_Project_UniBus_Smart_Shelter_for_Visually_Impaired/assets/102565567/edb389fe-3218-4710-a2d4-a31c7e1746be)
-
-
-</div>
-</details>
-<details>
-</div>
-<summary><h3>Step 1️⃣-3️⃣</h3></summary>
-<div markdown="1">
-<h3>1️⃣-3️⃣ The user follows the instructions and enters the bus number, expressing their intention to board.</h3>
-
-![스크린샷 2023-08-13 090113](https://github.com/alimhanhan/2023_SK_SuniC_Project_UniBus_Smart_Shelter_for_Visually_Impaired/assets/102565567/b464a764-81c6-4d8c-a389-ff4d45f2e7b4)
-
-
-
-</div>
-</details>
-<details>
-</div>
-<summary><h3>Step 1️⃣-4️⃣</h3></summary>
-<div markdown="1">
-<h3>1️⃣-4️⃣ The user receives information about the estimated arrival time of the selected bus.</h3>
-
-![스크린샷 2023-08-13 090528](https://github.com/alimhanhan/2023_SK_SuniC_Project_UniBus_Smart_Shelter_for_Visually_Impaired/assets/102565567/004414f2-fae7-419f-8591-7743d3191502)
-
-
-</div>
-</details>
-<details>
-</div>
-<summary><h3>Step 2️⃣-1️⃣</h3></summary>
-<div markdown="1">
-<h3>2️⃣-1️⃣ After the guidance concludes, the user moves to the luminous braille block and waits until the bus arrives.</h3>
-
-![스크린샷 2023-08-13 090815](https://github.com/alimhanhan/2023_SK_SuniC_Project_UniBus_Smart_Shelter_for_Visually_Impaired/assets/102565567/c249640e-824d-4e86-b43e-e80918bc1590)
-
-</div>
-</details>
-<details>
-</div>
-<summary><h3>Step 3️⃣-1️⃣</h3></summary>
-<div markdown="1">
-<h3>3️⃣-1️⃣ When the bus arrives, the traffic light changes color and a voice announcement is broadcasted, and the user boards the bus.</h3>
-
-![스크린샷 2023-08-13 090941](https://github.com/alimhanhan/2023_SK_SuniC_Project_UniBus_Smart_Shelter_for_Visually_Impaired/assets/102565567/d1b42a3c-21db-456b-b546-d1416f2231c7)
-
-</div>
-</details>
-
-<details>
-</div>
-<summary><h3>📑Project Development Potential</h3></summary>
-<div markdown="1">
-<h3>👁️‍🗨️ Continual Steps for Ensuring Fair Mobility Rights</h3>
-
-![스크린샷 2023-08-19 201955](https://github.com/alimhanhan/2023_SK_SuniC_Project_UniBus_Smart_Shelter_for_Visually_Impaired/assets/102565567/61cbf003-ae79-4d17-b13e-44f6cc25701a)
-
-<h4>ㅤWe will continue our efforts to ensure fair mobility rights, along with the potential for expanding our target audience, the growth potential of SmartShelter, the possibility of collaboration with private services, and awareness-changing campaigns for marginalized communities.</h4><br><hr>
-</div>
-</details>
-
-<br><br><br><h2>🐕‍🦺 Contents_5) Idea Validation and Expected Impact</h2>
-<h3>👁️‍🗨️ Prototype Evaluation and Validation</h3>
-
-![스크린샷 2023-08-19 204041](https://github.com/alimhanhan/2023_SK_SuniC_Project_UniBus_Smart_Shelter_for_Visually_Impaired/assets/102565567/6ceaa2bb-fcd7-4064-bb22-06c8dcb24d19)
-
-
-<h3>👉 Our prototype has undergone an evaluation process based on necessity, concreteness, usability, and innovation. The details of this evaluation are as follows:</h3><br><br>
-<details>
-</div>
-<summary><h3>📑Necessity</h3></summary>
-<div markdown="1">
-<h4>👁️‍🗨️ The problem we have defined is a task that, given the population of visually impaired individuals and the ratio of bus passengers, someone, someday, must definitely address.</h4>
-</div>
-</details>
-<details>
-</div>
-<summary><h3>📑Concreteness</h3></summary>
-<div markdown="1">
-<h4>👁️‍🗨️ Our prototype faithfully followed the design thinking process, going through a process of discovering tangible issues by listening to the voices of stakeholders through interviews with current bus drivers and visually impaired individuals.</h4>
-</div>
-</details>
-<details>
-</div>
-<summary><h3>📑Usability</h3></summary>
-<div markdown="1">
-<h4>👁️‍🗨️ Our prototype was introduced in the context of the opportune expansion of SmartShelter, starting as an idea for visually impaired individuals but gradually evolving into a system applicable to all transportation users with disabilities, making it highly versatile.</h4>
-</div>
-</details>
-<details>
-</div>
-<summary><h3>📑Innovation</h3></summary>
-<div markdown="1">
-<h4>👁️‍🗨️ While existing ideas posed challenges in accommodating the elderly visually impaired who might find app usage difficult, our prototype was designed to be physically accessible to everyone through a tangible approach.
- <br><br>
-ㅤFurthermore, conventional systems primarily relied on camera-based bus identification methods, but our innovation lies in designing a prototype that can be perceived through the senses of visually impaired individuals.</h4>
-</div>
-</details>
-<br>
-<hr><br>
-<h3>👁️‍🗨️ Anticipated Effects of the Prototype</h3>
-
-![스크린샷 2023-08-22 120925](https://github.com/alimhanhan/2023_SK_SuniC_Project_UniBus_Smart_Shelter_for_Visually_Impaired/assets/102565567/b425986c-95a1-48e4-bd42-4a8c8da791a5)
-
-<h3>Through our prototype, we can anticipate effects in the following five aspects:<br></h3>
-<h4>
-<br>1️⃣ Improved Information Accessibility <br><br>
-2️⃣ Enhanced Safety <br><br>
-3️⃣ Ensured Mobility Rights <br><br>
-4️⃣ Establishment of an Inclusive Urban Environment <br><br>
-5️⃣ Promotion of Technological Innovation
-</h4>
-</br>
+</br></br></br>
