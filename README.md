@@ -89,7 +89,7 @@ In light of the unavailability of a service capable of integrating and managing 
 </br></br></br><h2>✨ Contents_4) Expected Outcomes</h2>
 ![스크린샷 2024-11-17 000854](https://github.com/user-attachments/assets/0b8c99fa-3e19-4f3b-8fcf-3182c77c12a5)
 
-<b>🟠 상담 내역 및 인원 카운팅 등 기능을 통해 업무 효율을 높여 복지사들의 업무 부담을 줄일 수 있습니다. </b></br>
+</br><b>🟠 상담 내역 및 인원 카운팅 등 기능을 통해 업무 효율을 높여 복지사들의 업무 부담을 줄일 수 있습니다. </b></br>
 : The incorporation of counseling history and headcounting features enables outreach workers to streamline their processes, enhancing their overall efficiency.</br></br>
 
 <b>🟠 아웃리치를 진행 시 활용하기 편리한 모바일 애플리케이션 형태이며, 아웃리치와 카운팅 등 분리되었던 업무를 통합하여 관리할 수 있어, 업무 효율성을 높일 수 있습니다.</b></br>
@@ -101,4 +101,4 @@ In light of the unavailability of a service capable of integrating and managing 
 <b>🟠 기존에 메신저, 개인의 메모장이나 갤러리에 산재되어 있던 정보를 한곳에 저장하여 한눈에 볼 수 있으며, 필터링 및 검색 기능을 통해 원하는 기록 또는 사진을 빠르게 확인할 수 있습니다.</b></br>
 : Information that was previously scattered across messengers, personal notepads, or galleries can now be stored in one place for an at-a-glance view, and filtering and search functions allow for rapid retrieval of the records or photos needed.
 
-</br></br></br>
+</br></br>
