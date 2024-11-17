@@ -3,7 +3,7 @@
 <h3>: Real-time management application for homeless outreach</h3>
 
 <br><br><h2>✨ Contents_1) Project Background </h2>
-<h3>👣 Challenges Identified in Social Workers' 'Outreach' Activities</h3>
+<details><summary><h3>👣 Health issues Associated with Severe Street Homelessness</h3></summary>
 
 ![스크린샷 2024-11-16 222708](https://github.com/user-attachments/assets/9ad6ddcc-13bb-4248-b73e-6ad277950455)
 
@@ -12,13 +12,13 @@
 <h4>ㅤ2021년 보건복지부 조사 결과에 따르면, 전국 거리 노숙인 수 1600명 중 과반수 이상이 5년 이상 장기 거리 노숙인에 속합니다. 거리 노숙인의 경우 높은 유병률에 비해 저조한 병원 방문률을 보이고 있어, 건강 문제와 관련한 지속적인 지원이 필요한 상황입니다.
 </br></br></br>
 A 2021 Department of Health and Human Services survey revealed that the majority of the 1,600 individuals experiencing street homelessness nationwide have been doing so for five years or more. Despite the high prevalence of this issue, the street homeless population has low rates of healthcare visits, indicating a need for ongoing support for health issues.
-</h4><br><hr><br>
+</h4><br><hr><br></details><details><summary><h3>👣 Challenges Identified in Social Workers' 'Outreach' Activities</h3></summary>
 
 ![스크린샷 2024-11-16 223048](https://github.com/user-attachments/assets/d7846590-37a6-47e2-acd8-f38e77707be5)
 
 
 </br><h4>ㅤ이러한 상황에서 아웃리치 업무를 통합 및 관리할 수 있는 서비스의 부재로 인하여, 구두 또는 메신저 앱, 수기 기록 등으로 업무 내용을 기록 및 전달하는 상황에서 아웃리치 업무를 보조 및 효율화할 수 있는 서비스의 필요성을 느껴 본 서비스를 개발하였습니다.</br></br></br>
-In light of the unavailability of a service capable of integrating and managing outreach work, we recognized the need to develop a service that can assist and streamline this process in situations where outreach work is recorded and delivered orally, through messenger apps, handwritten records, and other formats.</h4></br>
+In light of the unavailability of a service capable of integrating and managing outreach work, we recognized the need to develop a service that can assist and streamline this process in situations where outreach work is recorded and delivered orally, through messenger apps, handwritten records, and other formats.</h4></br><hr></details>
 
 <br><br><h2>✨ Contents_2) Project Overview </h2>
 <h3>👣 Target Users</h3>
