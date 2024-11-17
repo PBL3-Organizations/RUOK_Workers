@@ -66,19 +66,19 @@ In light of the unavailability of a service capable of integrating and managing 
   </thead>
   <tbody>
     <tr>
-      <td>Front</td>
+      <td>Front-End</td>
       <td><img src="https://img.shields.io/badge/Android Studio-3DDC84?style=flat-square&logo=Android Studio&logoColor=white"/></a>&nbsp
  <img src="https://img.shields.io/badge/Kotlin-7F52FF?style=flat-square&logo=Kotlin&logoColor=white"/></a>&nbsp
  <img src="https://img.shields.io/badge/AI•Naver API-03C75A?style=flat-square&logo=Naver&logoColor=white"/></a>&nbsp
 </td>
     </tr>
     <tr>
-      <td>Back</td>
+      <td>Back-End</td>
       <td><img src="https://img.shields.io/badge/ERD Cloud-3693F3?style=flat-square&logo=icloud&logoColor=white"/></a>&nbsp
 <img src="https://img.shields.io/badge/SQLite-003B57?style=flat-square&logo=SQLite&logoColor=white"/></a>&nbsp</td>
     </tr>
     <tr>
-      <td>Managing</td>
+      <td>Version Control</td>
       <td><img src="https://img.shields.io/badge/Notion-000000?style=flat-square&logo=Notion&logoColor=white"/></a>&nbsp
   <img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/></a>&nbsp</td>
     </tr>
