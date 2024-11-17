@@ -108,7 +108,40 @@ In light of the unavailability of a service capable of integrating and managing 
 
 <h3>👣 Privacy</h3>
 
+<table border="1" style="border-collapse: collapse; width: 50%; text-align: left;">
+  <thead>
+    <tr style="background-color: #f2f2f2;">
+      <th>Document Name</th>
+      <th>View full text</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="background-color: #eaf7ff;">
+      <td>Terms of Service</td>
+      <td>
 
+[서비스 이용약관.pdf](https://github.com/user-attachments/files/17789002/default.pdf) </td>
+    </tr>
+    <tr>
+      <td>Privacy Policy</td>
+      <td>
+
+[개인정보처리방침.pdf](https://github.com/user-attachments/files/17789001/default.pdf) </td>
+    </tr>
+    <tr style="background-color: #eaf7ff;">
+      <td>Personal Information Agreement(Homeless)</td>
+      <td>
+        
+  [개인정보처리동의서(노숙인).pdf](https://github.com/user-attachments/files/17788998/default.pdf) </td>
+    </tr>
+    <tr>
+      <td>Personal Information Agreement(Workers)</td>
+      <td>
+
+  [개인정보처리동의서(복지사).pdf](https://github.com/user-attachments/files/17788996/default.pdf) </td>
+    </tr>
+  </tbody>
+</table>
 </br></br>
 
 <h3>👣 Detailed Feature Description</h3>
