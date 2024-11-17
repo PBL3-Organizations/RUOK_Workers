@@ -117,13 +117,13 @@ In light of the unavailability of a service capable of integrating and managing 
   </thead>
   <tbody>
     <tr style="background-color: #eaf7ff;">
-      <td>📙 Terms of Service</td>
+      <td>📢 Terms of Service</td>
       <td>
 
 [서비스 이용약관.pdf](https://github.com/user-attachments/files/17789002/default.pdf) </td>
     </tr>
     <tr>
-      <td>📘 Privacy Policy</td>
+      <td>⚖️ Privacy Policy</td>
       <td>
 
 [개인정보처리방침.pdf](https://github.com/user-attachments/files/17789001/default.pdf) </td>
