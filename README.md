@@ -199,7 +199,8 @@ In light of the unavailability of a service capable of integrating and managing 
 
 </br></br></br><h2>✨ Contents_4) Expected Outcomes</h2>
 
-![스크린샷 2024-11-23 172141](https://github.com/user-attachments/assets/6f92464f-f581-4a67-be3a-ebad752d71cf)
+![스크린샷 2024-11-23 181737](https://github.com/user-attachments/assets/265cbced-8a20-4478-97e2-f2ea4b7de286)
+
 
 
 </br><b>🟠 상담 내역 및 인원 카운팅 등 기능을 통해 업무 효율을 높여 복지사들의 업무 부담을 줄일 수 있습니다. </b></br>
@@ -226,6 +227,9 @@ In light of the unavailability of a service capable of integrating and managing 
 ⚫ 서울시 사회복지시설 정보 시스템 인트라넷과의 연동을 통한 공공 서비스 간 유기적 이용 기대 </br>
 : Expected organic use between public services through linkage with the intranet of Seoul's social welfare facilities information system. </br>
 
-</br><b>🅱️ 프로젝트 확장성 (Project scalability)</b></br>
-
+</br><b>🅱️ 프로젝트 확장성 (Project scalability)</b></br></br>
+⚫ 단일 시설이 아닌, 국내외 다양한 노숙인 복지 시설 내 보편적 활용 기대 </br>
+: Expected to be universally utilized in various homeless welfare facilities at home and abroad, not just a single facility. </br></br>
+⚫ 비단 노숙인 복지 분야에서뿐만 아니라, 아동 등 기타 사회적 취약 계층 복지에서 범용적으로 활용 가능 </br>
+: It can be universally utilized not only in the field of homeless welfare, but also in the welfare of other socially vulnerable groups such as children. </br>
 </br></br>
