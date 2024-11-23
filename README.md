@@ -198,7 +198,9 @@ In light of the unavailability of a service capable of integrating and managing 
 
 
 </br></br></br><h2>✨ Contents_4) Expected Outcomes</h2>
-![스크린샷 2024-11-17 000854](https://github.com/user-attachments/assets/0b8c99fa-3e19-4f3b-8fcf-3182c77c12a5)
+
+![스크린샷 2024-11-23 172141](https://github.com/user-attachments/assets/6f92464f-f581-4a67-be3a-ebad752d71cf)
+
 
 </br><b>🟠 상담 내역 및 인원 카운팅 등 기능을 통해 업무 효율을 높여 복지사들의 업무 부담을 줄일 수 있습니다. </b></br>
 : The incorporation of counseling history and headcounting features enables outreach workers to streamline their processes, enhancing their overall efficiency.</br></br>
