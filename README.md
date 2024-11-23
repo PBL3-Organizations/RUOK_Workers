@@ -221,7 +221,11 @@ In light of the unavailability of a service capable of integrating and managing 
 ![스크린샷 2024-11-23 172416](https://github.com/user-attachments/assets/41ceaf89-e443-451a-a7ab-cc5372909d76)
 
 
-</br>
-?
+</br><b>
+🅰️ 프로젝트 융합 가능성 (Possibility of project convergence) </b></br></br>
+⚫ 서울시 사회복지시설 정보 시스템 인트라넷과의 연동을 통한 공공 서비스 간 유기적 이용 기대 </br>
+: Expected organic use between public services through linkage with the intranet of Seoul's social welfare facilities information system. </br>
+
+</br><b>🅱️ 프로젝트 확장성 (Project scalability)</b></br>
 
 </br></br>
