@@ -67,7 +67,7 @@ In light of the unavailability of a service capable of integrating and managing 
   <tbody>
     <tr>
       <td>Front-End</td>
-      <td><img src="https://img.shields.io/badge/Android Studio-3DDC84?style=flat-square&logo=Android Studio&logoColor=white"/></a>&nbsp
+      <td><img src="https://img.shields.io/badge/Android Studio-3DDC84?style=flat-square&logo=AndroidStudio&logoColor=white"/></a>&nbsp
  <img src="https://img.shields.io/badge/Kotlin-7F52FF?style=flat-square&logo=Kotlin&logoColor=white"/></a>&nbsp
  <img src="https://img.shields.io/badge/AI•Naver API-03C75A?style=flat-square&logo=Naver&logoColor=white"/></a>&nbsp
 </td>
@@ -92,9 +92,17 @@ In light of the unavailability of a service capable of integrating and managing 
 
 </br></br>
 
-<h3>👣 System Flow</h3>
+<h3>👣 System Flow_Full Version</h3>
 
 ![PBL3_Aegis_System_Drawings- PBL4  System Flow drawio](https://github.com/user-attachments/assets/44832617-1915-4c33-a7d2-1283ea9e735f)
+
+
+</br></br>
+
+<h3>👣 System Flow_Simplified Version</h3></br>
+
+![KakaoTalk_20250409_002459721](https://github.com/user-attachments/assets/189fc431-470c-4eeb-87e4-c4ef7c0128ab)
+
 
 
 </br></br>
