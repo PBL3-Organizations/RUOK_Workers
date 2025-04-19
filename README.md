@@ -67,7 +67,7 @@ In light of the unavailability of a service capable of integrating and managing 
   <tbody>
     <tr>
       <td>Front-End</td>
-      <td><img src="https://img.shields.io/badge/Android Studio-3DDC84?style=flat-square&logo=Android Studio&logoColor=white"/></a>&nbsp
+      <td><img src="https://img.shields.io/badge/Android Studio-3DDC84?style=flat-square&logo=AndroidStudio&logoColor=white"/></a>&nbsp
  <img src="https://img.shields.io/badge/Kotlin-7F52FF?style=flat-square&logo=Kotlin&logoColor=white"/></a>&nbsp
  <img src="https://img.shields.io/badge/AI•Naver API-03C75A?style=flat-square&logo=Naver&logoColor=white"/></a>&nbsp
 </td>
