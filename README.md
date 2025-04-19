@@ -92,14 +92,14 @@ In light of the unavailability of a service capable of integrating and managing 
 
 </br></br>
 
-<h3>👣 System Flow_Full Version</h3></br>
+<h3>👣 System Flow_Full Version</h3>
 
 ![PBL3_Aegis_System_Drawings- PBL4  System Flow drawio](https://github.com/user-attachments/assets/44832617-1915-4c33-a7d2-1283ea9e735f)
 
 
 </br></br>
 
-<h3>👣 System Flow_Simplified Version Version</h3>
+<h3>👣 System Flow_Simplified Version</h3></br>
 
 ![KakaoTalk_20250409_002459721](https://github.com/user-attachments/assets/189fc431-470c-4eeb-87e4-c4ef7c0128ab)
 
